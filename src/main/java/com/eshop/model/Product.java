@@ -15,7 +15,7 @@ public class Product {
     private String brandName;
     private String category;
     private Double price;
-    @Column(columnDefinition = "TEXT", nullable = false)
+    @Column(columnDefinition = "TEXT")
     private String description;
     private LocalDate productionDate;
     private String size;
