@@ -2,9 +2,12 @@ package com.eshop.service;
 
 import com.eshop.repository.ProductRepository;
 import com.eshop.model.Product;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import java.util.Collection;
+import java.util.Optional;
 
 @Service
 public class ProductService {
@@ -18,15 +21,21 @@ public class ProductService {
         return productRepository.findByName(name);
     }
     // save the product to the database
-    public boolean addProduct(Product product){
-        boolean isExist = productRepository.existsProductByNameAndBrandNameAndPrice(product.getName(),product.getBrandName(), product.getPrice());
+    public ResponseEntity<String> addProduct(Product product){
+        productRepository.save(product);
+        return new ResponseEntity<>("Successfully saved!", HttpStatus.CREATED);
+    }
+    // update the existed product
+    public ResponseEntity<String> updateProduct(Product product){
+        boolean isExist = productRepository.existsById(product.getId());
         if(isExist){
-            return false;
-        }else{
             productRepository.save(product);
-            return true;
+            return new ResponseEntity<String>("Successfully updated! !",HttpStatus.CREATED);
+        }else{
+            return new ResponseEntity<>("not Found such product with id: "+product.getId(), HttpStatus.NOT_FOUND);
         }
     }
+
     //find all product in the database
     public Collection<Product> getAllProducts(){
         return productRepository.findAll();
@@ -76,5 +85,17 @@ public class ProductService {
      public Collection<Product> getAllByBrandNameAndPriceGreaterThanEqual(String brandName, Double price){
         return productRepository.findAllByBrandNameAndPriceGreaterThanEqual(brandName, price);
      }
+
+     // danger area
+    //removed product
+    public boolean deleteProductById(Integer id){
+        Optional<Product> p = productRepository.findById(id);
+        if(p.isPresent()){
+            productRepository.deleteById(id);
+            return true;
+        }else{
+            return false;
+        }
+    }
 
 }
