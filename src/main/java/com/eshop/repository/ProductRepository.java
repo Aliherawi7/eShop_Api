@@ -1,4 +1,4 @@
-package com.eshop.com.eshop.repository;
+package com.eshop.repository;
 
 
 import com.eshop.model.Product;
@@ -15,10 +15,22 @@ public interface ProductRepository extends JpaRepository<Product, Integer> {
     // find product bt name
     Product findByName(String name);
 
-    // find all product by category and brand name and price
-    Collection<Product> findAllByCategoryAndBrandNameAndPrice(String category, String brandName, Double price);
+    // check if product exist by name
+    boolean existsProductByName(String name);
+    //check if product exist by brand name
+    boolean existsProductByBrandName(String name);
+    //check if product exist by name, model , brand name , price,
+    boolean existsProductByNameAndBrandNameAndPrice(String name, String brandName, Double price);
+
+    // find all product by category and brand name and price greater than given price
+    Collection<Product> findAllByCategoryAndBrandNameAndPriceGreaterThan(String category, String brandName, Double price);
+    // find all product by category and brand name and price less than given price
+    Collection<Product> findAllByCategoryAndBrandNameAndPriceLessThan(String category, String brandName, Double price);
+
     // find all product by price greater or equal to the given price
     Collection<Product> findAllByPriceGreaterThanEqual(Double price);
+    //find all product by price less than or equal to the given price
+    Collection<Product> findAllByPriceLessThanEqual(Double price);
 
     // find all product by category and price less than or equal to the given price
     Collection<Product> findAllByCategoryAndPriceLessThanEqual(String category, Double price);
