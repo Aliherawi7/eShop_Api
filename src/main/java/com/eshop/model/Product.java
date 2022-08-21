@@ -1,5 +1,6 @@
 package com.eshop.model;
 
+import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.RequiredArgsConstructor;
@@ -8,7 +9,8 @@ import java.time.LocalDate;
 
 
 @Entity
-@Data @NoArgsConstructor @RequiredArgsConstructor
+@Data @NoArgsConstructor
+@AllArgsConstructor
 public class Product {
     @Id
     @SequenceGenerator(sequenceName = "product_sequence", name = "product_sequence", allocationSize = 1)
@@ -25,4 +27,3 @@ public class Product {
     private LocalDate productionDate;
     private String size;
 }
-
