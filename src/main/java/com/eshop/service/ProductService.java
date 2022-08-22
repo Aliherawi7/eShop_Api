@@ -5,7 +5,6 @@ import com.eshop.model.Product;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
-
 import java.util.Collection;
 import java.util.Optional;
 
@@ -96,6 +95,11 @@ public class ProductService {
         }else{
             return false;
         }
+    }
+    // remove all all product in the database
+    public ResponseEntity<?> deleteAllProducts(){
+        productRepository.deleteAll();
+        return new ResponseEntity<>("all data removed successfully!", HttpStatus.ACCEPTED);
     }
 
 }
