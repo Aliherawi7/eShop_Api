@@ -5,11 +5,13 @@ import com.eshop.service.ProductService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-
-import java.security.cert.CollectionCertStoreParameters;
 import java.util.Collection;
 import java.util.Map;
-
+/*
+* @Author: Aliherawi
+* @Github: Aliherawi7
+* @linkedin: ali-herawi
+* */
 @RestController
 @RequestMapping("/api/products")
 public class ProductResource {
@@ -75,7 +77,7 @@ public class ProductResource {
      *===========================================*/
 
     // find by brand name
-    @GetMapping(value = "/find", params = {"brand"})
+    @GetMapping(value = "/brand/", params = {"brand"})
     public ResponseEntity<?> getAllByBrandName(@RequestParam String brand){
         Collection<Product> products = productService.getAllByBrandName(brand);
         if(products.size()>0){
@@ -86,7 +88,7 @@ public class ProductResource {
     }
 
     // find product by category
-    @GetMapping(value = "/find", params = {"category"})
+    @GetMapping(value = "/category/", params = {"category"})
     public ResponseEntity<?> getAllByCategory(@RequestParam String category){
         Collection<Product> products = productService.getAllByCategory(category);
         if(products.size()>0){
@@ -95,12 +97,36 @@ public class ProductResource {
             return new ResponseEntity<>("no product found by category: " + category, HttpStatus.NOT_FOUND);
         }
     }
+
+    // find products by price greater than or equal to the given price
+    @GetMapping(value = "/price/", params = {"minprice"})
+    public ResponseEntity<?> getAllByPriceGreaterThanEqual(@RequestParam Double minprice){
+        Collection<Product> products = productService.getAllByPriceGreaterThanEqual(minprice);
+        if(products.size()>0){
+            return new ResponseEntity<>(products, HttpStatus.OK);
+        }else{
+            return new ResponseEntity<>("no product found by price greater than or equal to : "+minprice, HttpStatus.NOT_FOUND);
+        }
+    }
+
+    // find products by price Less than or equal to the given price
+    @GetMapping(value = "/price/", params = {"maxprice"})
+    public ResponseEntity<?> getAllByPriceLessThanEqual(@RequestParam Double maxprice){
+        Collection<Product> products = productService.findAllByPriceLessThanEqual(maxprice);
+        if(products.size()>0){
+            return new ResponseEntity<>(products, HttpStatus.OK);
+        }else{
+            return new ResponseEntity<>("no product found by price less than or equal to : "+maxprice, HttpStatus.NOT_FOUND);
+        }
+    }
+
     // find Products by category and price less than or equal to price
     @GetMapping(value = "/find", params = {"category", "maxprice"})
     public ResponseEntity<?> getAllByCategoryAndPriceLessThanEqual
     (@RequestParam Map<String, String> params){
         String category = params.get("category");
         Double maxprice = Double.parseDouble(params.get("maxprice"));
+        System.err.println("category: "+category+ " price: "+maxprice);
         Collection<Product> products = productService.getAllByCategoryAndPriceLessThanEqual(category, maxprice);
         if(products.size() > 0){
             return new ResponseEntity<>(products, HttpStatus.OK);
@@ -112,7 +138,10 @@ public class ProductResource {
     // find Products by category and price greater than or equal to price
     @GetMapping(value = "/find",params = {"category", "minprice"})
     public ResponseEntity<?> getAllByCategoryAndPriceGreaterThanEqual
-    (@RequestParam String category, @RequestParam Double minprice){
+    (@RequestParam Map<String, String> params){
+        String category = params.get("category");
+        Double minprice = Double.parseDouble(params.get("minprice"));
+        System.err.println("category: "+category+ " minprice: "+minprice);
         Collection<Product> products = productService.getAllByCategoryAndPriceGreaterThanEqual(category, minprice);
         if(products.size() > 0){
             return new ResponseEntity<>(products, HttpStatus.OK);
@@ -122,9 +151,12 @@ public class ProductResource {
     }
 
     // find products by category, brand name and greater or equal to the price
-    @GetMapping(value = "/find", params = {"category", "brandName", "minprice"})
-    public ResponseEntity<?> getAllByCategoryAndBrandNameAndPriceGreaterThanEqual
-    (@RequestParam String category, @RequestParam String brandName,@RequestParam Double minprice){
+    @GetMapping(value = "/find", params = {"category", "brand", "minprice"})
+    public ResponseEntity<?> getAllByCategoryAndBrandNameAndPriceGreaterThanEqual(@RequestParam Map<String, String> params){
+        String category = params.get("category");
+        String brandName = params.get("brand");
+        Double minprice = Double.parseDouble(params.get("minprice"));
+        System.err.println("category: "+category+ " minprice: "+minprice+" brandName: "+brandName);
         Collection<Product> products =
                 productService.getAllByCategoryAndBrandNameAndPriceGreaterThanEqual(category, brandName, minprice);
         if(products.size() > 0){
@@ -137,11 +169,12 @@ public class ProductResource {
     }
 
     // find products by category, brand name and less than or equal to the price
-    @GetMapping(value = "/find", params = {"category", "brandName","maxprice"})
-    public ResponseEntity<?> getAllByCategoryAndBrandNameAndPriceLessThanEqual
-    (@RequestParam String category,
-     @RequestParam String brandName,
-     @RequestParam Double maxprice){
+    @GetMapping(value = "/find", params = {"category", "brand","maxprice"})
+    public ResponseEntity<?> getAllByCategoryAndBrandNameAndPriceLessThanEqual(@RequestParam Map<String, String> params){
+        String category = params.get("category");
+        String brandName = params.get("brand");
+        Double maxprice = Double.parseDouble(params.get("maxprice"));
+        System.err.println("category: "+category+ " price: "+maxprice+" brandName: "+brandName);
         Collection<Product> products =
                 productService.getAllByCategoryAndBrandNameAndPriceLessThanEqual(category, brandName, maxprice);
         if(products.size() > 0) return new ResponseEntity<>(products, HttpStatus.OK);
@@ -150,31 +183,13 @@ public class ProductResource {
                         "brand name: " + brandName + ", price less than or equal: " + maxprice, HttpStatus.NOT_FOUND);
     }
 
-    // find products by price greater than or equal to the price
-    @GetMapping(value = "/find", params = {"minprice"})
-    public ResponseEntity<?> getAllByPriceGreaterThanEqual(@RequestParam Double minprice){
-        Collection<Product> products = productService.getAllByPriceGreaterThanEqual(minprice);
-        if(products.size()>0){
-            return new ResponseEntity<>(products, HttpStatus.OK);
-        }else{
-            return new ResponseEntity<>("no product found by price greater than or equal to : "+minprice, HttpStatus.NOT_FOUND);
-        }
-    }
-
-    // find products by price Less than or equal to the price
-    @GetMapping(value = "/find", params = {"maxprice"})
-    public ResponseEntity<?> getAllByPriceLessThanEqual(@RequestParam Double maxprice){
-        Collection<Product> products = productService.findAllByPriceLessThanEqual(maxprice);
-        if(products.size()>0){
-            return new ResponseEntity<>(products, HttpStatus.OK);
-        }else{
-            return new ResponseEntity<>("no product found by price less than or equal to : "+maxprice, HttpStatus.NOT_FOUND);
-        }
-    }
 
     // find all product by brand name and price less than or equal to the given price
-    @GetMapping(value = "/find", params = {"brandName","maxprice"})
-    public ResponseEntity<?> getAllByBrandNameAndPriceLessThanEqual(@RequestParam String brandName,@RequestParam Double maxprice){
+    @GetMapping(value = "/find", params = {"brand","maxprice"})
+    public ResponseEntity<?> getAllByBrandNameAndPriceLessThanEqual(@RequestParam Map<String, String> params){
+        String brandName = params.get("brand");
+        Double maxprice = Double.parseDouble(params.get("maxprice"));
+        System.err.println(" price: "+maxprice+" brandName: "+brandName);
         Collection<Product> products = productService.getAllByBrandNameAndPriceLessThanEqual(brandName, maxprice);
         if(products.size() > 0){
             return new ResponseEntity<>(products, HttpStatus.OK);
@@ -184,8 +199,11 @@ public class ProductResource {
         }
     }
     // find all product by brand name and price greater than or equal to the given price
-    @GetMapping(value = "/find", params = {"brandName","minprice"})
-    public ResponseEntity<?> getAllByBrandNameAndPriceGreaterThanEqual(@RequestParam String brandName,@RequestParam Double minprice){
+    @GetMapping(value = "/find", params = {"brand","minprice"})
+    public ResponseEntity<?> getAllByBrandNameAndPriceGreaterThanEqual(@RequestParam Map<String, String> params){
+        String brandName = params.get("brand");
+        Double minprice = Double.parseDouble(params.get("minprice"));
+        System.err.println(" minprice: "+minprice+" brandName: "+brandName);
         Collection<Product> products = productService.getAllByBrandNameAndPriceGreaterThanEqual(brandName, minprice);
         if(products.size() > 0){
             return new ResponseEntity<>(products, HttpStatus.OK);
