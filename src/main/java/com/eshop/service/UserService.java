@@ -6,15 +6,25 @@ import com.eshop.repository.RoleRepository;
 import com.eshop.repository.UserRepository;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import java.util.Collection;
+
+/*
+ * @Author: Aliherawi
+ * @Github: Aliherawi7
+ * @linkedin: ali-herawi
+ */
 @Service
 public class UserService {
-    private UserRepository userRepository;
-    private RoleRepository roleRepository;
-    public UserService(UserRepository userRepository, RoleRepository roleRepository){
+    private final UserRepository userRepository;
+    private final RoleRepository roleRepository;
+    private final BCryptPasswordEncoder bCryptPasswordEncoder;
+    public UserService(UserRepository userRepository, RoleRepository roleRepository, BCryptPasswordEncoder bCryptPasswordEncoder){
         this.userRepository = userRepository;
         this.roleRepository = roleRepository;
+        this.bCryptPasswordEncoder = bCryptPasswordEncoder;
     }
 
     //save user on database
@@ -55,10 +65,39 @@ public class UserService {
         }else{
             return new ResponseEntity<>("role with name: "+ roleName+" not found!", HttpStatus.NOT_FOUND);
         }
-
-
     }
 
+    // get all users from the database
+    public ResponseEntity<?> getAllUsers(){
+        Collection<User>  users = userRepository.findAll();
+        if(users.size()>0){
+            return new ResponseEntity<>(users, HttpStatus.OK);
+        }else{
+            return new ResponseEntity<>("no user is available!", HttpStatus.NOT_FOUND);
+        }
+    }
+
+    // delete a user by email and password
+    public ResponseEntity<?> deleteUser(String email, String password){
+        email = email.trim().toLowerCase();
+        User user = userRepository.findByEmail(email);
+        boolean matchPassword = bCryptPasswordEncoder.matches(user.getPassword(), password);
+        // if user is not available
+        if(user == null){
+            return new ResponseEntity<>("user not found!", HttpStatus.NOT_FOUND);
+        }
+        if(matchPassword){
+            userRepository.delete(user);
+            return new ResponseEntity<>("user removed successfully", HttpStatus.NOT_FOUND);
+        }else{
+            return new ResponseEntity<>("incorrect password!",HttpStatus.NOT_FOUND);
+        }
+    }
+
+    //delete a logged in user
+/*    public ResponseEntity<?> deleteLoggedInUser(String password){
+
+    }*/
 
 
 }
