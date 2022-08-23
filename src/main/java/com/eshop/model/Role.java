@@ -1,12 +1,17 @@
 package com.eshop.model;
 
-import javax.persistence.Entity;
-import javax.persistence.Id;
+import javax.persistence.*;
 
 @Entity
+@Table(
+        uniqueConstraints={
+                @UniqueConstraint(name = "role_name_unique", columnNames = "name")
+        }
+)
 public class Role {
     @Id
     private Integer id;
+    @Column(nullable = false)
     private String name;
 
     public Role() {
