@@ -31,16 +31,6 @@ public class EshopApiApplication {
 			p.addProduct(p1);
 		};
 	}
-	/*
-	* this.id = id;
-        this.name = name;
-        this.color = color;
-        this.imgUrl = imgUrl;
-        this.brandName = brandName;
-        this.category = category;
-        this.price = price;
-        this.description = description;
-        this.productionDate = productionDate;
-        this.size = size;*/
+
 
 }
