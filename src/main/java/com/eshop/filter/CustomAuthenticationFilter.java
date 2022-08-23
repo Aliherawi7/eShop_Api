@@ -3,6 +3,7 @@ package com.eshop.filter;
 import com.auth0.jwt.JWT;
 import com.auth0.jwt.algorithms.Algorithm;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -34,6 +35,7 @@ public class CustomAuthenticationFilter extends UsernamePasswordAuthenticationFi
         String email = request.getParameter("email").trim().toLowerCase();
         String password = request.getParameter("password");
         UsernamePasswordAuthenticationToken authenticateToken = new UsernamePasswordAuthenticationToken(email, password);
+        System.out.println("email: "+ email +" password: "+ password +" in custom auth : " + authenticateToken.toString());
         return authenticationManager.authenticate(authenticateToken);
     }
 
@@ -42,6 +44,7 @@ public class CustomAuthenticationFilter extends UsernamePasswordAuthenticationFi
         // we need the principal or authenticated user to create JWT token with its information
         User user = (User) authResult.getPrincipal();
         //we an algorithm to to build the token with
+        System.out.println("in successful auth method");
         Algorithm algorithm = Algorithm.HMAC256("herawi".getBytes());
         //then we create the access token and refresh token using auth0 library
         String access_token = JWT.create()
@@ -66,6 +69,8 @@ public class CustomAuthenticationFilter extends UsernamePasswordAuthenticationFi
 
     @Override
     protected void unsuccessfulAuthentication(HttpServletRequest request, HttpServletResponse response, AuthenticationException failed) throws IOException, ServletException {
-        super.unsuccessfulAuthentication(request, response, failed);
+        response.setHeader("error_message",failed.getMessage());
+        response.setStatus(HttpStatus.NOT_FOUND.value());
+        response.setContentType(MediaType.APPLICATION_JSON_VALUE);
     }
 }
