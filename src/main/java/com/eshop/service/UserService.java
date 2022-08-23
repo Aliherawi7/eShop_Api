@@ -24,9 +24,8 @@ import java.util.Collection;
  */
 @Service
 public class UserService implements UserDetailsService {
-    @Autowired
+
     private final UserRepository userRepository;
-    @Autowired
     private final RoleRepository roleRepository;
     private final BCryptPasswordEncoder bCryptPasswordEncoder;
     public UserService(UserRepository userRepository, RoleRepository roleRepository, BCryptPasswordEncoder bCryptPasswordEncoder){
@@ -51,10 +50,14 @@ public class UserService implements UserDetailsService {
 
     //save user on database
     public ResponseEntity<?> addUser(User user){
-        boolean exist = userRepository.existsByEmail(user.getEmail());
+        boolean exist = userRepository.existsByEmail(user.getEmail().toLowerCase().trim());
         if(exist){
             return new ResponseEntity<String>("User already exist", HttpStatus.BAD_REQUEST);
         }else{
+            user.setEmail(user.getEmail().trim().toLowerCase());
+            user.setName(user.getName().trim().toLowerCase());
+            user.addRole(roleRepository.findByName("USER"));
+            user.setPassword(bCryptPasswordEncoder.encode(user.getPassword()));
             userRepository.save(user);
             return new ResponseEntity<>("User save successfully!", HttpStatus.CREATED);
         }
