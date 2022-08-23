@@ -4,6 +4,7 @@ import com.eshop.model.Role;
 import com.eshop.model.User;
 import com.eshop.repository.RoleRepository;
 import com.eshop.repository.UserRepository;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
@@ -23,7 +24,9 @@ import java.util.Collection;
  */
 @Service
 public class UserService implements UserDetailsService {
+    @Autowired
     private final UserRepository userRepository;
+    @Autowired
     private final RoleRepository roleRepository;
     private final BCryptPasswordEncoder bCryptPasswordEncoder;
     public UserService(UserRepository userRepository, RoleRepository roleRepository, BCryptPasswordEncoder bCryptPasswordEncoder){
@@ -40,7 +43,7 @@ public class UserService implements UserDetailsService {
             throw new UsernameNotFoundException("User not found!");
         }
         Collection<SimpleGrantedAuthority> authorities = new ArrayList<>();
-        user.getRoles().forEach(role ->{
+        user.getRoles().forEach(role -> {
             authorities.add(new SimpleGrantedAuthority(role.getName()));
         });
         return new org.springframework.security.core.userdetails.User(user.getEmail(), user.getPassword(), authorities);
