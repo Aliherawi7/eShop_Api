@@ -3,6 +3,7 @@ package com.eshop.security;
 import com.eshop.filter.CustomAuthenticationFilter;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.http.HttpMethod;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
@@ -35,9 +36,14 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
         http.csrf().disable();
         http.sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS);
         http.authorizeHttpRequests().antMatchers("/api/login").permitAll();
-        http.authorizeHttpRequests().anyRequest().permitAll();
+        http.authorizeHttpRequests().antMatchers("/api/products").permitAll();
+        http.authorizeHttpRequests().antMatchers(HttpMethod.POST,"/api/products/save")
+                .hasAuthority("ADMIN");
+        http.authorizeHttpRequests().antMatchers(HttpMethod.DELETE,"/api/products/delete")
+                .hasAuthority("ADMIN");
+        http.authorizeHttpRequests().antMatchers("/api/users").hasAuthority("ADMIN");
+        http.authorizeHttpRequests().anyRequest().authenticated();
         http.addFilter(authenticationFilter);
-
     }
     @Bean
     @Override
