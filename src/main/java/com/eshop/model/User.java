@@ -27,10 +27,18 @@ public class User {
     private String imgUrl;
     @ManyToMany(fetch = FetchType.EAGER)
     private Collection<Role> roles = new ArrayList<>();
+    private boolean enabled;
+    private boolean accountNotLocked;
+    private int failedAttempt;
+    private  LocalDate lockTime;
+
 
     public User(){}
 
-    public User(Long id, String name, String lastName, Short age, LocalDate dob, String password, String email, String imgUrl) {
+    public User(Long id,
+                String name, String lastName,
+                Short age, LocalDate dob, String password,
+                String email, String imgUrl) {
         this.id = id;
         this.name = name;
         this.lastName = lastName;
@@ -39,6 +47,9 @@ public class User {
         this.password = password;
         this.email = email;
         this.imgUrl = imgUrl;
+        this.enabled = true;
+        this.accountNotLocked = true;
+        this.failedAttempt = 0;
     }
 
     public Long getId() {
@@ -117,5 +128,37 @@ public class User {
 
     public void setRoles(Collection<Role> roles) {
         this.roles = roles;
+    }
+
+    public boolean isEnabled() {
+        return enabled;
+    }
+
+    public void setEnabled(boolean enabled) {
+        this.enabled = enabled;
+    }
+
+    public boolean isAccountNotLocked() {
+        return accountNotLocked;
+    }
+
+    public void setAccountNotLocked(boolean accountNotLocked) {
+        this.accountNotLocked = accountNotLocked;
+    }
+
+    public int getFailedAttempt() {
+        return failedAttempt;
+    }
+
+    public void setFailedAttempt(int failedAttempt) {
+        this.failedAttempt = failedAttempt;
+    }
+
+    public LocalDate getLockTime() {
+        return lockTime;
+    }
+
+    public void setLockTime(LocalDate lockTime) {
+        this.lockTime = lockTime;
     }
 }
