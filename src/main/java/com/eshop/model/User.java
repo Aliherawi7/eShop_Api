@@ -5,6 +5,7 @@ import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Date;
 
 @Entity
 @Table(
@@ -31,7 +32,7 @@ public class User {
     private boolean enabled;
     private boolean accountLocked;
     private int failedAttempt;
-    private LocalDateTime lockTime;
+    private Date lockTime;
 
 
     public User(){}
@@ -155,11 +156,11 @@ public class User {
         this.failedAttempt = failedAttempt;
     }
 
-    public LocalDateTime getLockTime() {
+    public Date getLockTime() {
         return lockTime;
     }
 
-    public void setLockTime(LocalDateTime lockTime) {
+    public void setLockTime(Date lockTime) {
         this.lockTime = lockTime;
     }
 }
