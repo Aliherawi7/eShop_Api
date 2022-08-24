@@ -28,7 +28,7 @@ public class User {
     @ManyToMany(fetch = FetchType.EAGER)
     private Collection<Role> roles = new ArrayList<>();
     private boolean enabled;
-    private boolean accountNotLocked;
+    private boolean accountLocked;
     private int failedAttempt;
     private  LocalDate lockTime;
 
@@ -48,7 +48,7 @@ public class User {
         this.email = email;
         this.imgUrl = imgUrl;
         this.enabled = true;
-        this.accountNotLocked = true;
+        this.accountLocked = true;
         this.failedAttempt = 0;
     }
 
@@ -138,12 +138,12 @@ public class User {
         this.enabled = enabled;
     }
 
-    public boolean isAccountNotLocked() {
-        return accountNotLocked;
+    public boolean isAccountLocked() {
+        return accountLocked;
     }
 
-    public void setAccountNotLocked(boolean accountNotLocked) {
-        this.accountNotLocked = accountNotLocked;
+    public void setAccountNotLocked(boolean accountLocked) {
+        this.accountLocked = accountLocked;
     }
 
     public int getFailedAttempt() {
