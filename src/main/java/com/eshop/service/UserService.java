@@ -13,9 +13,9 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
-
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Date;
 
 /*
  * @Author: Aliherawi
@@ -24,6 +24,11 @@ import java.util.Collection;
  */
 @Service
 public class UserService implements UserDetailsService {
+    // maximum number of failed login attempts allowed
+    public static final int MAX_FAILED_ATTEMPTS = 5;
+    // duration of failed login attempts allowed
+    private static final long LOCK_TIME_DURATION = 12 * 60 * 60 * 1000; // 12 hours
+
 
     private final UserRepository userRepository;
     private final RoleRepository roleRepository;
@@ -118,6 +123,52 @@ public class UserService implements UserDetailsService {
             return new ResponseEntity<>("incorrect password!",HttpStatus.NOT_FOUND);
         }
     }
+
+    // check if account is locked
+    public boolean isAccountLocked(String email)throws UsernameNotFoundException{
+        User user = userRepository.findByEmail(email);
+        if(user != null){
+            return user.isAccountLocked();
+        }else{
+            throw new UsernameNotFoundException("User with email: "+email+ "not found!");
+        }
+    }
+    // updates the number of failed attempts of a user. it also called each time the user fails to login
+    public void increaseFailedAttempts(String email){
+        User user = userRepository.findByEmail(email);
+        if(user != null){
+            int newFailedAttempts = user.getFailedAttempt() + 1;
+            userRepository.updateFailedAttempts(newFailedAttempts, user.getEmail());
+        }
+    }
+    // sets number of failed attempts to zero. this method will called when user has logged in successfully.
+    public void resetFailedAttempts(String email){
+        userRepository.updateFailedAttempts(0, email);
+    }
+    // locks the user's account if the number of failed attempts reach the maximum allowed times.
+    public void lock(String email){
+        User user = userRepository.findByEmail(email);
+        user.setAccountLocked(true);
+        user.setLockTime(new Date());
+        userRepository.save(user);
+    }
+    // unlocks the user's account when lock duration expires, allowing the user to login as usual.
+    public boolean unlockWhenTimeExpired(String email){
+        User user = userRepository.findByEmail(email);
+        long lockTimeInMillis = user.getLockTime().getTime();
+        long currentTimeInMillis = System.currentTimeMillis();
+        if(lockTimeInMillis + LOCK_TIME_DURATION < currentTimeInMillis){
+            user.setAccountLocked(false);
+            user.setLockTime(null);
+            user.setFailedAttempt(0);
+            userRepository.save(user);
+            return true;
+        }
+        return false;
+    }
+
+
+
 
 
 
