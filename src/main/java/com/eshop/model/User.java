@@ -2,6 +2,7 @@ package com.eshop.model;
 
 import javax.persistence.*;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Collection;
 
@@ -30,7 +31,7 @@ public class User {
     private boolean enabled;
     private boolean accountLocked;
     private int failedAttempt;
-    private  LocalDate lockTime;
+    private LocalDateTime lockTime;
 
 
     public User(){}
@@ -154,11 +155,11 @@ public class User {
         this.failedAttempt = failedAttempt;
     }
 
-    public LocalDate getLockTime() {
+    public LocalDateTime getLockTime() {
         return lockTime;
     }
 
-    public void setLockTime(LocalDate lockTime) {
+    public void setLockTime(LocalDateTime lockTime) {
         this.lockTime = lockTime;
     }
 }
