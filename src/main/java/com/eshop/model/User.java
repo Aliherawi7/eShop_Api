@@ -142,7 +142,7 @@ public class User {
         return accountLocked;
     }
 
-    public void setAccountNotLocked(boolean accountLocked) {
+    public void setAccountLocked(boolean accountLocked) {
         this.accountLocked = accountLocked;
     }
 
