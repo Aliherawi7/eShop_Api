@@ -4,6 +4,7 @@ import javax.persistence.*;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Date;
 
 @Entity
 @Table(
@@ -27,10 +28,18 @@ public class User {
     private String imgUrl;
     @ManyToMany(fetch = FetchType.EAGER)
     private Collection<Role> roles = new ArrayList<>();
+    private boolean enabled;
+    private boolean accountLocked;
+    private int failedAttempt;
+    private Date lockTime;
+
 
     public User(){}
 
-    public User(Long id, String name, String lastName, Short age, LocalDate dob, String password, String email, String imgUrl) {
+    public User(Long id,
+                String name, String lastName,
+                Short age, LocalDate dob, String password,
+                String email, String imgUrl) {
         this.id = id;
         this.name = name;
         this.lastName = lastName;
@@ -39,6 +48,9 @@ public class User {
         this.password = password;
         this.email = email;
         this.imgUrl = imgUrl;
+        this.enabled = true;
+        this.accountLocked = false;
+        this.failedAttempt = 0;
     }
 
     public Long getId() {
@@ -117,5 +129,37 @@ public class User {
 
     public void setRoles(Collection<Role> roles) {
         this.roles = roles;
+    }
+
+    public boolean isEnabled() {
+        return enabled;
+    }
+
+    public void setEnabled(boolean enabled) {
+        this.enabled = enabled;
+    }
+
+    public boolean isAccountLocked() {
+        return accountLocked;
+    }
+
+    public void setAccountLocked(boolean accountLocked) {
+        this.accountLocked = accountLocked;
+    }
+
+    public int getFailedAttempt() {
+        return failedAttempt;
+    }
+
+    public void setFailedAttempt(int failedAttempt) {
+        this.failedAttempt = failedAttempt;
+    }
+
+    public Date getLockTime() {
+        return lockTime;
+    }
+
+    public void setLockTime(Date lockTime) {
+        this.lockTime = lockTime;
     }
 }
