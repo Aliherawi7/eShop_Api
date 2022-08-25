@@ -2,10 +2,8 @@ package com.eshop.filter;
 
 import com.auth0.jwt.JWT;
 import com.auth0.jwt.algorithms.Algorithm;
-import com.eshop.repository.UserRepository;
 import com.eshop.service.UserService;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -49,18 +47,20 @@ public class CustomAuthenticationFilter extends UsernamePasswordAuthenticationFi
 
             if(userService.isAccountLocked(user) ){
                 long remainMillisSecond = (user.getLockTime().getTime() - System.currentTimeMillis());
-
+                System.out.println("remained time: "+remainMillisSecond);
+                System.out.println("user time: "+ user.getLockTime().getTime());
+                System.out.println("system millis: "+System.currentTimeMillis());
                 // if user lock time is finished
                 if(remainMillisSecond < 0){
                     userService.unlockWhenTimeExpired(user);
 
                  // if user lock time is remained yet
                 }else if(remainMillisSecond > 0){
-                    Date remainTime= new Date(remainMillisSecond);
+                    Date remainTime = user.getLockTime();
                     response.setStatus(HttpStatus.FORBIDDEN.value());
-                    response.setHeader("error_message", "This is lock now try after expire date");
+                    response.setHeader("error_message", "Your account is lock now try after expire date");
                     response.setHeader("lock_expireDate: ", remainTime.toString());
-                    throw new RuntimeException("Your account is lock now try after expire date. try after: "+remainTime.toString());
+                    throw new RuntimeException("Your account is lock now try after expire date. try after: "+ remainTime.toString());
                 }
             }
 
@@ -93,13 +93,13 @@ public class CustomAuthenticationFilter extends UsernamePasswordAuthenticationFi
         //then we create the access token and refresh token using auth0 library
         String access_token = JWT.create()
                 .withSubject(user.getUsername())
-                .withExpiresAt(new Date(System.currentTimeMillis()+1000*60*60*24*15))
+                .withExpiresAt(new Date(System.currentTimeMillis()+1000*60*60*24*10)) // 10 days
                 .withIssuer(request.getRequestURL().toString())
                 .withClaim("roles", user.getAuthorities().stream().map(GrantedAuthority::getAuthority).collect(Collectors.toList()))
                 .sign(algorithm);
         String refresh_token = JWT.create()
                 .withSubject(user.getUsername())
-                .withExpiresAt(new Date(System.currentTimeMillis() + 100*60*60*24*30))
+                .withExpiresAt(new Date(System.currentTimeMillis() + 1000*60*60*24*20)) // 20 days
                 .withIssuer(request.getRequestURL().toString())
                 .sign(algorithm);
         Map<String, String> tokens = new HashMap<>();
@@ -119,11 +119,12 @@ public class CustomAuthenticationFilter extends UsernamePasswordAuthenticationFi
         if(user != null){
             // if user account is locked
             if(userService.isAccountLocked(user)){
-                long remainMillisSecond = (user.getLockTime().getTime() - System.currentTimeMillis());
-                Date remainTime= new Date(remainMillisSecond);
                 response.setStatus(HttpStatus.FORBIDDEN.value());
                 response.setHeader("limit_attempt", "Your account is lock now try after expire date");
-                response.setHeader("lock_expireDate: ", remainTime.toString());
+                response.setHeader("lock_expireDate", user.getLockTime().toString());
+                response.setHeader("error_message",failed.getMessage());
+                response.setHeader("remained_attempts",(UserService.MAX_FAILED_ATTEMPTS - user.getFailedAttempt())+" attempts chance");
+                response.setHeader("failed_attempts",user.getFailedAttempt()+" failed attempts");
                 response.setStatus(HttpStatus.FORBIDDEN.value());
                 response.setContentType(MediaType.APPLICATION_JSON_VALUE);
                 return;
@@ -134,15 +135,20 @@ public class CustomAuthenticationFilter extends UsernamePasswordAuthenticationFi
             }
             if(user.getFailedAttempt() >= UserService.MAX_FAILED_ATTEMPTS){
                 userService.lock(user);
-                long remainMillisSecond = (user.getLockTime().getTime() - System.currentTimeMillis());
-                Date remainTime= new Date(remainMillisSecond);
+                user = userService.getUser(user.getEmail());
                 response.setStatus(HttpStatus.FORBIDDEN.value());
                 response.setHeader("limit_attempt", "Your account is lock now try after expire date");
-                response.setHeader("lock_expireDate: ", remainTime.toString());
+                response.setHeader("error_message",failed.getMessage());
+                response.setHeader("remained_attempts",(UserService.MAX_FAILED_ATTEMPTS - user.getFailedAttempt())+" attempts chance");
+                response.setHeader("failed_attempts",user.getFailedAttempt()+" failed attempts");
+                response.setHeader("lock_expireDate", user.getLockTime().toString());
+                return;
             }
         }
 
         response.setHeader("error_message",failed.getMessage());
+        response.setHeader("remained_attempts",(UserService.MAX_FAILED_ATTEMPTS - user.getFailedAttempt())+" attempts chance");
+        response.setHeader("failed_attempts",user.getFailedAttempt()+" failed attempts");
         response.setStatus(HttpStatus.FORBIDDEN.value());
         response.setContentType(MediaType.APPLICATION_JSON_VALUE);
     }
