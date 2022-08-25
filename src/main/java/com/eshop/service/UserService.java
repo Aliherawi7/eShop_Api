@@ -146,7 +146,7 @@ public class UserService implements UserDetailsService {
     // locks the user's account if the number of failed attempts reach the maximum allowed times.
     public void lock(User user){
         user.setAccountLocked(true);
-        user.setLockTime(new Date());
+        user.setLockTime(new Date(System.currentTimeMillis()+LOCK_TIME_DURATION));
         userRepository.save(user);
     }
     // unlocks the user's account when lock duration expires, allowing the user to login as usual.
