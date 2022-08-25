@@ -47,26 +47,22 @@ public class CustomAuthenticationFilter extends UsernamePasswordAuthenticationFi
 
             if(userService.isAccountLocked(user) ){
                 long remainMillisSecond = (user.getLockTime().getTime() - System.currentTimeMillis());
-                System.out.println("remained time: "+remainMillisSecond);
-                System.out.println("user time: "+ user.getLockTime().getTime());
-                System.out.println("system millis: "+System.currentTimeMillis());
+
                 // if user lock time is finished
                 if(remainMillisSecond < 0){
                     userService.unlockWhenTimeExpired(user);
 
                  // if user lock time is remained yet
                 }else if(remainMillisSecond > 0){
-                    Date remainTime = user.getLockTime();
                     response.setStatus(HttpStatus.FORBIDDEN.value());
                     response.setHeader("error_message", "Your account is lock now try after expire date");
-                    response.setHeader("lock_expireDate: ", remainTime.toString());
-                    throw new RuntimeException("Your account is lock now try after expire date. try after: "+ remainTime.toString());
+                    response.setHeader("lock_expireDate: ", user.getLockTime().toString());
+                    throw new RuntimeException("Your account is lock now try after expire date. try after: "+ user.getLockTime().toString());
                 }
             }
 
         }
         UsernamePasswordAuthenticationToken authenticateToken = new UsernamePasswordAuthenticationToken(email, password);
-        System.out.println("email: "+ email +" password: "+ password +" in custom auth : " + authenticateToken.toString());
         return authenticationManager.authenticate(authenticateToken);
     }
 
