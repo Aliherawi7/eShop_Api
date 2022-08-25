@@ -69,14 +69,15 @@ public class UserService implements UserDetailsService {
     }
 
     // find user by email
-    public ResponseEntity<?> getUser(String email){
-        User user = userRepository.findByEmail(email);
-        if(user != null){
+    public User getUser(String email){
+        return userRepository.findByEmail(email);
+        /*if(user != null){
             return new ResponseEntity<>(user, HttpStatus.OK);
         }else{
             return new ResponseEntity<>("user with email: "+email+" not found!", HttpStatus.NOT_FOUND);
-        }
+        }*/
     }
+
     // add role to the user
     public ResponseEntity<?> addRoleToUser(String email, String roleName){
         User user = userRepository.findByEmail(email);
@@ -125,36 +126,26 @@ public class UserService implements UserDetailsService {
     }
 
     // check if account is locked
-    public boolean isAccountLocked(String email)throws UsernameNotFoundException{
-        User user = userRepository.findByEmail(email);
-        if(user != null){
-            return user.isAccountLocked();
-        }else{
-            throw new UsernameNotFoundException("User with email: "+email+ "not found!");
-        }
+    public boolean isAccountLocked(User user)throws UsernameNotFoundException{
+        return user.isAccountLocked();
     }
     // updates the number of failed attempts of a user. it also called each time the user fails to login
-    public void increaseFailedAttempts(String email){
-        User user = userRepository.findByEmail(email);
-        if(user != null){
-            int newFailedAttempts = user.getFailedAttempt() + 1;
-            userRepository.updateFailedAttempts(newFailedAttempts, user.getEmail());
-        }
+    public void increaseFailedAttempts(User user){
+        int newFailedAttempts = user.getFailedAttempt() + 1;
+        userRepository.updateFailedAttempts(newFailedAttempts, user.getEmail());
     }
     // sets number of failed attempts to zero. this method will called when user has logged in successfully.
     public void resetFailedAttempts(String email){
         userRepository.updateFailedAttempts(0, email);
     }
     // locks the user's account if the number of failed attempts reach the maximum allowed times.
-    public void lock(String email){
-        User user = userRepository.findByEmail(email);
+    public void lock(User user){
         user.setAccountLocked(true);
         user.setLockTime(new Date());
         userRepository.save(user);
     }
     // unlocks the user's account when lock duration expires, allowing the user to login as usual.
-    public boolean unlockWhenTimeExpired(String email){
-        User user = userRepository.findByEmail(email);
+    public boolean unlockWhenTimeExpired(User user){
         long lockTimeInMillis = user.getLockTime().getTime();
         long currentTimeInMillis = System.currentTimeMillis();
         if(lockTimeInMillis + LOCK_TIME_DURATION < currentTimeInMillis){
@@ -173,7 +164,8 @@ public class UserService implements UserDetailsService {
 
 
     //delete a logged in user
-/*    public ResponseEntity<?> deleteLoggedInUser(String password){
+    /*
+    public ResponseEntity<?> deleteLoggedInUser(String password){
 
     }*/
 
