@@ -2,7 +2,6 @@ package com.eshop.model;
 
 import javax.persistence.*;
 import java.time.LocalDate;
-import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Date;
@@ -50,7 +49,7 @@ public class User {
         this.email = email;
         this.imgUrl = imgUrl;
         this.enabled = true;
-        this.accountLocked = true;
+        this.accountLocked = false;
         this.failedAttempt = 0;
     }
 
