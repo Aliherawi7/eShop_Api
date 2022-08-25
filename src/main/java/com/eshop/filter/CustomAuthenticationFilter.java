@@ -2,7 +2,10 @@ package com.eshop.filter;
 
 import com.auth0.jwt.JWT;
 import com.auth0.jwt.algorithms.Algorithm;
+import com.eshop.repository.UserRepository;
+import com.eshop.service.UserService;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -26,14 +29,42 @@ public class CustomAuthenticationFilter extends UsernamePasswordAuthenticationFi
 
     // need authenticationManager instance
     private final AuthenticationManager authenticationManager;
-    public CustomAuthenticationFilter(AuthenticationManager authenticationManager){
+    private final UserService userService;
+    public CustomAuthenticationFilter(AuthenticationManager authenticationManager, UserService userService){
         this.authenticationManager = authenticationManager;
+        this.userService = userService;
     }
 
     @Override
     public Authentication attemptAuthentication(HttpServletRequest request, HttpServletResponse response) throws AuthenticationException {
         String email = request.getParameter("email").trim().toLowerCase();
         String password = request.getParameter("password");
+
+        com.eshop.model.User user = null;
+        if(email != null)
+            user = userService.getUser(email);
+
+        // check if user is not lock and reach to limit attempt failed. the user can't attempt to login
+        if(user != null){
+
+            if(userService.isAccountLocked(user) ){
+                long remainMillisSecond = (user.getLockTime().getTime() - System.currentTimeMillis());
+
+                // if user lock time is finished
+                if(remainMillisSecond < 0){
+                    userService.unlockWhenTimeExpired(user);
+
+                 // if user lock time is remained yet
+                }else if(remainMillisSecond > 0){
+                    Date remainTime= new Date(remainMillisSecond);
+                    response.setStatus(HttpStatus.FORBIDDEN.value());
+                    response.setHeader("error_message", "This is lock now try after expire date");
+                    response.setHeader("lock_expireDate: ", remainTime.toString());
+                    throw new RuntimeException("Your account is lock now try after expire date. try after: "+remainTime.toString());
+                }
+            }
+
+        }
         UsernamePasswordAuthenticationToken authenticateToken = new UsernamePasswordAuthenticationToken(email, password);
         System.out.println("email: "+ email +" password: "+ password +" in custom auth : " + authenticateToken.toString());
         return authenticationManager.authenticate(authenticateToken);
@@ -43,6 +74,19 @@ public class CustomAuthenticationFilter extends UsernamePasswordAuthenticationFi
     protected void successfulAuthentication(HttpServletRequest request, HttpServletResponse response, FilterChain chain, Authentication authResult) throws IOException, ServletException {
         // we need the principal or authenticated user to create JWT token with its information
         User user = (User) authResult.getPrincipal();
+         /*
+         * if user was locked dou to limit attempt failed.
+         * we have to unlock the user and reset the failedAttempt
+         * */
+        com.eshop.model.User checkUserActivation = userService.getUser(user.getUsername());
+        //check if user is locked
+        if(userService.isAccountLocked(checkUserActivation)){
+            userService.unlockWhenTimeExpired(checkUserActivation);
+            userService.resetFailedAttempts(checkUserActivation.getEmail());
+        }
+
+
+
         //we an algorithm to to build the token with
         System.out.println("in successful auth method");
         Algorithm algorithm = Algorithm.HMAC256("herawi".getBytes());
@@ -69,8 +113,37 @@ public class CustomAuthenticationFilter extends UsernamePasswordAuthenticationFi
 
     @Override
     protected void unsuccessfulAuthentication(HttpServletRequest request, HttpServletResponse response, AuthenticationException failed) throws IOException, ServletException {
+        String email = request.getParameter("email");
+        com.eshop.model.User user = userService.getUser(email);
+        //check user exist
+        if(user != null){
+            // if user account is locked
+            if(userService.isAccountLocked(user)){
+                long remainMillisSecond = (user.getLockTime().getTime() - System.currentTimeMillis());
+                Date remainTime= new Date(remainMillisSecond);
+                response.setStatus(HttpStatus.FORBIDDEN.value());
+                response.setHeader("limit_attempt", "Your account is lock now try after expire date");
+                response.setHeader("lock_expireDate: ", remainTime.toString());
+                response.setStatus(HttpStatus.FORBIDDEN.value());
+                response.setContentType(MediaType.APPLICATION_JSON_VALUE);
+                return;
+            }
+            //check if user is not locked
+            if(!userService.isAccountLocked(user)){
+                userService.increaseFailedAttempts(user);
+            }
+            if(user.getFailedAttempt() >= UserService.MAX_FAILED_ATTEMPTS){
+                userService.lock(user);
+                long remainMillisSecond = (user.getLockTime().getTime() - System.currentTimeMillis());
+                Date remainTime= new Date(remainMillisSecond);
+                response.setStatus(HttpStatus.FORBIDDEN.value());
+                response.setHeader("limit_attempt", "Your account is lock now try after expire date");
+                response.setHeader("lock_expireDate: ", remainTime.toString());
+            }
+        }
+
         response.setHeader("error_message",failed.getMessage());
-        response.setStatus(HttpStatus.NOT_FOUND.value());
+        response.setStatus(HttpStatus.FORBIDDEN.value());
         response.setContentType(MediaType.APPLICATION_JSON_VALUE);
     }
 }
