@@ -46,17 +46,17 @@ public class CustomAuthenticationFilter extends UsernamePasswordAuthenticationFi
         if(user != null){
 
             if(userService.isAccountLocked(user) ){
-                long remainMillisSecond = (user.getLockTime().getTime() - System.currentTimeMillis());
+                long remainMillisSecond = user.getLockTime().getTime() - System.currentTimeMillis();
 
                 // if user lock time is finished
-                if(remainMillisSecond < 0){
+                if(remainMillisSecond <= 0){
                     userService.unlockWhenTimeExpired(user);
 
                  // if user lock time is remained yet
                 }else if(remainMillisSecond > 0){
                     response.setStatus(HttpStatus.FORBIDDEN.value());
                     response.setHeader("error_message", "Your account is lock now try after expire date");
-                    response.setHeader("lock_expireDate: ", user.getLockTime().toString());
+                    response.setHeader("lock_expireDate", user.getLockTime().toString());
                     throw new RuntimeException("Your account is lock now try after expire date. try after: "+ user.getLockTime().toString());
                 }
             }
@@ -75,16 +75,17 @@ public class CustomAuthenticationFilter extends UsernamePasswordAuthenticationFi
          * we have to unlock the user and reset the failedAttempt
          * */
         com.eshop.model.User checkUserActivation = userService.getUser(user.getUsername());
-        //check if user is locked
-        if(userService.isAccountLocked(checkUserActivation)){
-            userService.unlockWhenTimeExpired(checkUserActivation);
+        //if user has failed attempts. then reset the failed attempt to zero
+        if(checkUserActivation.getFailedAttempt()>0){
             userService.resetFailedAttempts(checkUserActivation.getEmail());
         }
 
-
+        //check if user is locked. then unlock the user
+        if(userService.isAccountLocked(checkUserActivation)){
+            userService.unlockWhenTimeExpired(checkUserActivation);
+        }
 
         //we an algorithm to to build the token with
-        System.out.println("in successful auth method");
         Algorithm algorithm = Algorithm.HMAC256("herawi".getBytes());
         //then we create the access token and refresh token using auth0 library
         String access_token = JWT.create()
@@ -125,9 +126,10 @@ public class CustomAuthenticationFilter extends UsernamePasswordAuthenticationFi
                 response.setContentType(MediaType.APPLICATION_JSON_VALUE);
                 return;
             }
-            //check if user is not locked
+            //check if user is not locked increase failed attempts
             if(!userService.isAccountLocked(user)){
                 userService.increaseFailedAttempts(user);
+                user = userService.getUser(user.getEmail());
             }
             if(user.getFailedAttempt() >= UserService.MAX_FAILED_ATTEMPTS){
                 userService.lock(user);
