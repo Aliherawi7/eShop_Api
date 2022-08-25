@@ -132,11 +132,16 @@ public class UserService implements UserDetailsService {
     // updates the number of failed attempts of a user. it also called each time the user fails to login
     public void increaseFailedAttempts(User user){
         int newFailedAttempts = user.getFailedAttempt() + 1;
-        userRepository.updateFailedAttempts(newFailedAttempts, user.getEmail());
+        updateFailedAttempts(newFailedAttempts, user.getEmail());
     }
     // sets number of failed attempts to zero. this method will called when user has logged in successfully.
     public void resetFailedAttempts(String email){
-        userRepository.updateFailedAttempts(0, email);
+        updateFailedAttempts(0, email);
+    }
+    public void updateFailedAttempts(int attempt, String email){
+        User user = userRepository.findByEmail(email);
+        user.setFailedAttempt(attempt);
+        userRepository.save(user);
     }
     // locks the user's account if the number of failed attempts reach the maximum allowed times.
     public void lock(User user){
