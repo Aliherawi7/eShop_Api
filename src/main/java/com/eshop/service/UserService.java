@@ -27,7 +27,7 @@ public class UserService implements UserDetailsService {
     // maximum number of failed login attempts allowed
     public static final int MAX_FAILED_ATTEMPTS = 5;
     // duration of failed login attempts allowed
-    private static final long LOCK_TIME_DURATION =  60 * 1000; // 12 hours
+    private static final long LOCK_TIME_DURATION = 5 * 60 * 60 * 1000; // 5 hours
 
 
     private final UserRepository userRepository;
@@ -71,11 +71,6 @@ public class UserService implements UserDetailsService {
     // find user by email
     public User getUser(String email){
         return userRepository.findByEmail(email);
-        /*if(user != null){
-            return new ResponseEntity<>(user, HttpStatus.OK);
-        }else{
-            return new ResponseEntity<>("user with email: "+email+" not found!", HttpStatus.NOT_FOUND);
-        }*/
     }
 
     // add role to the user
@@ -161,10 +156,6 @@ public class UserService implements UserDetailsService {
         }
         return false;
     }
-
-
-
-
 
 
     //delete a logged in user
