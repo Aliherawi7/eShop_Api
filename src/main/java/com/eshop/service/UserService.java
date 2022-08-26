@@ -27,7 +27,7 @@ public class UserService implements UserDetailsService {
     // maximum number of failed login attempts allowed
     public static final int MAX_FAILED_ATTEMPTS = 5;
     // duration of failed login attempts allowed
-    private static final long LOCK_TIME_DURATION = 12 * 60 * 60 * 1000; // 12 hours
+    private static final long LOCK_TIME_DURATION =  60 * 1000; // 12 hours
 
 
     private final UserRepository userRepository;
@@ -152,8 +152,7 @@ public class UserService implements UserDetailsService {
     // unlocks the user's account when lock duration expires, allowing the user to login as usual.
     public boolean unlockWhenTimeExpired(User user){
         long lockTimeInMillis = user.getLockTime().getTime();
-        long currentTimeInMillis = System.currentTimeMillis();
-        if(lockTimeInMillis + LOCK_TIME_DURATION < currentTimeInMillis){
+        if(lockTimeInMillis < System.currentTimeMillis()){
             user.setAccountLocked(false);
             user.setLockTime(null);
             user.setFailedAttempt(0);
