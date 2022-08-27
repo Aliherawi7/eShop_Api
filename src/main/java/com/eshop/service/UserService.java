@@ -25,7 +25,7 @@ import java.util.Date;
 public class UserService implements UserDetailsService {
     // maximum number of failed login attempts allowed
     public static final int MAX_FAILED_ATTEMPTS = 5;
-    // duration of failed login attempts allowed
+    // duration of lock time for user that has been reached to max failed attempts
     private static final long LOCK_TIME_DURATION = 5 * 60 * 60 * 1000; // 5 hours
 
 
