@@ -1,5 +1,6 @@
 package com.eshop.resources;
 
+import com.eshop.dto.EmailAndPasswordDTO;
 import com.eshop.model.User;
 import com.eshop.service.UserService;
 import org.springframework.http.HttpStatus;
@@ -32,7 +33,7 @@ public class UserResource {
     }
 
     @PostMapping("/delete")
-    public ResponseEntity<?> deleteUser(@RequestBody EmailAndPassword emailAndPassword){
+    public ResponseEntity<?> deleteUser(@RequestBody EmailAndPasswordDTO emailAndPassword){
         return userService.deleteUser(emailAndPassword.getEmail(), emailAndPassword.getPassword());
     }
 
@@ -44,26 +45,3 @@ public class UserResource {
 
 }
 
-class EmailAndPassword{
-    private String email;
-    private String password;
-    public EmailAndPassword(String email, String password){
-        this.email = email;
-        this.password = password;
-    }
-    public String getEmail() {
-        return email;
-    }
-
-    public void setEmail(String email) {
-        this.email = email;
-    }
-
-    public String getPassword() {
-        return password;
-    }
-
-    public void setPassword(String password) {
-        this.password = password;
-    }
-}
