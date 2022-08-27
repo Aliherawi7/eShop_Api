@@ -4,7 +4,6 @@ import com.eshop.model.Role;
 import com.eshop.model.User;
 import com.eshop.repository.RoleRepository;
 import com.eshop.repository.UserRepository;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
@@ -114,9 +113,9 @@ public class UserService implements UserDetailsService {
         }
         if(matchPassword){
             userRepository.delete(user);
-            return new ResponseEntity<>("user removed successfully", HttpStatus.NOT_FOUND);
+            return new ResponseEntity<>("user removed successfully", HttpStatus.OK);
         }else{
-            return new ResponseEntity<>("incorrect password!",HttpStatus.NOT_FOUND);
+            return new ResponseEntity<>("incorrect password!",HttpStatus.FORBIDDEN);
         }
     }
 
