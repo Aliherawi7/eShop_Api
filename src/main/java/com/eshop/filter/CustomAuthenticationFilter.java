@@ -2,6 +2,7 @@ package com.eshop.filter;
 
 import com.auth0.jwt.JWT;
 import com.auth0.jwt.algorithms.Algorithm;
+import com.eshop.dto.LoginInformationDTO;
 import com.eshop.dto.UserInformationDTO;
 import com.eshop.service.UserService;
 import com.fasterxml.jackson.core.JsonFactory;
@@ -29,6 +30,7 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
+import java.util.Arrays;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
@@ -110,17 +112,18 @@ public class CustomAuthenticationFilter extends UsernamePasswordAuthenticationFi
                 .withExpiresAt(new Date(System.currentTimeMillis() + 1000*60*60*24*20)) // 20 days
                 .withIssuer(request.getRequestURL().toString())
                 .sign(algorithm);
-        Map<String, String> tokens = new HashMap<>();
+
         // user common information
         UserInformationDTO userInformationDTO = new UserInformationDTO(
                 checkUserActivation.getName(), checkUserActivation.getLastName(),
                 checkUserActivation.getImgUrl(), checkUserActivation.getEmail());
-        tokens.put("access_token", access_token);
-        tokens.put("refresh_token", refresh_token);
+        response.setContentType(MediaType.APPLICATION_JSON_VALUE);
         response.setHeader("access_token", access_token);
         response.setHeader("refresh_token", refresh_token);
-        response.setContentType(MediaType.APPLICATION_JSON_VALUE);
-        new ObjectMapper().writeValue(response.getOutputStream(), userInformationDTO);
+        // login information json array
+        LoginInformationDTO loggingInfo = new LoginInformationDTO(access_token, refresh_token, userInformationDTO);
+        new ObjectMapper().writeValue(response.getOutputStream(),loggingInfo);
+
     }
 
     @Override
