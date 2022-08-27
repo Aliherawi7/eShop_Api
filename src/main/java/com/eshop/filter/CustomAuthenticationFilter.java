@@ -2,10 +2,21 @@ package com.eshop.filter;
 
 import com.auth0.jwt.JWT;
 import com.auth0.jwt.algorithms.Algorithm;
+import com.eshop.dto.UserInformationDTO;
 import com.eshop.service.UserService;
+import com.fasterxml.jackson.core.JsonFactory;
+import com.fasterxml.jackson.core.JsonGenerator;
+import com.fasterxml.jackson.core.TSFBuilder;
+import com.fasterxml.jackson.core.json.JsonGeneratorImpl;
+import com.fasterxml.jackson.core.util.JsonGeneratorDelegate;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.util.JSONWrappedObject;
+import com.mysql.cj.xdevapi.JsonArray;
+import jdk.nashorn.internal.parser.JSONParser;
+import org.springframework.data.convert.PropertyValueConverter;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
+import org.springframework.http.converter.json.JsonbHttpMessageConverter;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
@@ -100,12 +111,16 @@ public class CustomAuthenticationFilter extends UsernamePasswordAuthenticationFi
                 .withIssuer(request.getRequestURL().toString())
                 .sign(algorithm);
         Map<String, String> tokens = new HashMap<>();
+        // user common information
+        UserInformationDTO userInformationDTO = new UserInformationDTO(
+                checkUserActivation.getName(), checkUserActivation.getLastName(),
+                checkUserActivation.getImgUrl(), checkUserActivation.getEmail());
         tokens.put("access_token", access_token);
         tokens.put("refresh_token", refresh_token);
         response.setHeader("access_token", access_token);
         response.setHeader("refresh_token", refresh_token);
         response.setContentType(MediaType.APPLICATION_JSON_VALUE);
-        new ObjectMapper().writeValue(response.getOutputStream(), tokens);
+        new ObjectMapper().writeValue(response.getOutputStream(), userInformationDTO);
     }
 
     @Override
