@@ -19,9 +19,6 @@ public interface ProductRepository extends JpaRepository<Product, Integer> {
     boolean existsProductByName(String name);
     //check if product exist by brand name
     boolean existsProductByBrandName(String name);
-    //check if product exist by name, model , brand name , price,
-    boolean existsProductByNameAndBrandNameAndPrice(String name, String brandName, Double price);
-
     // find all product by category and brand name and price greater than given price
     Collection<Product> findAllByCategoryAndBrandNameAndPriceGreaterThan(String category, String brandName, Double price);
     // find all product by category and brand name and price less than given price
