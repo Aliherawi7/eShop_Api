@@ -11,7 +11,7 @@ import static org.junit.jupiter.api.Assertions.*;
 class ProductRepositoryTest {
     @Autowired
     private ProductRepository underTest;
-    private Product product = new Product(null, "core i9 4.8Ghz","black","imgeUrl","Dell","computer",
+    private Product product = new Product(null, "L2700","black","imgeUrl","Dell","computer",
             999.99,"the latest dell product",LocalDate.now(),"meduim");
 
 
@@ -30,13 +30,12 @@ class ProductRepositoryTest {
     @Test
     void findAllByCategory() {
         // given
+
         //when
         String category = product.getCategory();
 
         //then
-        assertEquals(true, underTest.findAllByCategory(category).stream().allMatch(item ->{
-            return item.getCategory().equals(category);
-        }));
+        assertTrue(underTest.findAllByCategory(category).stream().allMatch(item -> item.getCategory().equals(category)));
     }
 
     @Test
@@ -46,26 +45,30 @@ class ProductRepositoryTest {
         String name = product.getName();
 
         //then
-        assertEquals(name, underTest.findByName(name));
+        assertEquals(name, underTest.findByName(name).getName());
     }
 
     @Test
     void existsProductByName() {
         //given
         //when
-        boolean exist = product.getName()
+        String name = product.getName();
+        //then
+        assertTrue(underTest.existsProductByName(name));
     }
 
     @Test
     void existsProductByBrandName() {
-    }
-
-    @Test
-    void existsProductByNameAndBrandNameAndPrice() {
+        //when
+        String brandName = product.getBrandName();
+        //then
+        assertTrue(underTest.existsProductByBrandName(brandName));
     }
 
     @Test
     void findAllByCategoryAndBrandNameAndPriceGreaterThan() {
+
+        assertIterableEquals();
     }
 
     @Test
