@@ -5,6 +5,8 @@ import com.eshop.model.Product;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
+
+import javax.xml.ws.Response;
 import java.util.Collection;
 import java.util.Optional;
 
@@ -63,7 +65,7 @@ public class ProductService {
         return productRepository.findAllByPriceGreaterThanEqual(price);
     }
     //find all product by price less than or equal to the given price
-    public Collection<Product> findAllByPriceLessThanEqual(Double price){
+    public Collection<Product> getAllByPriceLessThanEqual(Double price){
         return productRepository.findAllByPriceLessThanEqual(price);
     }
 
@@ -87,19 +89,22 @@ public class ProductService {
 
      // danger area
     //removed product
-    public boolean deleteProductById(Integer id){
-        Optional<Product> p = productRepository.findById(id);
-        if(p.isPresent()){
-            productRepository.deleteById(id);
-            return true;
+    public ResponseEntity<?> deleteProductById(Integer id){
+        boolean isExist = productRepository.existsById(id);
+        productRepository.deleteById(id);
+        if(isExist){
+
+            return new ResponseEntity<>("product with id: "+id +" successfully removed", HttpStatus.OK);
         }else{
-            return false;
+            return new ResponseEntity<>("not found any product with id: "+id, HttpStatus.NOT_FOUND);
         }
+
     }
     // remove all all product in the database
     public ResponseEntity<?> deleteAllProducts(){
         productRepository.deleteAll();
         return new ResponseEntity<>("all data removed successfully!", HttpStatus.ACCEPTED);
     }
+
 
 }
