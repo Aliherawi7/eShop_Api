@@ -1,28 +1,38 @@
 package com.eshop.repository;
 
 import com.eshop.model.Product;
+
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
-
+import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import java.time.LocalDate;
 
 import static org.junit.jupiter.api.Assertions.*;
 
+@DataJpaTest
 class ProductRepositoryTest {
+
     @Autowired
     private ProductRepository underTest;
-    private Product product = new Product(null, "L2700","black","imgeUrl","Dell","computer",
-            999.99,"the latest dell product",LocalDate.now(),"meduim");
+    Product product ;
 
+    @BeforeEach
+    void setUp() {
+        underTest.deleteAll();
+        product = new Product(1, "L2700","black","imgeUrl","Dell","computer",
+                999.99,"the latest dell product",LocalDate.now(),"meduim");
+    }
 
     @Test
-    void findAllByBrandName() {
+    void FindAllByBrandName() {
         //given
-            // the product is in class
+            // the product variable is in class
+            underTest.save(product);
         //when
         String brandName = "Dell";
         // then
-        assertEquals(true, underTest.findAllByBrandName(brandName).stream().allMatch(item ->{
+        assertTrue(underTest.findAllByBrandName(brandName).stream().allMatch(item ->{
             return item.getBrandName().equals(brandName);
         }));
     }
@@ -30,7 +40,7 @@ class ProductRepositoryTest {
     @Test
     void findAllByCategory() {
         // given
-
+        underTest.save(product);
         //when
         String category = product.getCategory();
 
@@ -41,9 +51,9 @@ class ProductRepositoryTest {
     @Test
     void findByName() {
         //given
+        underTest.save(product);
         //when
         String name = product.getName();
-
         //then
         assertEquals(name, underTest.findByName(name).getName());
     }
@@ -51,6 +61,7 @@ class ProductRepositoryTest {
     @Test
     void existsProductByName() {
         //given
+        underTest.save(product);
         //when
         String name = product.getName();
         //then
@@ -58,7 +69,9 @@ class ProductRepositoryTest {
     }
 
     @Test
-    void existsProductByBrandName() {
+    void doesExistProductByBrandName() {
+
+        underTest.save(product);
         //when
         String brandName = product.getBrandName();
         //then
@@ -67,35 +80,119 @@ class ProductRepositoryTest {
 
     @Test
     void findAllByCategoryAndBrandNameAndPriceGreaterThan() {
-
-        assertIterableEquals();
+        underTest.save(product);
+        //when
+        String category = product.getCategory();
+        String brandName = product.getCategory();
+        double price = product.getPrice();
+        //then
+        assertTrue(underTest.findAllByCategoryAndBrandNameAndPriceGreaterThan(category, brandName, price).
+                stream().
+                allMatch(
+                        item -> item.getCategory().equals(category) &&
+                                item.getBrandName().equals(brandName) &&
+                                item.getPrice() >= price));
     }
+
 
     @Test
     void findAllByCategoryAndBrandNameAndPriceLessThan() {
+        //given
+
+        underTest.save(product);
+        //when
+        String category = product.getCategory();
+        String brandName = product.getCategory();
+        double price = product.getPrice();
+        //then
+        assertTrue(underTest.findAllByCategoryAndBrandNameAndPriceGreaterThan(category, brandName, price).
+                stream().
+                allMatch(
+                        item -> item.getCategory().equals(category) &&
+                                item.getBrandName().equals(brandName) &&
+                                item.getPrice() <= price));
     }
 
     @Test
     void findAllByPriceGreaterThanEqual() {
+        underTest.save(product);
+        //when
+        double price = product.getPrice();
+        //then
+        assertTrue(underTest.findAllByPriceGreaterThanEqual(price).
+                stream().
+                allMatch(
+                        item -> item.getPrice() >= price));
     }
 
     @Test
     void findAllByPriceLessThanEqual() {
+        //given
+        underTest.save(product);
+        //when
+        double price = underTest.findByName(product.getName()).getPrice();
+        System.out.println(price);
+        //then
+        assertTrue(underTest.findAllByPriceLessThanEqual(price).
+                stream().
+                allMatch(
+                        item -> item.getPrice() <= price));
     }
 
     @Test
     void findAllByCategoryAndPriceLessThanEqual() {
+        //given
+        underTest.save(product);
+        //when
+        String category = product.getCategory();
+        double price = product.getPrice();
+        //then
+        assertTrue(underTest.findAllByCategoryAndPriceLessThanEqual(category, price).
+                stream().
+                allMatch(
+                        item -> item.getCategory().equals(category) &&
+                                item.getPrice() <= price));
+
     }
 
     @Test
     void findAllByCategoryAndPriceGreaterThanEqual() {
+        //given
+        underTest.save(product);
+        //when
+        String category = product.getCategory();
+        double price = product.getPrice();
+        //then
+        assertTrue(underTest.findAllByCategoryAndPriceGreaterThanEqual(category, price).
+                stream().
+                allMatch(
+                        item -> item.getCategory().equals(category) &&
+                                item.getPrice() >= price));
     }
 
     @Test
     void findAllByBrandNameAndPriceLessThanEqual() {
+        //given
+        underTest.save(product);
+        //when
+        String brandName = product.getBrandName();
+        double price = product.getPrice();
+        //then
+        assertTrue(underTest.findAllByBrandNameAndPriceLessThanEqual(brandName, price).
+                stream().
+                allMatch(
+                        item -> item.getPrice() <= price && item.getBrandName().equals(brandName)));
     }
 
     @Test
     void findAllByBrandNameAndPriceGreaterThanEqual() {
+        underTest.save(product);
+        //when
+        String brandName = product.getBrandName();
+        double price = product.getPrice();
+        //then
+        assertTrue(underTest.findAllByBrandNameAndPriceGreaterThanEqual(brandName, price).
+                stream().
+                allMatch(item -> item.getPrice() >= price && item.getBrandName().equals(brandName)));
     }
 }
