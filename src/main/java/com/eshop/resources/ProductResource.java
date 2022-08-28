@@ -59,12 +59,7 @@ public class ProductResource {
     //remove product
     @DeleteMapping("/delete/{id}")
     public ResponseEntity<?> deleteProductById(@PathVariable Integer id){
-        boolean isDeleted = productService.deleteProductById(id);
-        if(isDeleted){
-            return new ResponseEntity<>("Product with id: "+ id +" successfully removed", HttpStatus.ACCEPTED);
-        }else{
-            return new ResponseEntity<>("Not found any product by id: "+id, HttpStatus.NOT_FOUND);
-        }
+        return productService.deleteProductById(id);
     }
     @DeleteMapping
     public ResponseEntity<?> deleteAllProducts(){
@@ -112,7 +107,7 @@ public class ProductResource {
     // find products by price Less than or equal to the given price
     @GetMapping(value = "/price/", params = {"maxprice"})
     public ResponseEntity<?> getAllByPriceLessThanEqual(@RequestParam Double maxprice){
-        Collection<Product> products = productService.findAllByPriceLessThanEqual(maxprice);
+        Collection<Product> products = productService.getAllByPriceLessThanEqual(maxprice);
         if(products.size()>0){
             return new ResponseEntity<>(products, HttpStatus.OK);
         }else{
