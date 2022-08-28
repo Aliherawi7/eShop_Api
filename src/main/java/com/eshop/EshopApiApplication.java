@@ -25,7 +25,7 @@ public class EshopApiApplication {
 		return new BCryptPasswordEncoder();
 	}
 
-	@Bean
+/*	@Bean
 	CommandLineRunner run(ProductService p, UserService userService, RoleRepository roleRepository){
 		return args -> {
 			User user = new User(null, "Ali", "herawi", (short) 22, LocalDate.of(1999,3,25),"1234","Aliherawi7@gmail.com","image url");
@@ -42,7 +42,7 @@ public class EshopApiApplication {
 			);
 			p.addProduct(p1);
 		};
-	}
+	}*/
 
 
 }
