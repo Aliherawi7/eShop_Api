@@ -2,7 +2,9 @@ package com.eshop;
 
 import org.junit.jupiter.api.Test;
 
-class SpringSecurityApplicationTests {
+
+class EshopApiApplicationTests {
+
     @Test
     void contextLoads(){
     }
