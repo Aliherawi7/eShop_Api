@@ -3,7 +3,7 @@ package com.eshop.service;
 import com.eshop.model.Role;
 import com.eshop.model.UserApp;
 import com.eshop.repository.RoleRepository;
-import com.eshop.repository.UserRepository;
+import com.eshop.repository.UserAppRepository;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
@@ -29,10 +29,10 @@ public class UserService implements UserDetailsService {
     private static final long LOCK_TIME_DURATION = 5 * 60 * 60 * 1000; // 5 hours
 
 
-    private final UserRepository userRepository;
+    private final UserAppRepository userRepository;
     private final RoleRepository roleRepository;
     private final BCryptPasswordEncoder bCryptPasswordEncoder;
-    public UserService(UserRepository userRepository, RoleRepository roleRepository, BCryptPasswordEncoder bCryptPasswordEncoder){
+    public UserService(UserAppRepository userRepository, RoleRepository roleRepository, BCryptPasswordEncoder bCryptPasswordEncoder){
         this.userRepository = userRepository;
         this.roleRepository = roleRepository;
         this.bCryptPasswordEncoder = bCryptPasswordEncoder;
