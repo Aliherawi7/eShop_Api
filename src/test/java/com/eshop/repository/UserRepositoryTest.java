@@ -14,7 +14,7 @@ import static org.junit.jupiter.api.Assertions.*;
 class UserRepositoryTest {
 
     @Autowired
-    private UserRepository underTest;
+    private UserAppRepository underTest;
     private UserApp user;
 
     @BeforeEach
