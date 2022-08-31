@@ -1,17 +1,10 @@
 package com.eshop;
 
-import com.eshop.model.Product;
-import com.eshop.model.Role;
-import com.eshop.model.User;
-import com.eshop.repository.RoleRepository;
-import com.eshop.service.ProductService;
-import com.eshop.service.UserService;
-import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.Bean;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
-import java.time.LocalDate;
+
 
 @SpringBootApplication
 public class EshopApiApplication {
