@@ -12,7 +12,7 @@ import java.util.Date;
             @UniqueConstraint(name="user_email_unique", columnNames = "email")
     }
 )
-public class User {
+public class UserApp {
     @Id
     @SequenceGenerator(sequenceName = "user_sequence", name = "user_sequence", allocationSize = 1)
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "user_sequence")
@@ -34,12 +34,12 @@ public class User {
     private Date lockTime;
 
 
-    public User(){}
+    public UserApp(){}
 
-    public User(Long id,
-                String name, String lastName,
-                Short age, LocalDate dob, String password,
-                String email, String imgUrl) {
+    public UserApp(Long id,
+                   String name, String lastName,
+                   Short age, LocalDate dob, String password,
+                   String email, String imgUrl) {
         this.id = id;
         this.name = name;
         this.lastName = lastName;

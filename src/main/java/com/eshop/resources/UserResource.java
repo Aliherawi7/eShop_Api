@@ -1,7 +1,7 @@
 package com.eshop.resources;
 
 import com.eshop.dto.EmailAndPasswordDTO;
-import com.eshop.model.User;
+import com.eshop.model.UserApp;
 import com.eshop.service.UserService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -24,7 +24,7 @@ public class UserResource {
     @GetMapping("/user/{email}")
     public ResponseEntity<?> getUser(@PathVariable String email){
         email = email.trim().toLowerCase();
-        User user = userService.getUser(email);
+        UserApp user = userService.getUser(email);
         if(user != null){
             return new ResponseEntity<>(user, HttpStatus.OK);
         }else{

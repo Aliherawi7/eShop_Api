@@ -1,13 +1,12 @@
 package com.eshop.repository;
 
-import com.eshop.model.User;
+import com.eshop.model.UserApp;
 import org.springframework.data.jpa.repository.JpaRepository;
-import org.springframework.data.jpa.repository.Query;
 import java.util.Collection;
 
-public interface UserRepository extends JpaRepository<User, Long> {
+public interface UserRepository extends JpaRepository<UserApp, Long> {
     boolean existsByEmail(String email);
-    User findByEmail(String email);
-    Collection<User> findByName(String name);
+    UserApp findByEmail(String email);
+    Collection<UserApp> findByName(String name);
 
 }

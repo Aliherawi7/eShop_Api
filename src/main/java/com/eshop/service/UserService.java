@@ -1,7 +1,7 @@
 package com.eshop.service;
 
 import com.eshop.model.Role;
-import com.eshop.model.User;
+import com.eshop.model.UserApp;
 import com.eshop.repository.RoleRepository;
 import com.eshop.repository.UserRepository;
 import org.springframework.http.HttpStatus;
@@ -41,7 +41,7 @@ public class UserService implements UserDetailsService {
     // implementing UserDetailService interface for authenticating user
     @Override
     public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException {
-        User user = userRepository.findByEmail(email);
+        UserApp user = userRepository.findByEmail(email);
         if(user == null){
             throw new UsernameNotFoundException("User not found!");
         }
@@ -53,7 +53,7 @@ public class UserService implements UserDetailsService {
     }
 
     //save user on database
-    public ResponseEntity<?> addUser(User user){
+    public ResponseEntity<?> addUser(UserApp user){
         boolean exist = userRepository.existsByEmail(user.getEmail().toLowerCase().trim());
         if(exist){
             return new ResponseEntity<String>("User already exist", HttpStatus.BAD_REQUEST);
@@ -68,13 +68,13 @@ public class UserService implements UserDetailsService {
     }
 
     // find user by email
-    public User getUser(String email){
+    public UserApp getUser(String email){
         return userRepository.findByEmail(email);
     }
 
     // add role to the user
     public ResponseEntity<?> addRoleToUser(String email, String roleName){
-        User user = userRepository.findByEmail(email);
+        UserApp user = userRepository.findByEmail(email);
         Role role = roleRepository.findByName(roleName);
         if(user != null && role != null){
             user.addRole(role);
@@ -94,7 +94,7 @@ public class UserService implements UserDetailsService {
 
     // get all users from the database
     public ResponseEntity<?> getAllUsers(){
-        Collection<User>  users = userRepository.findAll();
+        Collection<UserApp>  users = userRepository.findAll();
         if(users.size()>0){
             return new ResponseEntity<>(users, HttpStatus.OK);
         }else{
@@ -105,7 +105,7 @@ public class UserService implements UserDetailsService {
     // delete a user by email and password
     public ResponseEntity<?> deleteUser(String email, String password){
         email = email.trim().toLowerCase();
-        User user = userRepository.findByEmail(email);
+        UserApp user = userRepository.findByEmail(email);
         boolean matchPassword = bCryptPasswordEncoder.matches(user.getPassword(), password);
         // if user is not available
         if(user == null){
@@ -120,11 +120,11 @@ public class UserService implements UserDetailsService {
     }
 
     // check if account is locked
-    public boolean isAccountLocked(User user)throws UsernameNotFoundException{
+    public boolean isAccountLocked(UserApp user)throws UsernameNotFoundException{
         return user.isAccountLocked();
     }
     // updates the number of failed attempts of a user. it also called each time the user fails to login
-    public void increaseFailedAttempts(User user){
+    public void increaseFailedAttempts(UserApp user){
         int newFailedAttempts = user.getFailedAttempt() + 1;
         updateFailedAttempts(newFailedAttempts, user.getEmail());
     }
@@ -133,18 +133,18 @@ public class UserService implements UserDetailsService {
         updateFailedAttempts(0, email);
     }
     public void updateFailedAttempts(int attempt, String email){
-        User user = userRepository.findByEmail(email);
+        UserApp user = userRepository.findByEmail(email);
         user.setFailedAttempt(attempt);
         userRepository.save(user);
     }
     // locks the user's account if the number of failed attempts reach the maximum allowed times.
-    public void lock(User user){
+    public void lock(UserApp user){
         user.setAccountLocked(true);
         user.setLockTime(new Date(System.currentTimeMillis()+LOCK_TIME_DURATION));
         userRepository.save(user);
     }
     // unlocks the user's account when lock duration expires, allowing the user to login as usual.
-    public boolean unlockWhenTimeExpired(User user){
+    public boolean unlockWhenTimeExpired(UserApp user){
         long lockTimeInMillis = user.getLockTime().getTime();
         if(lockTimeInMillis < System.currentTimeMillis()){
             user.setAccountLocked(false);
