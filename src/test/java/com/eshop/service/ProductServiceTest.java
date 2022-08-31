@@ -7,12 +7,10 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.ArgumentCaptor;
 import org.mockito.Mock;
-import org.mockito.Mockito;
 import org.mockito.junit.jupiter.MockitoExtension;
-
 import java.time.LocalDate;
-
 import static org.junit.jupiter.api.Assertions.*;
+import static org.mockito.Mockito.verify;
 
 
 @ExtendWith(MockitoExtension.class)
@@ -45,7 +43,7 @@ class ProductServiceTest {
         // then
         ArgumentCaptor<Product> productArgumentCaptor =
                 ArgumentCaptor.forClass(Product.class);
-        Mockito.verify(productRepository).save(productArgumentCaptor.capture());
+        verify(productRepository).save(productArgumentCaptor.capture());
         Product capturedProduct =
                 productArgumentCaptor.getValue();
         assertEquals(name, capturedProduct.getName());
@@ -59,7 +57,7 @@ class ProductServiceTest {
         // then
         ArgumentCaptor<Product> productArgumentCaptor =
                 ArgumentCaptor.forClass(Product.class);
-        Mockito.verify(productRepository).save(productArgumentCaptor.capture());
+        verify(productRepository).save(productArgumentCaptor.capture());
 
         Product capturedProduct =
                 productArgumentCaptor.getValue();
@@ -71,20 +69,16 @@ class ProductServiceTest {
     @Test
     void updateProduct() {
         //given
-        underTest.addProduct(product);
         product.setName("L2400 i7");
 
         //when
+        product.setBrandName("apple");
         underTest.addProduct(product);
-
-        //when
-        p.setBrandName("apple");
-        underTest.updateProduct(p);
 
         //then
         ArgumentCaptor<Product> productArgumentCaptor =
                 ArgumentCaptor.forClass(Product.class);
-        Mockito.verify(productRepository).save(productArgumentCaptor.capture());
+        verify(productRepository).save(productArgumentCaptor.capture());
 
         Product capturedProduct =
                 productArgumentCaptor.getValue();
@@ -94,10 +88,9 @@ class ProductServiceTest {
     @Test
     void getAllProducts() {
         //when
-        underTest.addProduct()
         underTest.getAllProducts();
         //then
-        Mockito.verify(productRepository).findAll();
+        verify(productRepository).findAll();
     }
 
     @Test
@@ -106,7 +99,7 @@ class ProductServiceTest {
         String brandName = "apple";
         underTest.getAllByBrandName(brandName);
         //then
-        Mockito.verify(productRepository).findAllByBrandName(brandName);
+        verify(productRepository).findAllByBrandName(brandName);
     }
 
     @Test
@@ -115,7 +108,7 @@ class ProductServiceTest {
         String category = "laptop";
         underTest.getAllByCategory(category);
         //then
-        Mockito.verify(productRepository).findAllByCategory(category);
+        verify(productRepository).findAllByCategory(category);
     }
 
     @Test
@@ -126,7 +119,7 @@ class ProductServiceTest {
         Double price = 99.5;
         underTest.getAllByCategoryAndBrandNameAndPriceGreaterThanEqual(category, branName, price);
         //then
-        Mockito.verify(productRepository).findAllByCategoryAndBrandNameAndPriceGreaterThan(category, branName, price);
+        verify(productRepository).findAllByCategoryAndBrandNameAndPriceGreaterThan(category, branName, price);
 
     }
 
@@ -145,7 +138,7 @@ class ProductServiceTest {
         Double price = 45.5;
         underTest.getAllByPriceGreaterThanEqual(price);
         //then
-        Mockito.verify(productRepository).findAllByPriceGreaterThanEqual(price);
+        verify(productRepository).findAllByPriceGreaterThanEqual(price);
     }
 
     @Test
@@ -154,7 +147,7 @@ class ProductServiceTest {
         Double price = 110.5;
         underTest.getAllByPriceLessThanEqual(price);
         //then
-        Mockito.verify(productRepository).findAllByPriceLessThanEqual(price);
+        verify(productRepository).findAllByPriceLessThanEqual(price);
     }
 
     @Test
@@ -164,7 +157,7 @@ class ProductServiceTest {
         String category = "laptop";
         underTest.getAllByCategoryAndPriceLessThanEqual(category, price);
         //then
-        Mockito.verify(productRepository).findAllByCategoryAndPriceLessThanEqual(category, price);
+        verify(productRepository).findAllByCategoryAndPriceLessThanEqual(category, price);
     }
 
     @Test
@@ -174,7 +167,7 @@ class ProductServiceTest {
         Double price = 200.99;
         underTest.getAllByCategoryAndPriceGreaterThanEqual(category, price);
         //then
-        Mockito.verify(productRepository).findAllByCategoryAndPriceGreaterThanEqual(category, price);
+        verify(productRepository).findAllByCategoryAndPriceGreaterThanEqual(category, price);
     }
 
     @Test
@@ -184,7 +177,7 @@ class ProductServiceTest {
         Double price = 999.99;
         underTest.getAllByBrandNameAndPriceLessThanEqual(brandName, price);
         //then
-        Mockito.verify(productRepository).findAllByBrandNameAndPriceLessThanEqual(brandName, price);
+        verify(productRepository).findAllByBrandNameAndPriceLessThanEqual(brandName, price);
     }
 
     @Test
@@ -194,7 +187,7 @@ class ProductServiceTest {
         Double price = 300.50;
         underTest.getAllByBrandNameAndPriceGreaterThanEqual(brandName, price);
         //then
-        Mockito.verify(productRepository).findAllByBrandNameAndPriceGreaterThanEqual(brandName, price);
+        verify(productRepository).findAllByBrandNameAndPriceGreaterThanEqual(brandName, price);
     }
 
     @Test
@@ -203,7 +196,7 @@ class ProductServiceTest {
         int id = 1;
         underTest.deleteProductById(id);
         //then
-        Mockito.verify(productRepository).deleteById(id);
+        verify(productRepository).deleteById(id);
     }
 
     @Test
@@ -211,71 +204,8 @@ class ProductServiceTest {
         //when
         underTest.deleteAllProducts();
         //then
-        Mockito.verify(productRepository).deleteAll();
+        verify(productRepository).deleteAll();
     }
 
 
-    @Test
-    void testGetProductByName() {
-    }
-
-    @Test
-    void testAddProduct() {
-    }
-
-    @Test
-    void testUpdateProduct() {
-    }
-
-    @Test
-    void testGetAllProducts() {
-    }
-
-    @Test
-    void testGetAllByBrandName() {
-    }
-
-    @Test
-    void testGetAllByCategory() {
-    }
-
-    @Test
-    void testGetAllByCategoryAndBrandNameAndPriceGreaterThanEqual() {
-    }
-
-    @Test
-    void testGetAllByCategoryAndBrandNameAndPriceLessThanEqual() {
-    }
-
-    @Test
-    void testGetAllByPriceGreaterThanEqual() {
-    }
-
-    @Test
-    void getAllByPriceLessThanEqual() {
-    }
-
-    @Test
-    void testGetAllByCategoryAndPriceLessThanEqual() {
-    }
-
-    @Test
-    void testGetAllByCategoryAndPriceGreaterThanEqual() {
-    }
-
-    @Test
-    void testGetAllByBrandNameAndPriceLessThanEqual() {
-    }
-
-    @Test
-    void testGetAllByBrandNameAndPriceGreaterThanEqual() {
-    }
-
-    @Test
-    void testDeleteProductById() {
-    }
-
-    @Test
-    void testDeleteAllProducts() {
-    }
 }
