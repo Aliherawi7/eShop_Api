@@ -4,6 +4,7 @@ import com.auth0.jwt.JWT;
 import com.auth0.jwt.algorithms.Algorithm;
 import com.eshop.dto.LoginInformationDTO;
 import com.eshop.dto.UserInformationDTO;
+import com.eshop.model.UserApp;
 import com.eshop.service.UserService;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.http.HttpStatus;
@@ -38,7 +39,7 @@ public class CustomAuthenticationFilter extends UsernamePasswordAuthenticationFi
         String email = request.getParameter("email").trim().toLowerCase();
         String password = request.getParameter("password");
 
-        com.eshop.model.User user = null;
+        UserApp user = null;
         if(email != null)
             user = userService.getUser(email);
 
@@ -74,7 +75,7 @@ public class CustomAuthenticationFilter extends UsernamePasswordAuthenticationFi
          * if user was locked dou to limit attempt failed.
          * we have to unlock the user and reset the failedAttempt
          * */
-        com.eshop.model.User checkUserActivation = userService.getUser(user.getUsername());
+        UserApp checkUserActivation = userService.getUser(user.getUsername());
         //if user has failed attempts. then reset the failed attempt to zero
         if(checkUserActivation.getFailedAttempt()>0){
             userService.resetFailedAttempts(checkUserActivation.getEmail());
@@ -116,7 +117,7 @@ public class CustomAuthenticationFilter extends UsernamePasswordAuthenticationFi
     @Override
     protected void unsuccessfulAuthentication(HttpServletRequest request, HttpServletResponse response, AuthenticationException failed) throws IOException, ServletException {
         String email = request.getParameter("email");
-        com.eshop.model.User user = userService.getUser(email);
+        UserApp user = userService.getUser(email);
         //check user exist
         if(user != null){
             // if user account is locked
