@@ -5,12 +5,14 @@ import com.eshop.repository.ProductRepository;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.ArgumentCaptor;
 import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.junit.jupiter.MockitoExtension;
 
 import java.time.LocalDate;
-import java.time.LocalDateTime;
+
+import static org.junit.jupiter.api.Assertions.*;
 
 
 @ExtendWith(MockitoExtension.class)
@@ -18,11 +20,16 @@ class ProductServiceTest {
     @Mock
     private ProductRepository productRepository;
     private ProductService underTest;
+    private Product product;
+
 
 
     @BeforeEach
     void setUp(){
         underTest = new ProductService(productRepository);
+        product = new Product(1, "L2400", "green", "img",
+                "dell", "laptop", 599.99,
+                "description", LocalDate.now(), "small");
     }
 
 
@@ -31,46 +38,63 @@ class ProductServiceTest {
     * */
     @Test
     void getProductByName() {
-        //given
-        String name = "L2400";
-        //when
-        underTest.getProductByName(name);
-        //then
-        Mockito.verify(productRepository).findByName(name);
+        // given
+        underTest.addProduct(product);
+        // when
+        String name = product.getName();
+        // then
+        ArgumentCaptor<Product> productArgumentCaptor =
+                ArgumentCaptor.forClass(Product.class);
+        Mockito.verify(productRepository).save(productArgumentCaptor.capture());
+        Product capturedProduct =
+                productArgumentCaptor.getValue();
+        assertEquals(name, capturedProduct.getName());
 
     }
 
     @Test
     void addProduct() {
-        //given
-        Product p = new Product(1, "L2400","green",
-                "img","dell","laptop",
-                99.10,"desc", LocalDate.now(),"small");
-        //when
-        underTest.addProduct(p);
-        //then
-        Mockito.verify(productRepository).save(p);
+        // when
+        underTest.addProduct(product);
+        // then
+        ArgumentCaptor<Product> productArgumentCaptor =
+                ArgumentCaptor.forClass(Product.class);
+        Mockito.verify(productRepository).save(productArgumentCaptor.capture());
 
+        Product capturedProduct =
+                productArgumentCaptor.getValue();
+
+        assertEquals(capturedProduct, product);
     }
+
 
     @Test
     void updateProduct() {
         //given
-        Product p = new Product(1, "L2400","green",
-                "img","dell","laptop",
-                99.10,"desc", LocalDate.now(),"small");
+        underTest.addProduct(product);
+        product.setName("L2400 i7");
+
         //when
-        underTest.addProduct(p);
+        underTest.addProduct(product);
+
+        //when
         p.setBrandName("apple");
-        //when
         underTest.updateProduct(p);
+
         //then
-        Mockito.verify(productRepository).save(p);
+        ArgumentCaptor<Product> productArgumentCaptor =
+                ArgumentCaptor.forClass(Product.class);
+        Mockito.verify(productRepository).save(productArgumentCaptor.capture());
+
+        Product capturedProduct =
+                productArgumentCaptor.getValue();
+        assertEquals(capturedProduct, product);
     }
 
     @Test
     void getAllProducts() {
         //when
+        underTest.addProduct()
         underTest.getAllProducts();
         //then
         Mockito.verify(productRepository).findAll();
@@ -191,4 +215,67 @@ class ProductServiceTest {
     }
 
 
+    @Test
+    void testGetProductByName() {
+    }
+
+    @Test
+    void testAddProduct() {
+    }
+
+    @Test
+    void testUpdateProduct() {
+    }
+
+    @Test
+    void testGetAllProducts() {
+    }
+
+    @Test
+    void testGetAllByBrandName() {
+    }
+
+    @Test
+    void testGetAllByCategory() {
+    }
+
+    @Test
+    void testGetAllByCategoryAndBrandNameAndPriceGreaterThanEqual() {
+    }
+
+    @Test
+    void testGetAllByCategoryAndBrandNameAndPriceLessThanEqual() {
+    }
+
+    @Test
+    void testGetAllByPriceGreaterThanEqual() {
+    }
+
+    @Test
+    void getAllByPriceLessThanEqual() {
+    }
+
+    @Test
+    void testGetAllByCategoryAndPriceLessThanEqual() {
+    }
+
+    @Test
+    void testGetAllByCategoryAndPriceGreaterThanEqual() {
+    }
+
+    @Test
+    void testGetAllByBrandNameAndPriceLessThanEqual() {
+    }
+
+    @Test
+    void testGetAllByBrandNameAndPriceGreaterThanEqual() {
+    }
+
+    @Test
+    void testDeleteProductById() {
+    }
+
+    @Test
+    void testDeleteAllProducts() {
+    }
 }
