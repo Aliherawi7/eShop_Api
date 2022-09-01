@@ -12,6 +12,7 @@ import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 
 import java.util.Date;
@@ -42,8 +43,23 @@ class UserServiceTest {
     }
 
     @Test
-    void loadUserByUsername() {
+    void loadUserByUsernameIfUserAvailable() {
+        //when
+        String email = user.getEmail();
+        when(userAppRepository.findByEmail(email)).thenReturn(null);
+        //then
+        assertThrows(UsernameNotFoundException.class, () -> underTest.loadUserByUsername(email));
+        verify(userAppRepository).findByEmail(email);
+    }
 
+    @Test
+    void loadUserByUsernameIfUserNotAvailable() {
+        //when
+        String email = user.getEmail();
+        when(userAppRepository.findByEmail(email)).thenReturn(null);
+        //then
+        assertThrows(UsernameNotFoundException.class, () -> underTest.loadUserByUsername(email));
+        verify(userAppRepository).findByEmail(email);
     }
 
     @Test
