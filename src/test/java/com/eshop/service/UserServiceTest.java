@@ -14,6 +14,8 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 
+import java.util.Date;
+
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
@@ -40,6 +42,7 @@ class UserServiceTest {
 
     @Test
     void loadUserByUsername() {
+
     }
 
     @Test
@@ -214,11 +217,23 @@ class UserServiceTest {
     }
 
     @Test
+    // if user lock time has expired
     void unlockWhenTimeExpired() {
+        //when
+        underTest.lock(user);
+        user.setLockTime(new Date(System.currentTimeMillis()));
+        // then
+        verify(userAppRepository).save(user);
+        assertTrue(underTest.unlockWhenTimeExpired(user));
+    }
+
+    @Test
+        // if user lock time has not expired
+    void testIfTimeNotExpiredInUnlockWhenTimeExpiredMethod() {
         //when
         underTest.lock(user);
         // then
         verify(userAppRepository).save(user);
-        assertFalse(underTest.unlockWhenTimeExpired(user));
+        assertTrue(underTest.unlockWhenTimeExpired(user));
     }
 }
