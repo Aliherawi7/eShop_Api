@@ -106,11 +106,12 @@ public class UserService implements UserDetailsService {
     public ResponseEntity<?> deleteUser(String email, String password){
         email = email.trim().toLowerCase();
         UserApp user = userRepository.findByEmail(email);
-        boolean matchPassword = bCryptPasswordEncoder.matches(user.getPassword(), password);
         // if user is not available
         if(user == null){
             return new ResponseEntity<>("user not found!", HttpStatus.NOT_FOUND);
         }
+        boolean matchPassword = bCryptPasswordEncoder.matches(user.getPassword(), password);
+
         if(matchPassword){
             userRepository.delete(user);
             return new ResponseEntity<>("user removed successfully", HttpStatus.OK);
@@ -132,6 +133,7 @@ public class UserService implements UserDetailsService {
     public void resetFailedAttempts(String email){
         updateFailedAttempts(0, email);
     }
+
     public void updateFailedAttempts(int attempt, String email){
         UserApp user = userRepository.findByEmail(email);
         user.setFailedAttempt(attempt);
