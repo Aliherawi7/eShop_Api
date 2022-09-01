@@ -32,6 +32,7 @@ class UserServiceTest {
 
     @BeforeEach
     void setUp() {
+        userAppRepository.deleteAll();
         underTest = new UserService(userAppRepository, roleRepository, bCryptPasswordEncoder);
         user = new UserApp();
         user.setName("ali");
@@ -221,7 +222,7 @@ class UserServiceTest {
     void unlockWhenTimeExpired() {
         //when
         underTest.lock(user);
-        user.setLockTime(new Date(System.currentTimeMillis()));
+        user.setLockTime(new Date(System.currentTimeMillis()-10000 ));
         // then
         verify(userAppRepository).save(user);
         assertTrue(underTest.unlockWhenTimeExpired(user));
@@ -234,6 +235,6 @@ class UserServiceTest {
         underTest.lock(user);
         // then
         verify(userAppRepository).save(user);
-        assertTrue(underTest.unlockWhenTimeExpired(user));
+        assertFalse(underTest.unlockWhenTimeExpired(user));
     }
 }
