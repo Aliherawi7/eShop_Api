@@ -46,9 +46,9 @@ class UserServiceTest {
     void loadUserByUsernameIfUserAvailable() {
         //when
         String email = user.getEmail();
-        when(userAppRepository.findByEmail(email)).thenReturn(null);
+        when(userAppRepository.findByEmail(email)).thenReturn(user);
         //then
-        assertThrows(UsernameNotFoundException.class, () -> underTest.loadUserByUsername(email));
+        assertEquals(underTest.loadUserByUsername(email).getUsername(), email);
         verify(userAppRepository).findByEmail(email);
     }
 
