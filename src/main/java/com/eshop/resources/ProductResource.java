@@ -35,7 +35,7 @@ public class ProductResource {
     public ResponseEntity<?> getProduct(@PathVariable String name){
         Product product = productService.getProductByName(name);
         if(product != null){
-            return new ResponseEntity<Product>(product, HttpStatus.OK);
+            return new ResponseEntity<>(product, HttpStatus.OK);
         }else{
             return new ResponseEntity<>("not product found by name : "+name, HttpStatus.NOT_FOUND);
         }
