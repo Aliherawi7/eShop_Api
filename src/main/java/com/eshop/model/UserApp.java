@@ -2,6 +2,7 @@ package com.eshop.model;
 
 import javax.persistence.*;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Date;
@@ -22,6 +23,7 @@ public class UserApp {
     private Short age;
     private LocalDate dob;
     private String password;
+    private LocalDateTime joinedDate;
     @PrimaryKeyJoinColumn
     @Column(nullable = false)
     private String email;
@@ -46,6 +48,7 @@ public class UserApp {
         this.age = age;
         this.dob = dob;
         this.password = password;
+        this.joinedDate = LocalDateTime.now();
         this.email = email;
         this.imgUrl = imgUrl;
         this.enabled = true;
@@ -105,6 +108,13 @@ public class UserApp {
 
     public void setPassword(String password) {
         this.password = password;
+    }
+
+    public LocalDateTime getJoinedDate(){
+        return joinedDate;
+    }
+    public void setJoinedDate(LocalDateTime joinedDate){
+        this.joinedDate = joinedDate;
     }
 
     public String getEmail() {
