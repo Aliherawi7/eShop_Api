@@ -172,11 +172,25 @@ class ProductResourceTest {
     }
 
     @Test
+    //if products exist by price greater or equal to the minPrice
     void getAllByPriceGreaterThanEqual() {
+        //  given
+        double minPrice = product.getPrice();
+        Collection<Product> products = Arrays.asList(product);
+
+        //  when
+        when(productService.getAllByPriceGreaterThanEqual(minPrice))
+                .thenReturn(products);
+
+        //  then
+        assertEquals(underTest.getAllByPriceGreaterThanEqual(minPrice),
+                new ResponseEntity<>(products, HttpStatus.OK));
+        verify(productService).getAllByPriceGreaterThanEqual(minPrice);
     }
 
     @Test
     void getAllByPriceLessThanEqual() {
+
     }
 
     @Test
