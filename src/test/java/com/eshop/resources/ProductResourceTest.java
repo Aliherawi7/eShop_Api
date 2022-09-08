@@ -427,7 +427,24 @@ class ProductResourceTest {
     }
 
     @Test
-    void getAllByBrandNameAndPriceLessThanEqual() {
+    //  if products exist with specific brand name and price
+    void getAllByBrandNameAndPriceLessThanEqualIfExist() {
+        //  given
+        String brandName = product.getBrandName();
+        double maxPrice = product.getPrice();
+        Collection<Product> products = Arrays.asList(product);
+
+        //  when
+        when(productService.getAllByBrandNameAndPriceLessThanEqual(brandName, maxPrice))
+                .thenReturn(products);
+        Map<String, String> params = new HashMap<>();
+        params.put("brand", brandName);
+        params.put("maxprice", maxPrice+"");
+
+        //  then
+        assertEquals(underTest.getAllByBrandNameAndPriceLessThanEqual(params),
+                new ResponseEntity<>(products, HttpStatus.OK));
+        verify(productService).getAllByBrandNameAndPriceLessThanEqual(brandName, maxPrice);
     }
 
     @Test
