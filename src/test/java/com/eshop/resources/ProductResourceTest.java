@@ -351,6 +351,32 @@ class ProductResourceTest {
     }
 
     @Test
+        //  if products not exist with the specific category, brand name and price
+    void getAllByCategoryAndBrandNameAndPriceGreaterThanEqualIfNotExist() {
+        //given
+        String category = product.getCategory();
+        String brandName = product.getBrandName();
+        double minPrice = product.getPrice();
+        Collection<Product> products = new ArrayList<>();
+
+        //  when
+        when(productService.getAllByCategoryAndBrandNameAndPriceGreaterThanEqual(category,brandName, minPrice))
+                .thenReturn(products);
+        Map<String, String> params = new HashMap<>();
+        params.put("category", category);
+        params.put("brand", brandName);
+        params.put("minprice", minPrice+"");
+
+        //  then
+        assertEquals(underTest.getAllByCategoryAndBrandNameAndPriceGreaterThanEqual(params),
+                new ResponseEntity<>
+                        ("no product found by category: "+category+", " +
+                                "brand name: "+brandName+ ", price: "+minPrice, HttpStatus.NOT_FOUND));
+        verify(productService)
+                .getAllByCategoryAndBrandNameAndPriceGreaterThanEqual(category,brandName,minPrice);
+    }
+
+    @Test
     void getAllByCategoryAndBrandNameAndPriceLessThanEqual() {
     }
 
