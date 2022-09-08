@@ -5,10 +5,7 @@ import com.eshop.model.Product;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
-
-import javax.xml.ws.Response;
 import java.util.Collection;
-import java.util.Optional;
 
 @Service
 public class ProductService {
@@ -93,7 +90,6 @@ public class ProductService {
         boolean isExist = productRepository.existsById(id);
         productRepository.deleteById(id);
         if(isExist){
-
             return new ResponseEntity<>("product with id: "+id +" successfully removed", HttpStatus.OK);
         }else{
             return new ResponseEntity<>("not found any product with id: "+id, HttpStatus.NOT_FOUND);
@@ -101,7 +97,7 @@ public class ProductService {
 
     }
     // remove all all product in the database
-    public ResponseEntity<?> deleteAllProducts(){
+    public ResponseEntity<String> deleteAllProducts(){
         productRepository.deleteAll();
         return new ResponseEntity<>("all data removed successfully!", HttpStatus.ACCEPTED);
     }
