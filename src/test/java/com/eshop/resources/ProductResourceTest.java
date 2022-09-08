@@ -241,7 +241,7 @@ class ProductResourceTest {
     }
 
     @Test
-    //  if product exist with the specific category name and price
+    //  if products exist with the specific category name and price
     void getAllByCategoryAndPriceLessThanEqualIfExist() {
         //  given
         String category = product.getCategory();
@@ -258,6 +258,28 @@ class ProductResourceTest {
         //  then
         assertEquals(underTest.getAllByCategoryAndPriceLessThanEqual(params),
                 new ResponseEntity<>(products, HttpStatus.OK));
+        verify(productService).getAllByCategoryAndPriceLessThanEqual(category, maxPrice);
+    }
+
+    @Test
+    //  if products not exist with the specific category name and price
+    void getAllByCategoryAndPriceLessThanEqualIfNotExist() {
+        //  given
+        String category = product.getCategory();
+        double maxPrice = product.getPrice();
+        Collection<Product> products = new ArrayList<>();
+
+        //  when
+        when(productService.getAllByCategoryAndPriceLessThanEqual(category, maxPrice))
+                .thenReturn(products);
+        Map<String, String> params = new HashMap<>();
+        params.put("category", category);
+        params.put("maxprice", maxPrice+"");
+
+        //  then
+        assertEquals(underTest.getAllByCategoryAndPriceLessThanEqual(params),
+                new ResponseEntity<>("no product found by category: "+category+"" +
+                        " and price less than or equal to : "+maxPrice, HttpStatus.NOT_FOUND));
         verify(productService).getAllByCategoryAndPriceLessThanEqual(category, maxPrice);
     }
 
