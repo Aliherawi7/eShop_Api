@@ -63,10 +63,28 @@ class ProductResourceTest {
 
     @Test
     void addProduct() {
+        //  when
+        when(productService.addProduct(product))
+                .thenReturn(new ResponseEntity<>("Successfully saved!", HttpStatus.CREATED));
+
+        //  then
+        assertEquals(underTest.addProduct(product), new ResponseEntity<>("Successfully saved!", HttpStatus.CREATED));
+        verify(productService).addProduct(product);
     }
 
     @Test
+
+    // update product if product is exist
     void updateProduct() {
+        // given
+
+        //  when
+        when(productService.updateProduct(product))
+                .thenReturn(new ResponseEntity<String>("Successfully updated! !",HttpStatus.CREATED));
+
+        //  then
+        assertEquals(underTest.updateProduct(product), new ResponseEntity<String>("Successfully updated! !",HttpStatus.CREATED));
+        verify(productService).updateProduct(product);
     }
 
     @Test
