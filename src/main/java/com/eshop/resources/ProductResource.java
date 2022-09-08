@@ -150,7 +150,6 @@ public class ProductResource {
         String category = params.get("category");
         String brandName = params.get("brand");
         Double minprice = Double.parseDouble(params.get("minprice"));
-        System.err.println("category: "+category+ " minprice: "+minprice+" brandName: "+brandName);
         Collection<Product> products =
                 productService.getAllByCategoryAndBrandNameAndPriceGreaterThanEqual(category, brandName, minprice);
         if(products.size() > 0){
@@ -168,7 +167,6 @@ public class ProductResource {
         String category = params.get("category");
         String brandName = params.get("brand");
         Double maxprice = Double.parseDouble(params.get("maxprice"));
-        System.err.println("category: "+category+ " price: "+maxprice+" brandName: "+brandName);
         Collection<Product> products =
                 productService.getAllByCategoryAndBrandNameAndPriceLessThanEqual(category, brandName, maxprice);
         if(products.size() > 0) return new ResponseEntity<>(products, HttpStatus.OK);
@@ -183,7 +181,6 @@ public class ProductResource {
     public ResponseEntity<?> getAllByBrandNameAndPriceLessThanEqual(@RequestParam Map<String, String> params){
         String brandName = params.get("brand");
         Double maxprice = Double.parseDouble(params.get("maxprice"));
-        System.err.println(" price: "+maxprice+" brandName: "+brandName);
         Collection<Product> products = productService.getAllByBrandNameAndPriceLessThanEqual(brandName, maxprice);
         if(products.size() > 0){
             return new ResponseEntity<>(products, HttpStatus.OK);
@@ -197,7 +194,6 @@ public class ProductResource {
     public ResponseEntity<?> getAllByBrandNameAndPriceGreaterThanEqual(@RequestParam Map<String, String> params){
         String brandName = params.get("brand");
         Double minprice = Double.parseDouble(params.get("minprice"));
-        System.err.println(" minprice: "+minprice+" brandName: "+brandName);
         Collection<Product> products = productService.getAllByBrandNameAndPriceGreaterThanEqual(brandName, minprice);
         if(products.size() > 0){
             return new ResponseEntity<>(products, HttpStatus.OK);
