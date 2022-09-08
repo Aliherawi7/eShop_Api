@@ -206,8 +206,19 @@ class ProductResourceTest {
     }
 
     @Test
-    void getAllByPriceLessThanEqual() {
+    void getAllByPriceLessThanEqualIfExist() {
+        //  given
+        double maxPrice = product.getPrice();
+        Collection<Product> products = Arrays.asList(product);
 
+        //  when
+        when(productService.getAllByPriceLessThanEqual(maxPrice))
+                .thenReturn(products);
+
+        //  then
+        assertEquals(underTest.getAllByPriceLessThanEqual(maxPrice),
+                new ResponseEntity<>(products, HttpStatus.OK));
+        verify(productService).getAllByPriceLessThanEqual(maxPrice);
     }
 
     @Test
