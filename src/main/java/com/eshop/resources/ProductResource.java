@@ -121,7 +121,7 @@ public class ProductResource {
     (@RequestParam Map<String, String> params){
         String category = params.get("category");
         Double maxprice = Double.parseDouble(params.get("maxprice"));
-        System.err.println("category: "+category+ " price: "+maxprice);
+
         Collection<Product> products = productService.getAllByCategoryAndPriceLessThanEqual(category, maxprice);
         if(products.size() > 0){
             return new ResponseEntity<>(products, HttpStatus.OK);
