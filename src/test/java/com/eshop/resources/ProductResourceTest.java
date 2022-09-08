@@ -3,7 +3,6 @@ package com.eshop.resources;
 import com.eshop.model.Product;
 import com.eshop.repository.ProductRepository;
 import com.eshop.service.ProductService;
-import org.hibernate.dialect.ProgressDialect;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -11,14 +10,9 @@ import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-
-import java.net.CookieHandler;
-import java.security.cert.CollectionCertStoreParameters;
 import java.time.LocalDate;
 import java.util.*;
-
 import static org.junit.jupiter.api.Assertions.*;
-import static org.mockito.ArgumentMatchers.doubleThat;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
@@ -96,10 +90,11 @@ class ProductResourceTest {
 
         //  when
         when(productService.updateProduct(product))
-                .thenReturn(new ResponseEntity<>("Successfully updated! !",HttpStatus.CREATED));
+                .thenReturn(new ResponseEntity<>("not Found such product with id: "+product.getId(), HttpStatus.NOT_FOUND));
 
         //  then
-        assertEquals(underTest.updateProduct(product), new ResponseEntity<>("Successfully updated!",HttpStatus.CREATED));
+        assertEquals(underTest.updateProduct(product),
+                new ResponseEntity<>("not Found such product with id: "+product.getId(), HttpStatus.NOT_FOUND));
         verify(productService).updateProduct(product);
     }
     @Test
@@ -477,16 +472,16 @@ class ProductResourceTest {
         Collection<Product> products = Arrays.asList(product);
 
         //  when
-        when(productService.getAllByBrandNameAndPriceLessThanEqual(brandName, minPrice))
+        when(productService.getAllByBrandNameAndPriceGreaterThanEqual(brandName, minPrice))
                 .thenReturn(products);
         Map<String, String> params = new HashMap<>();
         params.put("brand", brandName);
         params.put("minprice", minPrice+"");
 
         //  then
-        assertEquals(underTest.getAllByBrandNameAndPriceLessThanEqual(params),
+        assertEquals(underTest.getAllByBrandNameAndPriceGreaterThanEqual(params),
                 new ResponseEntity<>(products, HttpStatus.OK));
-        verify(productService).getAllByBrandNameAndPriceLessThanEqual(brandName, minPrice);
+        verify(productService).getAllByBrandNameAndPriceGreaterThanEqual(brandName, minPrice);
     }
 
     @Test
@@ -498,16 +493,16 @@ class ProductResourceTest {
         Collection<Product> products = new ArrayList<>();
 
         //  when
-        when(productService.getAllByBrandNameAndPriceLessThanEqual(brandName, minPrice))
+        when(productService.getAllByBrandNameAndPriceGreaterThanEqual(brandName, minPrice))
                 .thenReturn(products);
         Map<String, String> params = new HashMap<>();
         params.put("brand", brandName);
         params.put("minprice", minPrice+"");
 
         //  then
-        assertEquals(underTest.getAllByBrandNameAndPriceLessThanEqual(params),
+        assertEquals(underTest.getAllByBrandNameAndPriceGreaterThanEqual(params),
                 new ResponseEntity<>
                         ("no product found by brand name: "+brandName+" and price greater than or equal to : "+minPrice, HttpStatus.NOT_FOUND));
-        verify(productService).getAllByBrandNameAndPriceLessThanEqual(brandName, minPrice);
+        verify(productService).getAllByBrandNameAndPriceGreaterThanEqual(brandName, minPrice);
     }
 }
