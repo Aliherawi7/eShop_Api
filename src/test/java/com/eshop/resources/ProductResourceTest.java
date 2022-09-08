@@ -75,15 +75,30 @@ class ProductResourceTest {
     @Test
 
     // update product if product is exist
-    void updateProduct() {
+    void updateProductIfProductAlreadyExist() {
         // given
 
         //  when
         when(productService.updateProduct(product))
-                .thenReturn(new ResponseEntity<String>("Successfully updated! !",HttpStatus.CREATED));
+                .thenReturn(new ResponseEntity<>("Successfully updated! !",HttpStatus.CREATED));
 
         //  then
-        assertEquals(underTest.updateProduct(product), new ResponseEntity<String>("Successfully updated! !",HttpStatus.CREATED));
+        assertEquals(underTest.updateProduct(product),
+                new ResponseEntity<>("Successfully updated! !",HttpStatus.CREATED));
+        verify(productService).updateProduct(product);
+    }
+
+    @Test
+    // update product if the product is not exist
+    void updateProductIfProductAlreadyNotExist() {
+        // given
+
+        //  when
+        when(productService.updateProduct(product))
+                .thenReturn(new ResponseEntity<>("Successfully updated! !",HttpStatus.CREATED));
+
+        //  then
+        assertEquals(underTest.updateProduct(product), new ResponseEntity<>("Successfully updated! !",HttpStatus.CREATED));
         verify(productService).updateProduct(product);
     }
 
