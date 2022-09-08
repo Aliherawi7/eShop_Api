@@ -10,13 +10,8 @@ import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-
 import java.time.LocalDate;
-import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Collection;
-import java.util.List;
-
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
@@ -98,16 +93,21 @@ class ProductResourceTest {
                 .thenReturn(new ResponseEntity<>("Successfully updated! !",HttpStatus.CREATED));
 
         //  then
-        assertEquals(underTest.updateProduct(product), new ResponseEntity<>("Successfully updated! !",HttpStatus.CREATED));
+        assertEquals(underTest.updateProduct(product), new ResponseEntity<>("Successfully updated!",HttpStatus.CREATED));
         verify(productService).updateProduct(product);
     }
 
-    @Test
-    void deleteProductById() {
-    }
 
     @Test
     void deleteAllProducts() {
+
+        when(productService.deleteAllProducts())
+                .thenReturn(new ResponseEntity<>("all data removed successfully!", HttpStatus.ACCEPTED));
+
+        //  then
+        assertEquals(underTest.deleteAllProducts(),
+                new ResponseEntity<>("all data removed successfully!", HttpStatus.ACCEPTED));
+        verify(productService).deleteAllProducts();
     }
 
     @Test
