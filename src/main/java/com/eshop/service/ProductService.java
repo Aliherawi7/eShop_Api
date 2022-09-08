@@ -86,7 +86,7 @@ public class ProductService {
 
      // danger area
     //removed product
-    public ResponseEntity<?> deleteProductById(Integer id){
+    public ResponseEntity<String> deleteProductById(Integer id){
         boolean isExist = productRepository.existsById(id);
         productRepository.deleteById(id);
         if(isExist){
