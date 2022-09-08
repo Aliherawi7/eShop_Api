@@ -33,6 +33,9 @@ public class RequestService {
                 }
             }
         }
+        if(!ipAddress.isEmpty() && ipAddress.length()>15 && ipAddress.indexOf(",")>0){
+            ipAddress = ipAddress.substring(0, ipAddress.indexOf(","));
+        }
         return ipAddress;
     }
 }
