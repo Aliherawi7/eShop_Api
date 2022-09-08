@@ -11,10 +11,11 @@ import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+
+import java.net.CookieHandler;
+import java.security.cert.CollectionCertStoreParameters;
 import java.time.LocalDate;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collection;
+import java.util.*;
 
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.verify;
@@ -240,7 +241,24 @@ class ProductResourceTest {
     }
 
     @Test
-    void getAllByCategoryAndPriceLessThanEqual() {
+    //  if product exist with the specific category name and price
+    void getAllByCategoryAndPriceLessThanEqualIfExist() {
+        //  given
+        String category = product.getCategory();
+        double maxPrice = product.getPrice();
+        Collection<Product> products = Arrays.asList(product);
+
+        //  when
+        when(productService.getAllByCategoryAndPriceLessThanEqual(category, maxPrice))
+                .thenReturn(products);
+        Map<String, String> params = new HashMap<>();
+        params.put("category", category);
+        params.put("maxprice", maxPrice+"");
+
+        //  then
+        assertEquals(underTest.getAllByCategoryAndPriceLessThanEqual(params),
+                new ResponseEntity<>(products, HttpStatus.OK));
+        verify(productService).getAllByCategoryAndPriceLessThanEqual(category, maxPrice);
     }
 
     @Test
