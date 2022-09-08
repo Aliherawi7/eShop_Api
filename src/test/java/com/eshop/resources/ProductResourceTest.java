@@ -96,11 +96,24 @@ class ProductResourceTest {
         assertEquals(underTest.updateProduct(product), new ResponseEntity<>("Successfully updated!",HttpStatus.CREATED));
         verify(productService).updateProduct(product);
     }
+    @Test
+    void deleteProductById() {
+        // given
+        int id = product.getId();
 
+        //  when
+        when(productService.deleteProductById(id))
+                .thenReturn(new ResponseEntity<>("product with id: "+id +" successfully removed", HttpStatus.OK));
+
+        //  then
+        assertEquals(underTest.deleteProductById(id),
+                new ResponseEntity<>("product with id: "+id +" successfully removed", HttpStatus.OK));
+        verify(productService).deleteProductById(id);
+    }
 
     @Test
     void deleteAllProducts() {
-
+        //  when
         when(productService.deleteAllProducts())
                 .thenReturn(new ResponseEntity<>("all data removed successfully!", HttpStatus.ACCEPTED));
 
