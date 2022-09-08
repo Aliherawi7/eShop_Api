@@ -18,6 +18,7 @@ import java.time.LocalDate;
 import java.util.*;
 
 import static org.junit.jupiter.api.Assertions.*;
+import static org.mockito.ArgumentMatchers.doubleThat;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
@@ -284,8 +285,26 @@ class ProductResourceTest {
     }
 
     @Test
-    void getAllByCategoryAndPriceGreaterThanEqual() {
+    //  if products exist with the category and minPrice
+    void getAllByCategoryAndPriceGreaterThanEqualIfExist() {
+        // given
+        String category = product.getCategory();
+        double minPrice = product.getPrice();
+        Collection<Product> products = Arrays.asList(product);
+
+        //  when
+        when(productService.getAllByCategoryAndPriceGreaterThanEqual(category, minPrice))
+                .thenReturn(products);
+        Map<String, String> params = new HashMap<>();
+        params.put("category", category);
+        params.put("minprice", minPrice+"");
+
+        //  then
+        assertEquals(underTest.getAllByCategoryAndPriceGreaterThanEqual(params),
+                new ResponseEntity<>(products, HttpStatus.OK));
+        verify(productService).getAllByCategoryAndPriceGreaterThanEqual(category, minPrice);
     }
+
 
     @Test
     void getAllByCategoryAndBrandNameAndPriceGreaterThanEqual() {
