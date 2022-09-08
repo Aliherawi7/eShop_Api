@@ -2,13 +2,14 @@ package com.eshop.service;
 
 
 import org.springframework.stereotype.Service;
+import org.springframework.util.StringUtils;
 
 import javax.servlet.http.HttpServletRequest;
 import java.net.InetAddress;
 import java.net.UnknownHostException;
 
 @Service
-public class RequestService {
+public class IPFinderService {
 
     private final String LOCALHOST_IPV4 = "127.0.0.1";
     private final String LOCALHOST_IPV6 = "0:0:0:0:0:0:0:1";
@@ -16,13 +17,13 @@ public class RequestService {
     public String getClientIP(HttpServletRequest request){
         String ipAddress = request.getHeader("X-Forwarded-For");
 
-        if(ipAddress.isEmpty() || "unknown".equalsIgnoreCase(ipAddress)){
+        if(StringUtils.isEmpty(ipAddress) || "unknown".equalsIgnoreCase(ipAddress)){
             ipAddress = request.getHeader("Proxy-Client-IP");
         }
-        if(ipAddress.isEmpty() || "unknown".equalsIgnoreCase(ipAddress)){
+        if(StringUtils.isEmpty(ipAddress) || "unknown".equalsIgnoreCase(ipAddress)){
             ipAddress = request.getHeader("WL-Proxy-Client-IP");
         }
-        if(ipAddress.isEmpty() || "unknown".equalsIgnoreCase(ipAddress)){
+        if(StringUtils.isEmpty(ipAddress) || "unknown".equalsIgnoreCase(ipAddress)){
             ipAddress = request.getRemoteAddr();
             if(LOCALHOST_IPV4.equals(ipAddress) || LOCALHOST_IPV6.equals(ipAddress)){
                 try{
@@ -33,7 +34,7 @@ public class RequestService {
                 }
             }
         }
-        if(!ipAddress.isEmpty() && ipAddress.length()>15 && ipAddress.indexOf(",")>0){
+        if(!StringUtils.isEmpty(ipAddress) && ipAddress.length()>15 && ipAddress.indexOf(",")>0){
             ipAddress = ipAddress.substring(0, ipAddress.indexOf(","));
         }
         return ipAddress;
