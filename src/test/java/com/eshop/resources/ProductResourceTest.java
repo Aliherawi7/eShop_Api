@@ -3,6 +3,7 @@ package com.eshop.resources;
 import com.eshop.model.Product;
 import com.eshop.repository.ProductRepository;
 import com.eshop.service.ProductService;
+import org.hibernate.dialect.ProgressDialect;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -11,7 +12,10 @@ import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collection;
+
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
@@ -124,11 +128,47 @@ class ProductResourceTest {
     }
 
     @Test
-    void getAllByBrandName() {
+    //if products with the brand name are exist
+    void getAllByBrandNameIfProductsWithTheBrandNameExist() {
+        //  given
+        String brandName = product.getBrandName();
+        Collection<Product> products = Arrays.asList(product);
+        //  when
+        when(productService.getAllByBrandName(brandName)).thenReturn(products);
+
+        //  then
+        assertEquals(underTest.getAllByBrandName(brandName), new ResponseEntity<>(products, HttpStatus.OK));
+        verify(productService).getAllByBrandName(brandName);
+    }
+
+    @Test
+        //if products with the brand name are not exist
+    void getAllByBrandNameIfProductsWithTheBrandNameNotExist() {
+        //  given
+        String brandName = product.getBrandName();
+        Collection<Product> products = new ArrayList<>();
+        //  when
+        when(productService.getAllByBrandName(brandName))
+                .thenReturn(products);
+
+        //  then
+        assertEquals(underTest.getAllByBrandName(brandName),
+                new ResponseEntity<>("no products found by brand name: "+ brandName, HttpStatus.NOT_FOUND));
+        verify(productService).getAllByBrandName(brandName);
     }
 
     @Test
     void getAllByCategory() {
+        //  given
+        String category = product.getCategory();
+        Collection<Product> products = Arrays.asList(product);
+
+        //  when
+        when(productService.getAllByCategory(category)).thenReturn(products);
+
+        //  then
+        assertEquals(underTest.getAllByCategory(category), new ResponseEntity<>(products, HttpStatus.OK));
+        verify(productService).getAllByCategory(category);
     }
 
     @Test
