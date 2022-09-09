@@ -13,6 +13,7 @@ import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
+import org.springframework.security.core.parameters.P;
 import org.springframework.security.core.userdetails.User;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -46,7 +47,7 @@ class CustomAuthenticationFilterTest {
 
     @Test
     // attempt authentication when user is not lock
-    void attemptAuthenticationTest() {
+    void attemptAuthenticationTestIfUserIsNotLock() {
         //  given
         String email = "aliherawi7@gmail.com";
         String password = "1234";
@@ -72,6 +73,33 @@ class CustomAuthenticationFilterTest {
         verify(req).getParameter("password");
         verify(authenticationManager).authenticate(authenticationToken);
         verify(authentication).getPrincipal();
+    }
+
+    @Test
+    // attempt authentication when user is lock
+    void attemptAuthenticationTestIfUserIsLock() {
+        //  given
+        String email = "aliherawi7@gmail.com";
+        String password = "1234";
+        UserApp user = new UserApp();
+        user.setEmail(email);
+        user.setPassword(password);
+        UsernamePasswordAuthenticationToken authenticationToken =
+                new UsernamePasswordAuthenticationToken(email, password);
+
+        //  when
+        when(req.getParameter("email")).thenReturn(email);
+        when(req.getParameter("password")).thenReturn(password);
+        when(userService.getUser(email)).thenReturn(user);
+        when(userService.isAccountLocked(user)).thenReturn(true);
+
+        //  then
+
+        assertThrows(RuntimeException.class, ()-> underTest.attemptAuthentication(req, res));
+        verify(userService).getUser(email);
+        verify(userService).isAccountLocked(user);
+        verify(req).getParameter("email");
+        verify(req).getParameter("password");
     }
 
 
