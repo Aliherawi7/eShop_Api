@@ -19,6 +19,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Date;
 
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.verify;
@@ -97,6 +98,41 @@ class CustomAuthenticationFilterTest {
 
         assertThrows(RuntimeException.class, ()-> underTest.attemptAuthentication(req, res));
         verify(userService).getUser(email);
+        verify(userService).isAccountLocked(user);
+        verify(req).getParameter("email");
+        verify(req).getParameter("password");
+    }
+   // @Test
+    // attempt authentication when user is lock but lock time has expired
+    // void attemptAuthenticationTestIfUserIsLockButLockTimeHasExpired()
+
+    @Test
+        // attempt authentication when user is lock
+    void attemptAuthenticationTestIfUserIsLockButLockTimeHasExpired() {
+        //  given
+        String email = "aliherawi7@gmail.com";
+        String password = "1234";
+        UserApp user = new UserApp();
+        user.setEmail(email);
+        user.setPassword(password);
+        user.setLockTime(new Date(System.currentTimeMillis()-10000));
+        UsernamePasswordAuthenticationToken authenticationToken =
+                new UsernamePasswordAuthenticationToken(email, password);
+
+        //  when
+        when(req.getParameter("email")).thenReturn(email);
+        when(req.getParameter("password")).thenReturn(password);
+        when(userService.getUser(email)).thenReturn(user);
+        when(userService.isAccountLocked(user)).thenReturn(true);
+        when(authenticationManager.authenticate(authenticationToken)).thenReturn(authentication);
+        when(authentication.getPrincipal()).thenReturn(user);
+
+
+        //  then
+        UserApp userTest =(UserApp) underTest.attemptAuthentication(req, res).getPrincipal();
+        assertEquals(userTest.getEmail(), email);
+        verify(userService).getUser(email);
+        verify(userService).unlockWhenTimeExpired(user);
         verify(userService).isAccountLocked(user);
         verify(req).getParameter("email");
         verify(req).getParameter("password");
