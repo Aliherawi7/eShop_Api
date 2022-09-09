@@ -36,7 +36,12 @@ public class UserApp {
     private Date lockTime;
 
 
-    public UserApp(){}
+    public UserApp(){
+        this.joinedDate = LocalDateTime.now();
+        this.enabled = true;
+        this.accountLocked = false;
+        this.failedAttempt = 0;
+    }
 
     public UserApp(Long id,
                    String name, String lastName,
