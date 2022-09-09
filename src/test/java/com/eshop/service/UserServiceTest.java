@@ -103,7 +103,7 @@ class UserServiceTest {
     }
 
     @Test
-    //if the user not exists
+    //adding role if the user not exists
     void addRoleToUserIfUserAndRoleNotExist() {
         //given
         Role role = new Role(1, "USER");
