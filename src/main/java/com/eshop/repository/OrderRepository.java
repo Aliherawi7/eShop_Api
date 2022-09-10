@@ -6,7 +6,7 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import java.time.LocalDate;
 import java.util.Collection;
 
-public interface OderRepository extends JpaRepository<Order, Long> {
+public interface OrderRepository extends JpaRepository<Order, Long> {
 
     // find all orders with specific userId and ProductID
     Collection<Order> findAllByUserIdAndProductId(Long userID, Long productId);
