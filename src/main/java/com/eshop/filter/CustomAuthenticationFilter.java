@@ -72,7 +72,7 @@ public class CustomAuthenticationFilter extends UsernamePasswordAuthenticationFi
         // we need the principal or authenticated user to create JWT token with its information
         User user = (User) authResult.getPrincipal();
          /*
-         * if user was locked dou to limit attempt failed.
+         * if user was locked, dou to limit attempt failed.
          * we have to unlock the user and reset the failedAttempt
          * */
         UserApp checkUserActivation = userService.getUser(user.getUsername());
@@ -86,7 +86,7 @@ public class CustomAuthenticationFilter extends UsernamePasswordAuthenticationFi
             userService.unlockWhenTimeExpired(checkUserActivation);
         }
 
-        //we an algorithm to to build the token with
+        //we have an algorithm to to build the token with
         Algorithm algorithm = Algorithm.HMAC256("herawi".getBytes());
         //then we create the access token and refresh token using auth0 library
         String access_token = JWT.create()
