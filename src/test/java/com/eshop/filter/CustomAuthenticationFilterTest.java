@@ -8,11 +8,21 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
+import org.springframework.http.MediaType;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
+import org.springframework.security.core.userdetails.User;
+
+import javax.servlet.FilterChain;
+import javax.servlet.ServletOutputStream;
+import javax.servlet.WriteListener;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import java.io.IOException;
+import java.util.Arrays;
+import java.util.Collection;
 import java.util.Date;
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.verify;
@@ -32,6 +42,11 @@ class CustomAuthenticationFilterTest {
     private HttpServletResponse res;
     @Mock
     private Authentication authentication;
+    @Mock
+    FilterChain chain;
+    @Mock
+    ServletOutputStream servletOutputStream;
+
 
 
     @BeforeEach
@@ -97,7 +112,7 @@ class CustomAuthenticationFilterTest {
     }
 
     @Test
-        // attempt authentication when user is lock
+    // attempt authentication when user is lock
     void attemptAuthenticationTestIfUserIsLockButLockTimeHasExpired() {
         //  given
         String email = "aliherawi7@gmail.com";
@@ -130,14 +145,76 @@ class CustomAuthenticationFilterTest {
 
 
     @Test
-    @Disabled
+    //  if user failed attempts is greater than zero
+    void successfulAuthenticationIfFailedAttemptsIsGreaterThanZero() {
+        //given
+        String email = "aliherawi7@gmail.com";
+        String password = "1234";
+        UserApp user = new UserApp();
+        user.setEmail(email);
+        user.setPassword(password);
+        user.setFailedAttempt(3);
+        Collection<SimpleGrantedAuthority> authorities = Arrays.asList(new SimpleGrantedAuthority("USER"));
+        User testUser = new User(email, password, authorities);
+
+        //when
+        when(authentication.getPrincipal()).thenReturn(testUser);
+        when(userService.getUser(email)).thenReturn(user);
+        when(req.getRequestURL()).thenReturn(new StringBuffer("api-url"));
+        try{
+            when(res.getOutputStream()).thenReturn(servletOutputStream);
+        }catch(Exception ex){
+            ex.printStackTrace();
+        }
+
+        //then
+        try{
+            underTest.successfulAuthentication(req, res, chain, authentication);
+        }catch(Exception ex){
+            ex.printStackTrace();
+        }
+        verify(userService).resetFailedAttempts(email);
+
+    }
+
+    @Test
+    //  create access token and refresh token
     void successfulAuthentication() {
+        //given
+        String email = "aliherawi7@gmail.com";
+        String password = "1234";
+        UserApp user = new UserApp();
+        user.setEmail(email);
+        user.setPassword(password);
+        Collection<SimpleGrantedAuthority> authorities = Arrays.asList(new SimpleGrantedAuthority("USER"));
+        User testUser = new User(email, password, authorities);
+
+        //when
+        when(authentication.getPrincipal()).thenReturn(testUser);
+        when(userService.getUser(email)).thenReturn(user);
+        when(req.getRequestURL()).thenReturn(new StringBuffer("api-url"));
+        try{
+            when(res.getOutputStream()).thenReturn(servletOutputStream);
+        }catch(Exception ex){
+            ex.printStackTrace();
+        }
+
+        //then
+        try{
+            underTest.successfulAuthentication(req, res, chain, authentication);
+        }catch(Exception ex){
+            ex.printStackTrace();
+        }
+
+        // if response content type set to application/json
+        verify(res).setContentType(MediaType.APPLICATION_JSON_VALUE);
 
     }
 
     @Test
     @Disabled
     void unsuccessfulAuthentication() {
+
     }
 }
 
