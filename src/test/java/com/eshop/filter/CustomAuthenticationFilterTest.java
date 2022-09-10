@@ -1,6 +1,5 @@
 package com.eshop.filter;
 
-import com.eshop.model.Role;
 import com.eshop.model.UserApp;
 import com.eshop.service.UserService;
 import org.junit.jupiter.api.BeforeEach;
@@ -12,15 +11,9 @@ import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
-import org.springframework.security.core.authority.SimpleGrantedAuthority;
-import org.springframework.security.core.parameters.P;
-import org.springframework.security.core.userdetails.User;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import java.util.ArrayList;
-import java.util.Collection;
 import java.util.Date;
-
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
@@ -102,9 +95,6 @@ class CustomAuthenticationFilterTest {
         verify(req).getParameter("email");
         verify(req).getParameter("password");
     }
-   // @Test
-    // attempt authentication when user is lock but lock time has expired
-    // void attemptAuthenticationTestIfUserIsLockButLockTimeHasExpired()
 
     @Test
         // attempt authentication when user is lock
@@ -142,6 +132,7 @@ class CustomAuthenticationFilterTest {
     @Test
     @Disabled
     void successfulAuthentication() {
+
     }
 
     @Test
