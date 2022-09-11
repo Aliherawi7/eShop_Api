@@ -6,7 +6,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
-import org.yaml.snakeyaml.nodes.CollectionNode;
 
 import java.time.LocalDate;
 import java.util.Collection;
@@ -29,6 +28,18 @@ public class OrderService {
         }else{
             return new ResponseEntity<>("order not found with id: "+id, HttpStatus.NOT_FOUND);
         }
+    }
+
+    // save order
+    public ResponseEntity<?> addOrder(Order order){
+        orderRepository.save(order);
+        return new ResponseEntity<>("order save successfully.", HttpStatus.CREATED);
+    }
+
+    // update order
+    public ResponseEntity<?> updateOrder(Order order){
+        orderRepository.save(order);
+        return new ResponseEntity<>("order save successfully.", HttpStatus.CREATED);
     }
 
     // find all orders with specific userId and ProductID
