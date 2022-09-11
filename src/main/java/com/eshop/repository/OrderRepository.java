@@ -36,9 +36,9 @@ public interface OrderRepository extends JpaRepository<Order, Long> {
     Collection<Order> findAllByOrderDateBetweenAndDelivered(LocalDate startDate, LocalDate endDate, boolean delivered);
 
     // find All by userId productId and date
-    Collection<Order> findAllByUserIdAndProductIdAndOrderDateBetween(LocalDate start, LocalDate end);
+    Collection<Order> findAllByUserIdAndProductIdAndOrderDateBetween(Long userId, Long productId, LocalDate start, LocalDate end);
 
     // find all orders with specific userId and productId after the specific date
-    Collection<Order> findAllByUserIdAndProductIdAndOrderDateAfter(LocalDate start);
+    Collection<Order> findAllByUserIdAndProductIdAndOrderDateAfter(Long userID, Long productId, LocalDate start);
 
 }
