@@ -81,10 +81,10 @@ public class CustomAuthenticationFilter extends UsernamePasswordAuthenticationFi
             userService.resetFailedAttempts(checkUserActivation.getEmail());
         }
 
-        //check if user is locked. then unlock the user
+        /*check if user is locked. then unlock the user
         if(userService.isAccountLocked(checkUserActivation)){
             userService.unlockWhenTimeExpired(checkUserActivation);
-        }
+        }*/
 
         //we have an algorithm to to build the token with
         Algorithm algorithm = Algorithm.HMAC256("herawi".getBytes());
