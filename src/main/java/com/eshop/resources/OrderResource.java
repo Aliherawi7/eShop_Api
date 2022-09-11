@@ -69,6 +69,18 @@ public class OrderResource {
         return orderService.findAllByOrderDateAndDelivered(date, delivered);
     }
 
+    // find all orders before the specific date
+    @GetMapping(value = "/find", params = {"beforeDate"})
+    public ResponseEntity<?> findAllByOrderDateBefore(@RequestParam LocalDate beforeDate){
+        return orderService.findAllByOrderDateBefore(beforeDate);
+    }
+
+    // find all orders after a specific date
+    @GetMapping(value = "/find", params = {"afterDate"})
+    public ResponseEntity<?> findAllByOrderDateAfter(@RequestParam LocalDate afterDate){
+        return orderService.findAllByOrderDateAfter(afterDate);
+    }
+
 
 
 
