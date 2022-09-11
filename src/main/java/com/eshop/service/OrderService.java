@@ -42,6 +42,12 @@ public class OrderService {
         return new ResponseEntity<>("order save successfully.", HttpStatus.CREATED);
     }
 
+    // delete an order
+    public ResponseEntity<?> deleteOrder(Long id){
+        orderRepository.deleteById(id);
+        return new ResponseEntity<>("order deleted successfully", HttpStatus.OK);
+    }
+
     // find all orders with specific userId and ProductID
     public ResponseEntity<?> findAllByUserIdAndProductId(Long userID, Long productId){
         Collection<Order> orders = orderRepository.findAllByUserIdAndProductId(userID, productId);
