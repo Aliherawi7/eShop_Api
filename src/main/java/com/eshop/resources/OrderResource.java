@@ -81,6 +81,21 @@ public class OrderResource {
         return orderService.findAllByOrderDateAfter(afterDate);
     }
 
+    // find all orders between two date
+    @GetMapping(value = "/find", params = {"startDate", "endDate"})
+    public ResponseEntity<?> findAllByOrderDateBetween(@RequestParam Map<String, LocalDate> params){
+        return orderService.findAllByOrderDateBetween(params.get("startDate"), params.get("endDate"));
+    }
+
+    // find all delivered order between two specific date
+    @GetMapping(value="/find", params = {"startDate", "endDate", "delivered"})
+    public ResponseEntity<?> findAllByOrderDateBetweenAndDelivered(@RequestParam Map<String, String> params){
+        LocalDate start = LocalDate.parse(params.get("startDate"));
+        LocalDate end = LocalDate.parse(params.get("endDate"));
+        boolean delivered = Boolean.parseBoolean(params.get("delivered"));
+        return orderService.findAllByOrderDateBetweenAndDelivered(start, end, delivered);
+    }
+
 
 
 
