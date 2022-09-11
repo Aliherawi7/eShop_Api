@@ -3,9 +3,12 @@ package com.eshop.resources;
 import com.eshop.model.Order;
 import com.eshop.service.OrderService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.time.LocalDate;
+import java.util.Collection;
 import java.util.Map;
 
 @RestController
@@ -39,5 +42,34 @@ public class OrderResource {
     public ResponseEntity<?> findAllByUserIdAndProductId(@RequestParam Map<String, Long> params){
         return orderService.findAllByUserIdAndProductId(params.get("userId"), params.get("productId"));
     }
+
+    // find all orders with specific userId
+    @GetMapping(value = "/find", params = {"userId"})
+    public ResponseEntity<?> findAllByUserId(@RequestParam Long userId){
+        return orderService.findAllByUserId(userId);
+    }
+
+    // find all orders with specific productID
+    @GetMapping(value = "/find", params = {"productId"})
+    public ResponseEntity<?> findAllByProductId(@RequestParam Long productId){
+        return orderService.findAllByProductId(productId);
+    }
+
+    //find all order in a specific date
+    @GetMapping(value = "/find", params = {"orderDate"})
+    public ResponseEntity<?> findAllByOrderDate(@RequestParam LocalDate orderDate){
+        return orderService.findAllByOrderDate(orderDate);
+    }
+
+    // find all delivered or not delivered orders in a specific date
+    @GetMapping(value = "/find", params = {"orderDate", "delivered"})
+    public ResponseEntity<?> findAllByOrderDateAndDelivered(@RequestParam Map<String, String> params){
+        LocalDate date = LocalDate.parse(params.get("orderDate"));
+        boolean delivered = Boolean.parseBoolean(params.get("delivered"));
+        return orderService.findAllByOrderDateAndDelivered(date, delivered);
+    }
+
+
+
 
 }
