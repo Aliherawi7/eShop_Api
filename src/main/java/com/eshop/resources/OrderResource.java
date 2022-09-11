@@ -96,6 +96,25 @@ public class OrderResource {
         return orderService.findAllByOrderDateBetweenAndDelivered(start, end, delivered);
     }
 
+    // find All by userId productId and date
+    @GetMapping(value="/find", params = {"userId", "productId", "startDate", "endDate"})
+    public ResponseEntity<?> findAllByUserIdAndProductIdAndOrderDateBetween(@RequestParam Map<String, String> params){
+        Long userId = Long.parseLong(params.get("userId"));
+        Long productId = Long.parseLong(params.get("productId"));
+        LocalDate start = LocalDate.parse(params.get("startDate"));
+        LocalDate end = LocalDate.parse(params.get("endDate"));
+        return orderService.findAllByUserIdAndProductIdAndOrderDateBetween(userId, productId, start, end);
+    }
+
+    // find all orders with specific userId and productId after the specific date
+    @GetMapping(value="/find", params = {"userId", "productId", "dateAfter"})
+    public ResponseEntity<?> findAllByUserIdAndProductIdAndOrderDateAfter(@RequestParam Map<String, String> params){
+        Long userId = Long.parseLong(params.get("userId"));
+        Long productId = Long.parseLong(params.get("productId"));
+        LocalDate dateAfter = LocalDate.parse(params.get("dateAfter"));
+        return orderService.findAllByUserIdAndProductIdAndOrderDateAfter(userId, productId, dateAfter);
+    }
+
 
 
 
