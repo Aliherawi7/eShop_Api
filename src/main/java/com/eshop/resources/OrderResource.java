@@ -32,6 +32,11 @@ public class OrderResource {
         return orderService.addOrder(order);
     }
 
+    @PostMapping("/saveAll")
+    public ResponseEntity<?> addOrders(@RequestBody Collection<Order> orders){
+        return orderService.addOrders(orders);
+    }
+
     @DeleteMapping("/delete/{id}")
     public ResponseEntity<?> deleteOrder(@PathVariable Long id){
         return orderService.deleteOrder(id);
