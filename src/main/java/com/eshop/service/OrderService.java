@@ -36,6 +36,13 @@ public class OrderService {
         return new ResponseEntity<>("order save successfully.", HttpStatus.CREATED);
     }
 
+    // saves orders
+
+    public ResponseEntity<String> addOrders(Collection<Order> orders){
+        orders.forEach(this::addOrder);
+        return ResponseEntity.ok("orders save successfully");
+    }
+
     // update order
     public ResponseEntity<?> updateOrder(Order order){
         orderRepository.save(order);
