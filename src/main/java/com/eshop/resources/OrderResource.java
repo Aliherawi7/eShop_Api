@@ -1,9 +1,8 @@
 package com.eshop.resources;
 
-import com.eshop.model.Order;
+import com.eshop.model.OrderApp;
 import com.eshop.service.OrderService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -28,12 +27,12 @@ public class OrderResource {
     }
 
     @PostMapping("/save")
-    public ResponseEntity<?> addOrder(@RequestBody Order order){
+    public ResponseEntity<?> addOrder(@RequestBody OrderApp order){
         return orderService.addOrder(order);
     }
 
     @PostMapping("/saveAll")
-    public ResponseEntity<?> addOrders(@RequestBody Collection<Order> orders){
+    public ResponseEntity<?> addOrders(@RequestBody Collection<OrderApp> orders){
         return orderService.addOrders(orders);
     }
 
