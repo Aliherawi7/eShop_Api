@@ -1,6 +1,6 @@
 package com.eshop.service;
 
-import com.eshop.model.Order;
+import com.eshop.model.OrderApp;
 import com.eshop.repository.OrderRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -22,7 +22,7 @@ public class OrderService {
 
     // find order by id
     public ResponseEntity<?> getOrder(Long id){
-        Order order = orderRepository.findById(id).orElse(null);
+        OrderApp order = orderRepository.findById(id).orElse(null);
         if(order != null){
             return new ResponseEntity<>(order, HttpStatus.OK);
         }else{
@@ -31,20 +31,20 @@ public class OrderService {
     }
 
     // save order
-    public ResponseEntity<?> addOrder(Order order){
+    public ResponseEntity<?> addOrder(OrderApp order){
         orderRepository.save(order);
         return new ResponseEntity<>("order save successfully.", HttpStatus.CREATED);
     }
 
     // saves orders
 
-    public ResponseEntity<String> addOrders(Collection<Order> orders){
+    public ResponseEntity<String> addOrders(Collection<OrderApp> orders){
         orders.forEach(this::addOrder);
         return ResponseEntity.ok("orders save successfully");
     }
 
     // update order
-    public ResponseEntity<?> updateOrder(Order order){
+    public ResponseEntity<?> updateOrder(OrderApp order){
         orderRepository.save(order);
         return new ResponseEntity<>("order save successfully.", HttpStatus.CREATED);
     }
@@ -57,7 +57,7 @@ public class OrderService {
 
     // find all orders with specific userId and ProductID
     public ResponseEntity<?> findAllByUserIdAndProductId(Long userID, Long productId){
-        Collection<Order> orders = orderRepository.findAllByUserIdAndProductId(userID, productId);
+        Collection<OrderApp> orders = orderRepository.findAllByUserIdAndProductId(userID, productId);
         if(orders.size() > 0){
             return new ResponseEntity<>(orders, HttpStatus.OK);
         }else{
@@ -68,7 +68,7 @@ public class OrderService {
 
     // find all orders with specific userId
     public ResponseEntity<?> findAllByUserId(Long userId){
-        Collection<Order> orders = orderRepository.findAllByUserId(userId);
+        Collection<OrderApp> orders = orderRepository.findAllByUserId(userId);
         if(orders.size()>0){
             return new ResponseEntity<>(orders, HttpStatus.OK);
         }else{
@@ -78,7 +78,7 @@ public class OrderService {
 
     // find all orders with specific productID
     public ResponseEntity<?> findAllByProductId(Long productId){
-        Collection<Order> orders = orderRepository.findAllByProductId(productId);
+        Collection<OrderApp> orders = orderRepository.findAllByProductId(productId);
         if(orders.size()>0){
             return new ResponseEntity<>(orders, HttpStatus.OK);
         }else{
@@ -88,7 +88,7 @@ public class OrderService {
 
     //find all order in a specific date
     public ResponseEntity<?> findAllByOrderDate(LocalDate orderDate){
-        Collection<Order> orders = orderRepository.findAllByOrderDate(orderDate);
+        Collection<OrderApp> orders = orderRepository.findAllByOrderDate(orderDate);
         if(orders.size()>0){
             return new ResponseEntity<>(orders, HttpStatus.OK);
         }else{
@@ -98,7 +98,7 @@ public class OrderService {
 
     // find all delivered or not delivered orders in a specific date
     public ResponseEntity<?> findAllByOrderDateAndDelivered(LocalDate date, boolean delivered){
-        Collection<Order> orders = orderRepository.findAllByOrderDateAndDelivered(date, delivered);
+        Collection<OrderApp> orders = orderRepository.findAllByOrderDateAndDelivered(date, delivered);
         if(orders.size() > 0){
             return  new ResponseEntity<>(orders, HttpStatus.OK);
         }else{
@@ -108,7 +108,7 @@ public class OrderService {
 
     // find all orders before the specific date
     public ResponseEntity<?> findAllByOrderDateBefore(LocalDate date){
-        Collection<Order> orders = orderRepository.findAllByOrderDateBefore(date);
+        Collection<OrderApp> orders = orderRepository.findAllByOrderDateBefore(date);
         if(orders.size() > 0){
             return new ResponseEntity<>(orders, HttpStatus.OK);
         }else{
@@ -118,7 +118,7 @@ public class OrderService {
 
     // find all orders after a specific date
     public ResponseEntity<?> findAllByOrderDateAfter(LocalDate date){
-        Collection<Order> orders = orderRepository.findAllByOrderDateAfter(date);
+        Collection<OrderApp> orders = orderRepository.findAllByOrderDateAfter(date);
         if(orders.size() > 0){
             return new ResponseEntity<>(orders, HttpStatus.OK);
         }else{
@@ -128,7 +128,7 @@ public class OrderService {
 
     // find all orders between two date
     public ResponseEntity<?> findAllByOrderDateBetween(LocalDate startDate, LocalDate endDate){
-        Collection<Order> orders = orderRepository.findAllByOrderDateBetween(startDate, endDate);
+        Collection<OrderApp> orders = orderRepository.findAllByOrderDateBetween(startDate, endDate);
         if(orders.size() > 0){
             return new ResponseEntity<>(orders, HttpStatus.OK);
         }else{
@@ -138,7 +138,7 @@ public class OrderService {
 
     // find all delivered order between two specific date
     public ResponseEntity<?> findAllByOrderDateBetweenAndDelivered(LocalDate startDate, LocalDate endDate, boolean delivered){
-        Collection<Order> orders = orderRepository.findAllByOrderDateBetweenAndDelivered(startDate, endDate, delivered);
+        Collection<OrderApp> orders = orderRepository.findAllByOrderDateBetweenAndDelivered(startDate, endDate, delivered);
         if(orders.size() > 0){
             return new ResponseEntity<>(orders, HttpStatus.OK);
         }else{
@@ -148,7 +148,7 @@ public class OrderService {
 
     // find All by userId productId and date
     public ResponseEntity<?> findAllByUserIdAndProductIdAndOrderDateBetween(Long userId, Long productId, LocalDate start, LocalDate end){
-        Collection<Order> orders = orderRepository.findAllByUserIdAndProductIdAndOrderDateBetween(userId, productId, start, end);
+        Collection<OrderApp> orders = orderRepository.findAllByUserIdAndProductIdAndOrderDateBetween(userId, productId, start, end);
         if(orders.size() > 0){
             return new ResponseEntity<>(orders, HttpStatus.OK);
         }else{
@@ -158,7 +158,7 @@ public class OrderService {
 
     // find all orders with specific userId and productId after the specific date
     public ResponseEntity<?> findAllByUserIdAndProductIdAndOrderDateAfter(Long userID, Long productId, LocalDate start){
-        Collection<Order> orders = orderRepository.findAllByUserIdAndProductIdAndOrderDateAfter(userID, productId, start);
+        Collection<OrderApp> orders = orderRepository.findAllByUserIdAndProductIdAndOrderDateAfter(userID, productId, start);
         if(orders.size() >0){
             return new ResponseEntity<>(orders, HttpStatus.OK);
         }else{
