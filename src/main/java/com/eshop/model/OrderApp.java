@@ -3,27 +3,32 @@ package com.eshop.model;
 
 import javax.persistence.*;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 
 @Entity
-public class Order {
+public class OrderApp {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
     private Long productId;
     private Long userId;
-    private LocalDate orderDate;
+    private LocalDateTime orderDate;
     private String shippingAddress;
     private int quantity;
     private boolean delivered;
+    private LocalDateTime deliveredDate;
 
-    public Order(){}
+    public OrderApp(){
+        this.orderDate = LocalDateTime.now();
+        this.delivered = false;
+    }
 
-    public Order(Long id, Long productId, Long userId, String shippingAddress, int quantity) {
+    public OrderApp(Long id, Long productId, Long userId, String shippingAddress, int quantity) {
         this.id = id;
         this.productId = productId;
         this.userId = userId;
-        this.orderDate = LocalDate.now();
+        this.orderDate = LocalDateTime.now();
         this.shippingAddress = shippingAddress;
         this.quantity = quantity;
         this.delivered = false;
@@ -53,14 +58,6 @@ public class Order {
         this.userId = userId;
     }
 
-    public LocalDate getOrderDate() {
-        return orderDate;
-    }
-
-    public void setOrderDate(LocalDate orderDate) {
-        this.orderDate = orderDate;
-    }
-
     public String getShippingAddress() {
         return shippingAddress;
     }
@@ -83,5 +80,17 @@ public class Order {
 
     public void setDelivered(boolean delivered) {
         this.delivered = delivered;
+    }
+
+    public void setOrderDate(LocalDateTime orderDate) {
+        this.orderDate = orderDate;
+    }
+
+    public LocalDateTime getDeliveredDate() {
+        return deliveredDate;
+    }
+
+    public void setDeliveredDate(LocalDateTime deliveredDate) {
+        this.deliveredDate = deliveredDate;
     }
 }
