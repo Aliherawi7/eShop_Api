@@ -21,6 +21,11 @@ public class OrderResource {
         this.orderService = orderService;
     }
 
+    @GetMapping("/all")
+    public ResponseEntity<?> getAllOrder(){
+        return orderService.getAllOrder();
+    }
+
     @GetMapping("/{orderId}")
     public ResponseEntity<?> getOrder(@PathVariable Long orderId){
         return orderService.getOrder(orderId);
@@ -61,8 +66,10 @@ public class OrderResource {
 
     //find all order in a specific date
     @GetMapping(value = "/find", params = {"orderDate"})
-    public ResponseEntity<?> findAllByOrderDate(@RequestParam LocalDate orderDate){
-        return orderService.findAllByOrderDate(orderDate);
+    public ResponseEntity<?> findAllByOrderDate(@RequestParam String orderDate){
+        LocalDate localDateTime = LocalDate.parse(orderDate);
+        System.out.println(localDateTime.toString());
+        return orderService.findAllByOrderDate(localDateTime);
     }
 
     // find all delivered or not delivered orders in a specific date
