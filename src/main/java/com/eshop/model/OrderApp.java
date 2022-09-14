@@ -19,6 +19,7 @@ public class OrderApp {
     private int quantity;
     private boolean delivered;
     private LocalDateTime deliveredDate;
+    private String remoteAddress;
 
     public OrderApp(){
         this.orderDateTime = LocalDateTime.now();
@@ -107,4 +108,11 @@ public class OrderApp {
         this.orderDateTime = orderDateTime;
     }
 
+    public String getRemoteAddress() {
+        return remoteAddress;
+    }
+
+    public void setRemoteAddress(String remoteAddress) {
+        this.remoteAddress = remoteAddress;
+    }
 }
