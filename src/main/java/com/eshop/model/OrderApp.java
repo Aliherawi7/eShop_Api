@@ -20,6 +20,8 @@ public class OrderApp {
     private boolean delivered;
     private LocalDateTime deliveredDate;
     private String remoteAddress;
+    private String customerComment;
+    private String currency;
 
     public OrderApp(){
         this.orderDateTime = LocalDateTime.now();
@@ -111,8 +113,23 @@ public class OrderApp {
     public String getRemoteAddress() {
         return remoteAddress;
     }
-
     public void setRemoteAddress(String remoteAddress) {
         this.remoteAddress = remoteAddress;
+    }
+
+    public String getCustomerComment() {
+        return customerComment;
+    }
+
+    public void setCustomerComment(String customerComment) {
+        this.customerComment = customerComment;
+    }
+
+    public String getCurrency() {
+        return currency;
+    }
+
+    public void setCurrency(String currency) {
+        this.currency = currency;
     }
 }
