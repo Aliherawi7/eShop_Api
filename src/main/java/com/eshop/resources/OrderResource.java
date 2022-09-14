@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import javax.servlet.http.HttpServletRequest;
 import java.time.LocalDate;
 import java.util.Collection;
 import java.util.Map;
@@ -32,13 +33,13 @@ public class OrderResource {
     }
 
     @PostMapping("/save")
-    public ResponseEntity<?> addOrder(@RequestBody OrderApp order){
-        return orderService.addOrder(order);
+    public ResponseEntity<?> addOrder(@RequestBody OrderApp order, HttpServletRequest request){
+        return orderService.addOrder(order, request);
     }
 
     @PostMapping("/saveAll")
-    public ResponseEntity<?> addOrders(@RequestBody Collection<OrderApp> orders){
-        return orderService.addOrders(orders);
+    public ResponseEntity<?> addOrders(@RequestBody Collection<OrderApp> orders, HttpServletRequest request){
+        return orderService.addOrders(orders, request);
     }
 
     @DeleteMapping("/delete/{id}")
