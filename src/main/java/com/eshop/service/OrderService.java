@@ -30,6 +30,16 @@ public class OrderService {
         }
     }
 
+    // find all orders
+    public ResponseEntity<?> getAllOrder(){
+        Collection<OrderApp> orders = orderRepository.findAll();
+        if(orders.size() > 0){
+            return ResponseEntity.ok(orders);
+        }else {
+            return new ResponseEntity<>(orders, HttpStatus.NOT_FOUND);
+        }
+    }
+
     // save order
     public ResponseEntity<?> addOrder(OrderApp order){
         orderRepository.save(order);
