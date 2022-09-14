@@ -7,6 +7,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
+import javax.servlet.http.HttpServletRequest;
 import java.time.LocalDate;
 import java.util.Collection;
 
@@ -14,10 +15,12 @@ import java.util.Collection;
 public class OrderService {
 
     private final OrderRepository orderRepository;
+    private final IPFinderService ipFinderService;
 
     @Autowired
-    public OrderService(OrderRepository orderRepository){
+    public OrderService(OrderRepository orderRepository, IPFinderService ipFinderService){
         this.orderRepository = orderRepository;
+        this.ipFinderService = ipFinderService;
     }
 
     // find order by id
@@ -41,15 +44,18 @@ public class OrderService {
     }
 
     // save order
-    public ResponseEntity<?> addOrder(OrderApp order){
+    public ResponseEntity<?> addOrder(OrderApp order , HttpServletRequest request){
+        // get user remoteAddress
+        String userIPAddress = ipFinderService.getClientIP(request);
+        order.setRemoteAddress(userIPAddress);
         orderRepository.save(order);
         return new ResponseEntity<>("order save successfully.", HttpStatus.CREATED);
     }
 
     // saves orders
 
-    public ResponseEntity<String> addOrders(Collection<OrderApp> orders){
-        orders.forEach(this::addOrder);
+    public ResponseEntity<String> addOrders(Collection<OrderApp> orders, HttpServletRequest request){
+        orders.forEach(orderApp -> addOrder(orderApp, request));
         return ResponseEntity.ok("orders save successfully");
     }
 
