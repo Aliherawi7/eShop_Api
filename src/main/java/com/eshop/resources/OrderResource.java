@@ -5,7 +5,6 @@ import com.eshop.service.OrderService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-
 import javax.servlet.http.HttpServletRequest;
 import java.time.LocalDate;
 import java.util.Collection;
@@ -95,8 +94,10 @@ public class OrderResource {
 
     // find all orders between two date
     @GetMapping(value = "/find", params = {"startDate", "endDate"})
-    public ResponseEntity<?> findAllByOrderDateBetween(@RequestParam Map<String, LocalDate> params){
-        return orderService.findAllByOrderDateBetween(params.get("startDate"), params.get("endDate"));
+    public ResponseEntity<?> findAllByOrderDateBetween(@RequestParam Map<String, String> params){
+        LocalDate startDate = LocalDate.parse(params.get("startDate"));
+        LocalDate endDate = LocalDate.parse(params.get("endDate"));
+        return orderService.findAllByOrderDateBetween(startDate, endDate);
     }
 
     // find all delivered order between two specific date
