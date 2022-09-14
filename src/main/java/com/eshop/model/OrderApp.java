@@ -24,9 +24,12 @@ public class OrderApp {
     private String currency;
 
     public OrderApp(){
+        //default properties values
         this.orderDateTime = LocalDateTime.now();
         this.orderDate = orderDateTime.toLocalDate();
         this.delivered = false;
+        this.customerComment = "";
+        this.currency = "USD";
     }
 
     public OrderApp(Long id, Long productId, Long userId, String shippingAddress, int quantity) {
