@@ -13,14 +13,16 @@ public class OrderApp {
     private Long id;
     private Long productId;
     private Long userId;
-    private LocalDateTime orderDate;
+    private LocalDateTime orderDateTime;
+    private LocalDate orderDate;
     private String shippingAddress;
     private int quantity;
     private boolean delivered;
     private LocalDateTime deliveredDate;
 
     public OrderApp(){
-        this.orderDate = LocalDateTime.now();
+        this.orderDateTime = LocalDateTime.now();
+        this.orderDate = orderDateTime.toLocalDate();
         this.delivered = false;
     }
 
@@ -28,7 +30,8 @@ public class OrderApp {
         this.id = id;
         this.productId = productId;
         this.userId = userId;
-        this.orderDate = LocalDateTime.now();
+        this.orderDateTime = LocalDateTime.now();
+        this.orderDate = orderDateTime.toLocalDate();
         this.shippingAddress = shippingAddress;
         this.quantity = quantity;
         this.delivered = false;
@@ -82,7 +85,9 @@ public class OrderApp {
         this.delivered = delivered;
     }
 
-    public void setOrderDate(LocalDateTime orderDate) {
+    public LocalDate getOrderDate(){ return orderDate; }
+
+    public void setOrderDate(LocalDate orderDate) {
         this.orderDate = orderDate;
     }
 
@@ -93,4 +98,13 @@ public class OrderApp {
     public void setDeliveredDate(LocalDateTime deliveredDate) {
         this.deliveredDate = deliveredDate;
     }
+
+    public LocalDateTime getOrderDateTime() {
+        return orderDateTime;
+    }
+
+    public void setOrderDateTime(LocalDateTime orderDateTime) {
+        this.orderDateTime = orderDateTime;
+    }
+
 }
