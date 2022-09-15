@@ -1,18 +1,15 @@
 package com.eshop.service;
 
-
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
-
 import javax.servlet.http.HttpServletRequest;
 import java.net.InetAddress;
 import java.net.UnknownHostException;
 
 @Service
 public class IPFinderService {
-
-    private final String LOCALHOST_IPV4 = "127.0.0.1";
-    private final String LOCALHOST_IPV6 = "0:0:0:0:0:0:0:1";
+    private final static String LOCALHOST_IPV4 = "127.0.0.1";
+    private final static String LOCALHOST_IPV6 = "0:0:0:0:0:0:0:1";
 
     public String getClientIP(HttpServletRequest request){
         String ipAddress = request.getHeader("X-Forwarded-For");
