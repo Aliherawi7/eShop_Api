@@ -6,12 +6,25 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import java.util.Collection;
+import java.util.Optional;
 
 @Service
 public class ProductService {
     private final ProductRepository productRepository;
     public ProductService(ProductRepository productRepository){
         this.productRepository = productRepository;
+    }
+
+    //find product by id
+
+    public ResponseEntity<?> getProductById(int id){
+        Optional<Product> product = productRepository.findById(id);
+        if(product.isPresent()){
+            return new ResponseEntity<>(product.get(), HttpStatus.OK);
+
+        }else{
+            return new ResponseEntity<>("product with id: "+id+ " not found!", HttpStatus.NOT_FOUND);
+        }
     }
 
     //find all product in the database by name
