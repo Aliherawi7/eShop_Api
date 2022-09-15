@@ -15,7 +15,6 @@ import org.springframework.stereotype.Service;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Date;
-
 /*
  * @Author: Aliherawi
  * @Github: Aliherawi7
@@ -27,7 +26,6 @@ public class UserService implements UserDetailsService {
     public static final int MAX_FAILED_ATTEMPTS = 5;
     // duration of lock time for user that has been reached to max failed attempts
     private static final long LOCK_TIME_DURATION = 5 * 60 * 60 * 1000; // 5 hours
-
 
     private final UserAppRepository userRepository;
     private final RoleRepository roleRepository;
