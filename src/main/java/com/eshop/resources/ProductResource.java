@@ -30,15 +30,11 @@ public class ProductResource {
             return new ResponseEntity<String>("No Product is available!", HttpStatus.NOT_FOUND);
         }
     }
-    // find product by name
-    @GetMapping(value = "/find/name={name}" )
-    public ResponseEntity<?> getProduct(@PathVariable String name){
-        Product product = productService.getProductByName(name);
-        if(product != null){
-            return new ResponseEntity<>(product, HttpStatus.OK);
-        }else{
-            return new ResponseEntity<>("not product found by name : "+name, HttpStatus.NOT_FOUND);
-        }
+
+    //find by id
+    @GetMapping("/{id}")
+    public ResponseEntity<?> getProductById(@PathVariable Integer id){
+        return productService.getProductById(id);
     }
 
     // save the product in database
@@ -56,11 +52,12 @@ public class ProductResource {
         return productService.updateProduct(product);
     }
 
-    //remove product
+    //remove product by id
     @DeleteMapping("/delete/{id}")
     public ResponseEntity<?> deleteProductById(@PathVariable Integer id){
         return productService.deleteProductById(id);
     }
+    //remove all products
     @DeleteMapping
     public ResponseEntity<?> deleteAllProducts(){
         return productService.deleteAllProducts();
@@ -71,8 +68,19 @@ public class ProductResource {
      *============   query methods   ============*
      *===========================================*/
 
+    // find product by name
+    @GetMapping(value = "/find", params = {"name"})
+    public ResponseEntity<?> getProduct(@RequestParam String name){
+        Product product = productService.getProductByName(name);
+        if(product != null){
+            return new ResponseEntity<>(product, HttpStatus.OK);
+        }else{
+            return new ResponseEntity<>("not product found by name : "+name, HttpStatus.NOT_FOUND);
+        }
+    }
+
     // find by brand name
-    @GetMapping(value = "/brand/", params = {"brand"})
+    @GetMapping(value = "/find", params = {"brand"})
     public ResponseEntity<?> getAllByBrandName(@RequestParam String brand){
         Collection<Product> products = productService.getAllByBrandName(brand);
         if(products.size()>0){
@@ -83,7 +91,7 @@ public class ProductResource {
     }
 
     // find product by category
-    @GetMapping(value = "/category/", params = {"category"})
+    @GetMapping(value = "/find", params = {"category"})
     public ResponseEntity<?> getAllByCategory(@RequestParam String category){
         Collection<Product> products = productService.getAllByCategory(category);
         if(products.size()>0){
@@ -94,7 +102,7 @@ public class ProductResource {
     }
 
     // find products by price greater than or equal to the given price
-    @GetMapping(value = "/price/", params = {"minprice"})
+    @GetMapping(value = "/find", params = {"minprice"})
     public ResponseEntity<?> getAllByPriceGreaterThanEqual(@RequestParam Double minprice){
         Collection<Product> products = productService.getAllByPriceGreaterThanEqual(minprice);
         if(products.size()>0){
@@ -105,7 +113,7 @@ public class ProductResource {
     }
 
     // find products by price Less than or equal to the given price
-    @GetMapping(value = "/price/", params = {"maxprice"})
+    @GetMapping(value = "/find", params = {"maxprice"})
     public ResponseEntity<?> getAllByPriceLessThanEqual(@RequestParam Double maxprice){
         Collection<Product> products = productService.getAllByPriceLessThanEqual(maxprice);
         if(products.size()>0){
