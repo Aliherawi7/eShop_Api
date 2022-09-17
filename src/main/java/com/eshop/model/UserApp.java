@@ -3,6 +3,7 @@ package com.eshop.model;
 import javax.persistence.*;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.time.Period;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Date;
@@ -20,7 +21,7 @@ public class UserApp {
     private Long id;
     private String name;
     private String lastName;
-    private Short age;
+    private String userName;
     private LocalDate dob;
     private String password;
     private LocalDateTime joinedDate;
@@ -37,20 +38,21 @@ public class UserApp {
 
 
     public UserApp(){
+        this.userName = email.substring(0, email.indexOf("@"));
         this.joinedDate = LocalDateTime.now();
         this.enabled = true;
+        this.age =(short) Period.between(dob, LocalDate.now()).getYears();
         this.accountLocked = false;
         this.failedAttempt = 0;
     }
 
     public UserApp(Long id,
                    String name, String lastName,
-                   Short age, LocalDate dob, String password,
+                   LocalDate dob, String password,
                    String email, String imgUrl) {
         this.id = id;
         this.name = name;
         this.lastName = lastName;
-        this.age = age;
         this.dob = dob;
         this.password = password;
         this.joinedDate = LocalDateTime.now();
@@ -91,12 +93,8 @@ public class UserApp {
         this.lastName = lastName.trim().toLowerCase();
     }
 
-    public Short getAge() {
-        return age;
-    }
-
-    public void setAge(Short age) {
-        this.age = age;
+    public Integer getAge() {
+        return Period.between(dob, LocalDate.now()).getYears();
     }
 
     public LocalDate getDob() {
@@ -176,5 +174,13 @@ public class UserApp {
 
     public void setLockTime(Date lockTime) {
         this.lockTime = lockTime;
+    }
+
+    public String getUserName() {
+        return userName;
+    }
+
+    public void setUserName(String userName) {
+        this.userName = userName;
     }
 }
