@@ -1,5 +1,6 @@
 package com.eshop.service;
 
+import com.eshop.dto.UserSignupDTO;
 import com.eshop.model.Role;
 import com.eshop.model.UserApp;
 import com.eshop.repository.RoleRepository;
@@ -51,16 +52,20 @@ public class UserService implements UserDetailsService {
     }
 
     //save user on database
-    public ResponseEntity<?> addUser(UserApp user){
+    public ResponseEntity<?> addUser(UserSignupDTO user){
+
         boolean exist = userRepository.existsByEmail(user.getEmail().toLowerCase().trim());
         if(exist){
             return new ResponseEntity<String>("User already exist", HttpStatus.BAD_REQUEST);
         }else{
-            user.setEmail(user.getEmail().trim().toLowerCase());
-            user.setName(user.getName().trim().toLowerCase());
-            user.addRole(roleRepository.findByName("USER"));
-            user.setPassword(bCryptPasswordEncoder.encode(user.getPassword()));
-            userRepository.save(user);
+            UserApp userApp = new UserApp();
+            userApp.setEmail(user.getEmail().trim().toLowerCase());
+            userApp.setName(user.getName().trim().toLowerCase());
+            userApp.setLastName(user.getLastName().trim().toLowerCase());
+            userApp.setPassword(bCryptPasswordEncoder.encode(user.getPassword()));
+            userApp.setImgUrl(user.getImgUrl());
+            userApp.addRole(roleRepository.findByName("USER"));
+            userRepository.save(userApp);
             return new ResponseEntity<>("User save successfully!", HttpStatus.CREATED);
         }
     }
