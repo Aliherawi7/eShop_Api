@@ -41,7 +41,6 @@ public class UserApp {
         this.userName = email.substring(0, email.indexOf("@"));
         this.joinedDate = LocalDateTime.now();
         this.enabled = true;
-        this.age =(short) Period.between(dob, LocalDate.now()).getYears();
         this.accountLocked = false;
         this.failedAttempt = 0;
     }
