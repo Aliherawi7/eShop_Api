@@ -11,12 +11,15 @@ import static org.junit.jupiter.api.Assertions.*;
 @DataJpaTest
 class RoleRepositoryTest {
 
-    @Autowired private RoleRepository underTest;
+    @Autowired
+    private RoleRepository underTest;
     private Role role;
+
     @BeforeEach
-    void setUp(){
+    void setUp() {
         role = new Role(1, "ADMIN");
     }
+
     @Test
     void findByName() {
         //given
@@ -37,6 +40,7 @@ class RoleRepositoryTest {
         //then
         assertTrue(underTest.existsByName(name));
     }
+
     @Test
     void itDoesNotExistsByName() {
         //given

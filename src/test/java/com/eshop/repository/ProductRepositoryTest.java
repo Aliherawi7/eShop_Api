@@ -6,6 +6,7 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
+
 import java.time.LocalDate;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -15,24 +16,24 @@ class ProductRepositoryTest {
 
     @Autowired
     private ProductRepository underTest;
-    Product product ;
+    Product product;
 
     @BeforeEach
     void setUp() {
         underTest.deleteAll();
-        product = new Product(1, "L2700","black","imgeUrl","Dell","computer",
-                999.99,"the latest dell product",LocalDate.now(),"meduim");
+        product = new Product(1, "L2700", "black", "imgeUrl", "Dell", "computer",
+                999.99, "the latest dell product", LocalDate.now(), "meduim");
     }
 
     @Test
     void FindAllByBrandName() {
         //given
-            // the product variable is in class
-            underTest.save(product);
+        // the product variable is in class
+        underTest.save(product);
         //when
         String brandName = "Dell";
         // then
-        assertTrue(underTest.findAllByBrandName(brandName).stream().allMatch(item ->{
+        assertTrue(underTest.findAllByBrandName(brandName).stream().allMatch(item -> {
             return item.getBrandName().equals(brandName);
         }));
     }

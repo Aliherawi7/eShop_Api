@@ -24,6 +24,7 @@ import java.io.IOException;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.Date;
+
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
@@ -48,14 +49,13 @@ class CustomAuthenticationFilterTest {
     ServletOutputStream servletOutputStream;
 
 
-
     @BeforeEach
     void setUp() {
         underTest = new CustomAuthenticationFilter(authenticationManager, userService);
     }
 
     @Test
-    // attempt authentication when user is not lock
+        // attempt authentication when user is not lock
     void attemptAuthenticationTestIfUserIsNotLock() {
         //  given
         String email = "aliherawi7@gmail.com";
@@ -74,7 +74,7 @@ class CustomAuthenticationFilterTest {
         when(authentication.getPrincipal()).thenReturn(user);
 
         //  then
-        UserApp userTest =(UserApp) underTest.attemptAuthentication(req, res).getPrincipal();
+        UserApp userTest = (UserApp) underTest.attemptAuthentication(req, res).getPrincipal();
         assertEquals(userTest.getEmail(), email);
         verify(userService).getUser(email);
         verify(userService).isAccountLocked(user);
@@ -85,7 +85,7 @@ class CustomAuthenticationFilterTest {
     }
 
     @Test
-    // attempt authentication when user is lock
+        // attempt authentication when user is lock
     void attemptAuthenticationTestIfUserIsLock() {
         //  given
         String email = "aliherawi7@gmail.com";
@@ -104,7 +104,7 @@ class CustomAuthenticationFilterTest {
 
         //  then
 
-        assertThrows(RuntimeException.class, ()-> underTest.attemptAuthentication(req, res));
+        assertThrows(RuntimeException.class, () -> underTest.attemptAuthentication(req, res));
         verify(userService).getUser(email);
         verify(userService).isAccountLocked(user);
         verify(req).getParameter("email");
@@ -112,7 +112,7 @@ class CustomAuthenticationFilterTest {
     }
 
     @Test
-    // attempt authentication when user is lock
+        // attempt authentication when user is lock
     void attemptAuthenticationTestIfUserIsLockButLockTimeHasExpired() {
         //  given
         String email = "aliherawi7@gmail.com";
@@ -120,7 +120,7 @@ class CustomAuthenticationFilterTest {
         UserApp user = new UserApp();
         user.setEmail(email);
         user.setPassword(password);
-        user.setLockTime(new Date(System.currentTimeMillis()-10000));
+        user.setLockTime(new Date(System.currentTimeMillis() - 10000));
         UsernamePasswordAuthenticationToken authenticationToken =
                 new UsernamePasswordAuthenticationToken(email, password);
 
@@ -134,7 +134,7 @@ class CustomAuthenticationFilterTest {
 
 
         //  then
-        UserApp userTest =(UserApp) underTest.attemptAuthentication(req, res).getPrincipal();
+        UserApp userTest = (UserApp) underTest.attemptAuthentication(req, res).getPrincipal();
         assertEquals(userTest.getEmail(), email);
         verify(userService).getUser(email);
         verify(userService).unlockWhenTimeExpired(user);
@@ -145,7 +145,7 @@ class CustomAuthenticationFilterTest {
 
 
     @Test
-    //  if user failed attempts is greater than zero
+        //  if user failed attempts is greater than zero
     void successfulAuthenticationIfFailedAttemptsIsGreaterThanZero() {
         //given
         String email = "aliherawi7@gmail.com";
@@ -161,16 +161,16 @@ class CustomAuthenticationFilterTest {
         when(authentication.getPrincipal()).thenReturn(testUser);
         when(userService.getUser(email)).thenReturn(user);
         when(req.getRequestURL()).thenReturn(new StringBuffer("api-url"));
-        try{
+        try {
             when(res.getOutputStream()).thenReturn(servletOutputStream);
-        }catch(Exception ex){
+        } catch (Exception ex) {
             ex.printStackTrace();
         }
 
         //then
-        try{
+        try {
             underTest.successfulAuthentication(req, res, chain, authentication);
-        }catch(Exception ex){
+        } catch (Exception ex) {
             ex.printStackTrace();
         }
         verify(userService).resetFailedAttempts(email);
@@ -178,7 +178,7 @@ class CustomAuthenticationFilterTest {
     }
 
     @Test
-    //  create access token and refresh token
+        //  create access token and refresh token
     void successfulAuthentication() {
         //given
         String email = "aliherawi7@gmail.com";
@@ -193,16 +193,16 @@ class CustomAuthenticationFilterTest {
         when(authentication.getPrincipal()).thenReturn(testUser);
         when(userService.getUser(email)).thenReturn(user);
         when(req.getRequestURL()).thenReturn(new StringBuffer("api-url"));
-        try{
+        try {
             when(res.getOutputStream()).thenReturn(servletOutputStream);
-        }catch(Exception ex){
+        } catch (Exception ex) {
             ex.printStackTrace();
         }
 
         //then
-        try{
+        try {
             underTest.successfulAuthentication(req, res, chain, authentication);
-        }catch(Exception ex){
+        } catch (Exception ex) {
             ex.printStackTrace();
         }
 

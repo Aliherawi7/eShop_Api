@@ -6,7 +6,7 @@ import org.junit.jupiter.api.Test;
 class EshopApiApplicationTests {
 
     @Test
-    void contextLoads(){
+    void contextLoads() {
     }
 
 }
