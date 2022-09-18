@@ -17,17 +17,18 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
 @EnableWebSecurity
-@Configuration
 public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
 
     private final UserDetailsService userDetailsService;
     private final UserService userService;
     private final BCryptPasswordEncoder bCryptPasswordEncoder;
-    public SecurityConfiguration(UserDetailsService userDetailsService, BCryptPasswordEncoder bCryptPasswordEncoder, UserService userService){
+
+    public SecurityConfiguration(UserDetailsService userDetailsService, BCryptPasswordEncoder bCryptPasswordEncoder, UserService userService) {
         this.userDetailsService = userDetailsService;
         this.bCryptPasswordEncoder = bCryptPasswordEncoder;
         this.userService = userService;
     }
+
     @Override
     protected void configure(AuthenticationManagerBuilder auth) throws Exception {
         auth.userDetailsService(userDetailsService).passwordEncoder(bCryptPasswordEncoder);
@@ -36,16 +37,16 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
     @Override
     protected void configure(HttpSecurity http) throws Exception {
         CustomAuthenticationFilter authenticationFilter =
-                new CustomAuthenticationFilter(authenticationManagerBean(),userService);
+                new CustomAuthenticationFilter(authenticationManagerBean(), userService);
         authenticationFilter.setFilterProcessesUrl("/api/login");
         http.csrf().disable();
         http.sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS);
         http.authorizeHttpRequests().antMatchers("/").permitAll();
-        http.authorizeHttpRequests().antMatchers("/api/login").permitAll();
+        http.authorizeHttpRequests().antMatchers("/api/login","/api/users/signup").permitAll();
         http.authorizeHttpRequests().antMatchers("/api/products").permitAll();
-        http.authorizeHttpRequests().antMatchers(HttpMethod.POST,"/api/products/save")
+        http.authorizeHttpRequests().antMatchers(HttpMethod.POST, "/api/products/save")
                 .hasAuthority("ADMIN");
-        http.authorizeHttpRequests().antMatchers(HttpMethod.DELETE,"/api/products/delete")
+        http.authorizeHttpRequests().antMatchers(HttpMethod.DELETE, "/api/products/delete")
                 .hasAuthority("ADMIN");
         http.authorizeHttpRequests().antMatchers("/api/users").hasAuthority("ADMIN");
         http.authorizeHttpRequests().anyRequest().authenticated();
@@ -53,6 +54,7 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
         http.addFilterBefore(new CustomAuthorizationFilter(), UsernamePasswordAuthenticationFilter.class);
 
     }
+
     @Bean
     @Override
     public AuthenticationManager authenticationManagerBean() throws Exception {
