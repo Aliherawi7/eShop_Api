@@ -1,5 +1,6 @@
 package com.eshop.service;
 
+import com.eshop.dto.UserSignupDTO;
 import com.eshop.model.Role;
 import com.eshop.model.UserApp;
 import com.eshop.repository.RoleRepository;
@@ -24,10 +25,14 @@ import static org.mockito.Mockito.when;
 @ExtendWith(MockitoExtension.class)
 class UserServiceTest {
 
-    @Mock private UserAppRepository userAppRepository;
-    @Mock private RoleRepository roleRepository;
-    @Mock private BCryptPasswordEncoder bCryptPasswordEncoder;
+    @Mock
+    private UserAppRepository userAppRepository;
+    @Mock
+    private RoleRepository roleRepository;
+    @Mock
+    private BCryptPasswordEncoder bCryptPasswordEncoder;
     private UserService underTest;
+    private UserSignupDTO userSingup;
     private UserApp user;
 
 
@@ -35,11 +40,19 @@ class UserServiceTest {
     void setUp() {
         userAppRepository.deleteAll();
         underTest = new UserService(userAppRepository, roleRepository, bCryptPasswordEncoder);
+        userSingup = new UserSignupDTO();
+        userSingup.setName("ali");
+        userSingup.setLastName("herawi");
+        userSingup.setEmail("aliherawi7@gmail.com");
+        userSingup.setPassword("1234");
+        userSingup.setImgUrl("imgurl");
+
         user = new UserApp();
         user.setName("ali");
         user.setLastName("herawi");
         user.setEmail("aliherawi7@gmail.com");
         user.setPassword("1234");
+        user.setImgUrl("imgurl");
     }
 
     @Test
@@ -65,14 +78,14 @@ class UserServiceTest {
     @Test
     void addUser() {
         //when
-        underTest.addUser(user);
+        underTest.addUser(userSingup);
 
         //then
         ArgumentCaptor<UserApp> userAppArgumentCaptor =
                 ArgumentCaptor.forClass(UserApp.class);
         verify(userAppRepository).save(userAppArgumentCaptor.capture());
         UserApp capturedUserApp = userAppArgumentCaptor.getValue();
-        assertEquals(capturedUserApp, user);
+        assertEquals(capturedUserApp.getEmail(), user.getEmail());
 
     }
 
@@ -86,7 +99,7 @@ class UserServiceTest {
     }
 
     @Test
-    //if the user and role exists
+        //if the user and role exists
     void addRoleToUserIfUserAndRoleExist() {
         //given
         Role role = new Role(1, "USER");
@@ -103,7 +116,7 @@ class UserServiceTest {
     }
 
     @Test
-    //adding role if the user not exists
+        //adding role if the user not exists
     void addRoleToUserIfUserAndRoleNotExist() {
         //given
         Role role = new Role(1, "USER");
@@ -127,7 +140,7 @@ class UserServiceTest {
     }
 
     @Test
-    // if user is available and password is correct
+        // if user is available and password is correct
     void deleteUserIFUserIsAvailableAndPasswordIsCorrect() {
         //given
         String email = user.getEmail();
@@ -135,12 +148,13 @@ class UserServiceTest {
         // when
         when(userAppRepository.findByEmail(email)).thenReturn(user);
         when(bCryptPasswordEncoder.matches(password, user.getPassword())).thenReturn(true);
-        underTest.deleteUser(email,password);
+        underTest.deleteUser(email, password);
         //then
         verify(userAppRepository).delete(user);
     }
+
     @Test
-    // if user is available and password is incorrect
+        // if user is available and password is incorrect
     void deleteUserIFUserIsAvailableAndPasswordIsIncorrect() {
         //given
         String email = user.getEmail();
@@ -148,11 +162,12 @@ class UserServiceTest {
         // when
         when(userAppRepository.findByEmail(email)).thenReturn(user);
         when(bCryptPasswordEncoder.matches(password, "fakePassword")).thenReturn(false);
-        underTest.deleteUser(email,"fakePassword");
+        underTest.deleteUser(email, "fakePassword");
         //then
         assertEquals(underTest.deleteUser(email, "fakePassword"),
                 new ResponseEntity<>("incorrect password!", HttpStatus.FORBIDDEN));
     }
+
     @Test
         // if user is available and password is incorrect
     void deleteUserIFUserIsNotAvailable() {
@@ -161,7 +176,7 @@ class UserServiceTest {
         String password = "fakePassword";
         // when
         when(userAppRepository.findByEmail(email)).thenReturn(null);
-        underTest.deleteUser(email,password);
+        underTest.deleteUser(email, password);
         //then
         verify(userAppRepository).findByEmail(email);
         assertEquals(underTest.deleteUser(email, password),
@@ -169,13 +184,14 @@ class UserServiceTest {
     }
 
     @Test
-    // check if account is lock
+        // check if account is lock
     void isAccountLocked() {
         // when
         user.setAccountLocked(true);
         // then
         assertTrue(underTest.isAccountLocked(user));
     }
+
     @Test
         // check if account is not lock
     void isNotAccountLocked() {
@@ -234,11 +250,11 @@ class UserServiceTest {
     }
 
     @Test
-    // if user lock time has expired
+        // if user lock time has expired
     void unlockWhenTimeExpired() {
         //when
         underTest.lock(user);
-        user.setLockTime(new Date(System.currentTimeMillis()-10000 ));
+        user.setLockTime(new Date(System.currentTimeMillis() - 10000));
         // then
         verify(userAppRepository).save(user);
         assertTrue(underTest.unlockWhenTimeExpired(user));
