@@ -18,10 +18,10 @@ class UserRepositoryTest {
     private UserApp user;
 
     @BeforeEach
-    void setUp(){
+    void setUp() {
         underTest.deleteAll();
-        user = new UserApp(1L,"ali","herawi", (short) 22, LocalDate.of(1999,3,29),
-                "1234","aliherawi7@gmail.com","img");
+        user = new UserApp(1L, "ali", "herawi", LocalDate.of(1999, 3, 29),
+                "1234", "aliherawi7@gmail.com", "img");
 
     }
 
@@ -37,6 +37,7 @@ class UserRepositoryTest {
         // then
         assertTrue(underTest.existsByEmail(email));
     }
+
     @Test
     void isNotExistsByEmail() {
         // given
@@ -58,6 +59,7 @@ class UserRepositoryTest {
         //then
         assertEquals(email, underTest.findByEmail(email).getEmail());
     }
+
     @Test
     void itShouldNotFindByEmail() {
         //given
@@ -80,6 +82,7 @@ class UserRepositoryTest {
         // then
         assertTrue(underTest.findByName(name).stream().allMatch(item -> item.getName().equals(name)));
     }
+
     @Test
     void itShouldNotFindByName() {
         // given
@@ -90,9 +93,9 @@ class UserRepositoryTest {
         String name = "John";
 
         // then
-        if(underTest.findByName(name).size()>0){
+        if (underTest.findByName(name).size() > 0) {
             assertFalse(underTest.findByName(name).stream().allMatch(item -> item.getName().equals(name)));
-        }else{
+        } else {
             assertFalse(Boolean.FALSE);
         }
 
