@@ -4,7 +4,8 @@ public class LoginInformationDTO {
     private String access_token;
     private String refresh_token;
     private UserInformationDTO userInformationDTO;
-    public LoginInformationDTO(String access_token, String refresh_token, UserInformationDTO userInformationDTO){
+
+    public LoginInformationDTO(String access_token, String refresh_token, UserInformationDTO userInformationDTO) {
         this.access_token = access_token;
         this.refresh_token = refresh_token;
         this.userInformationDTO = userInformationDTO;

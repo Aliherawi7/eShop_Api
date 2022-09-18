@@ -3,10 +3,12 @@ package com.eshop.dto;
 public class EmailAndPasswordDTO {
     private String email;
     private String password;
-    public EmailAndPasswordDTO(String email, String password){
+
+    public EmailAndPasswordDTO(String email, String password) {
         this.email = email;
         this.password = password;
     }
+
     public String getEmail() {
         return email;
     }

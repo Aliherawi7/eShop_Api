@@ -23,26 +23,26 @@ public class CustomAuthorizationFilter extends OncePerRequestFilter {
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
         //if the request is coming from login page so do nothing and pass the request to the next filter
-        if(request.getServletPath().equals("/api/login")){
+        if (request.getServletPath().equals("/api/login")) {
             filterChain.doFilter(request, response);
-        }else{
+        } else {
             String authorizationHeader = request.getHeader("Authorization");
-            if(authorizationHeader != null){
-                try{
+            if (authorizationHeader != null) {
+                try {
                     Algorithm algorithm = Algorithm.HMAC256("herawi".getBytes());
                     JWTVerifier jwtVerifier = JWT.require(algorithm).build();
                     DecodedJWT decodedJWT = jwtVerifier.verify(authorizationHeader);
                     String email = decodedJWT.getSubject();
                     String[] roles = decodedJWT.getClaim("roles").asArray(String.class);
                     Collection<SimpleGrantedAuthority> authorities = new ArrayList<>();
-                    Arrays.stream(roles).forEach(role ->{
+                    Arrays.stream(roles).forEach(role -> {
                         authorities.add(new SimpleGrantedAuthority(role));
                     });
                     UsernamePasswordAuthenticationToken authenticationToken =
                             new UsernamePasswordAuthenticationToken(email, null, authorities);
                     SecurityContextHolder.getContext().setAuthentication(authenticationToken);
                     filterChain.doFilter(request, response);
-                }catch(Exception ex){
+                } catch (Exception ex) {
                     System.err.println(ex.getMessage());
                     Map<String, String> error = new HashMap<>();
                     error.put("error_message", ex.getMessage());
@@ -53,7 +53,7 @@ public class CustomAuthorizationFilter extends OncePerRequestFilter {
                 }
 
 
-            }else{
+            } else {
                 filterChain.doFilter(request, response);
             }
         }
