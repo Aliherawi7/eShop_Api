@@ -1,4 +1,5 @@
 package com.eshop.service;
+
 import com.eshop.model.Product;
 import com.eshop.repository.ProductRepository;
 import org.junit.jupiter.api.BeforeEach;
@@ -7,7 +8,9 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.ArgumentCaptor;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
+
 import java.time.LocalDate;
+
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.verify;
 
@@ -20,9 +23,8 @@ class ProductServiceTest {
     private Product product;
 
 
-
     @BeforeEach
-    void setUp(){
+    void setUp() {
         underTest = new ProductService(productRepository);
         product = new Product(1, "L2400", "green", "img",
                 "dell", "laptop", 599.99,
@@ -31,8 +33,8 @@ class ProductServiceTest {
 
 
     /*
-    * Tests of Query methods
-    * */
+     * Tests of Query methods
+     * */
     @Test
     void getProductByName() {
         // given
@@ -182,7 +184,7 @@ class ProductServiceTest {
     @Test
     void getAllByBrandNameAndPriceGreaterThanEqual() {
         //when
-        String brandName ="apple";
+        String brandName = "apple";
         Double price = 300.50;
         underTest.getAllByBrandNameAndPriceGreaterThanEqual(brandName, price);
         //then
