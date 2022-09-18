@@ -23,7 +23,7 @@ public class OrderApp {
     private String customerComment;
     private String currency;
 
-    public OrderApp(){
+    public OrderApp() {
         //default properties values
         this.orderDateTime = LocalDateTime.now();
         this.orderDate = orderDateTime.toLocalDate();
@@ -91,7 +91,9 @@ public class OrderApp {
         this.delivered = delivered;
     }
 
-    public LocalDate getOrderDate(){ return orderDate; }
+    public LocalDate getOrderDate() {
+        return orderDate;
+    }
 
     public void setOrderDate(LocalDate orderDate) {
         this.orderDate = orderDate;
@@ -116,6 +118,7 @@ public class OrderApp {
     public String getRemoteAddress() {
         return remoteAddress;
     }
+
     public void setRemoteAddress(String remoteAddress) {
         this.remoteAddress = remoteAddress;
     }

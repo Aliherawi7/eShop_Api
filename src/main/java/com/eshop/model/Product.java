@@ -20,7 +20,8 @@ public class Product {
     private LocalDate productionDate;
     private String size;
 
-    public Product(){}
+    public Product() {
+    }
 
     public Product(Integer id, String name, String color, String imgUrl, String brandName, String category, Double price, String description, LocalDate productionDate, String size) {
         this.id = id;

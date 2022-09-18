@@ -8,6 +8,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;
+
 import javax.servlet.http.HttpServletRequest;
 import java.util.HashMap;
 import java.util.Map;
@@ -21,7 +22,7 @@ public class HomeResource {
     private ProductService productService;
 
     @GetMapping("/")
-    public ResponseEntity<String> index(HttpServletRequest request){
+    public ResponseEntity<String> index(HttpServletRequest request) {
         String clientIP = ipFinderService.getClientIP(request);
         ObjectMapper response = new ObjectMapper();
         Map<String, String> responseValues = new HashMap<>();

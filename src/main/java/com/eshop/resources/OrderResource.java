@@ -5,6 +5,7 @@ import com.eshop.service.OrderService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+
 import javax.servlet.http.HttpServletRequest;
 import java.time.LocalDate;
 import java.util.Collection;
@@ -17,56 +18,56 @@ public class OrderResource {
     private final OrderService orderService;
 
     @Autowired
-    public OrderResource(OrderService orderService){
+    public OrderResource(OrderService orderService) {
         this.orderService = orderService;
     }
 
     @GetMapping("/all")
-    public ResponseEntity<?> getAllOrder(){
+    public ResponseEntity<?> getAllOrder() {
         return orderService.getAllOrder();
     }
 
     @GetMapping("/{orderId}")
-    public ResponseEntity<?> getOrder(@PathVariable Long orderId){
+    public ResponseEntity<?> getOrder(@PathVariable Long orderId) {
         return orderService.getOrder(orderId);
     }
 
     @PostMapping("/save")
-    public ResponseEntity<?> addOrder(@RequestBody OrderApp order, HttpServletRequest request){
+    public ResponseEntity<?> addOrder(@RequestBody OrderApp order, HttpServletRequest request) {
         return orderService.addOrder(order, request);
     }
 
     @PostMapping("/saveAll")
-    public ResponseEntity<?> addOrders(@RequestBody Collection<OrderApp> orders, HttpServletRequest request){
+    public ResponseEntity<?> addOrders(@RequestBody Collection<OrderApp> orders, HttpServletRequest request) {
         return orderService.addOrders(orders, request);
     }
 
     @DeleteMapping("/delete/{id}")
-    public ResponseEntity<?> deleteOrder(@PathVariable Long id){
+    public ResponseEntity<?> deleteOrder(@PathVariable Long id) {
         return orderService.deleteOrder(id);
     }
 
     // find all orders with specific userId and ProductID
     @GetMapping(value = "/find", params = {"userId", "productId"})
-    public ResponseEntity<?> findAllByUserIdAndProductId(@RequestParam Map<String, Long> params){
+    public ResponseEntity<?> findAllByUserIdAndProductId(@RequestParam Map<String, Long> params) {
         return orderService.findAllByUserIdAndProductId(params.get("userId"), params.get("productId"));
     }
 
     // find all orders with specific userId
     @GetMapping(value = "/find", params = {"userId"})
-    public ResponseEntity<?> findAllByUserId(@RequestParam Long userId){
+    public ResponseEntity<?> findAllByUserId(@RequestParam Long userId) {
         return orderService.findAllByUserId(userId);
     }
 
     // find all orders with specific productID
     @GetMapping(value = "/find", params = {"productId"})
-    public ResponseEntity<?> findAllByProductId(@RequestParam Long productId){
+    public ResponseEntity<?> findAllByProductId(@RequestParam Long productId) {
         return orderService.findAllByProductId(productId);
     }
 
     //find all order in a specific date
     @GetMapping(value = "/find", params = {"orderDate"})
-    public ResponseEntity<?> findAllByOrderDate(@RequestParam String orderDate){
+    public ResponseEntity<?> findAllByOrderDate(@RequestParam String orderDate) {
         LocalDate localDateTime = LocalDate.parse(orderDate);
         System.out.println(localDateTime.toString());
         return orderService.findAllByOrderDate(localDateTime);
@@ -74,7 +75,7 @@ public class OrderResource {
 
     // find all delivered or not delivered orders in a specific date
     @GetMapping(value = "/find", params = {"orderDate", "delivered"})
-    public ResponseEntity<?> findAllByOrderDateAndDelivered(@RequestParam Map<String, String> params){
+    public ResponseEntity<?> findAllByOrderDateAndDelivered(@RequestParam Map<String, String> params) {
         LocalDate date = LocalDate.parse(params.get("orderDate"));
         boolean delivered = Boolean.parseBoolean(params.get("delivered"));
         return orderService.findAllByOrderDateAndDelivered(date, delivered);
@@ -82,27 +83,27 @@ public class OrderResource {
 
     // find all orders before the specific date
     @GetMapping(value = "/find", params = {"beforeDate"})
-    public ResponseEntity<?> findAllByOrderDateBefore(@RequestParam LocalDate beforeDate){
+    public ResponseEntity<?> findAllByOrderDateBefore(@RequestParam LocalDate beforeDate) {
         return orderService.findAllByOrderDateBefore(beforeDate);
     }
 
     // find all orders after a specific date
     @GetMapping(value = "/find", params = {"afterDate"})
-    public ResponseEntity<?> findAllByOrderDateAfter(@RequestParam LocalDate afterDate){
+    public ResponseEntity<?> findAllByOrderDateAfter(@RequestParam LocalDate afterDate) {
         return orderService.findAllByOrderDateAfter(afterDate);
     }
 
     // find all orders between two date
     @GetMapping(value = "/find", params = {"startDate", "endDate"})
-    public ResponseEntity<?> findAllByOrderDateBetween(@RequestParam Map<String, String> params){
+    public ResponseEntity<?> findAllByOrderDateBetween(@RequestParam Map<String, String> params) {
         LocalDate startDate = LocalDate.parse(params.get("startDate"));
         LocalDate endDate = LocalDate.parse(params.get("endDate"));
         return orderService.findAllByOrderDateBetween(startDate, endDate);
     }
 
     // find all delivered order between two specific date
-    @GetMapping(value="/find", params = {"startDate", "endDate", "delivered"})
-    public ResponseEntity<?> findAllByOrderDateBetweenAndDelivered(@RequestParam Map<String, String> params){
+    @GetMapping(value = "/find", params = {"startDate", "endDate", "delivered"})
+    public ResponseEntity<?> findAllByOrderDateBetweenAndDelivered(@RequestParam Map<String, String> params) {
         LocalDate start = LocalDate.parse(params.get("startDate"));
         LocalDate end = LocalDate.parse(params.get("endDate"));
         boolean delivered = Boolean.parseBoolean(params.get("delivered"));
@@ -110,8 +111,8 @@ public class OrderResource {
     }
 
     // find All by userId productId and date
-    @GetMapping(value="/find", params = {"userId", "productId", "startDate", "endDate"})
-    public ResponseEntity<?> findAllByUserIdAndProductIdAndOrderDateBetween(@RequestParam Map<String, String> params){
+    @GetMapping(value = "/find", params = {"userId", "productId", "startDate", "endDate"})
+    public ResponseEntity<?> findAllByUserIdAndProductIdAndOrderDateBetween(@RequestParam Map<String, String> params) {
         Long userId = Long.parseLong(params.get("userId"));
         Long productId = Long.parseLong(params.get("productId"));
         LocalDate start = LocalDate.parse(params.get("startDate"));
@@ -120,15 +121,13 @@ public class OrderResource {
     }
 
     // find all orders with specific userId and productId after the specific date
-    @GetMapping(value="/find", params = {"userId", "productId", "dateAfter"})
-    public ResponseEntity<?> findAllByUserIdAndProductIdAndOrderDateAfter(@RequestParam Map<String, String> params){
+    @GetMapping(value = "/find", params = {"userId", "productId", "dateAfter"})
+    public ResponseEntity<?> findAllByUserIdAndProductIdAndOrderDateAfter(@RequestParam Map<String, String> params) {
         Long userId = Long.parseLong(params.get("userId"));
         Long productId = Long.parseLong(params.get("productId"));
         LocalDate dateAfter = LocalDate.parse(params.get("dateAfter"));
         return orderService.findAllByUserIdAndProductIdAndOrderDateAfter(userId, productId, dateAfter);
     }
-
-
 
 
 }

@@ -10,9 +10,9 @@ import java.util.Date;
 
 @Entity
 @Table(
-    uniqueConstraints={
-            @UniqueConstraint(name="user_email_unique", columnNames = "email")
-    }
+        uniqueConstraints = {
+                @UniqueConstraint(name = "user_email_unique", columnNames = "email")
+        }
 )
 public class UserApp {
     @Id
@@ -37,8 +37,8 @@ public class UserApp {
     private Date lockTime;
 
 
-    public UserApp(){
-        this.userName = email.substring(0, email.indexOf("@"));
+    public UserApp() {
+        this.userName = email != null ? email.substring(0, email.indexOf("@")) : "";
         this.joinedDate = LocalDateTime.now();
         this.enabled = true;
         this.accountLocked = false;
@@ -70,12 +70,14 @@ public class UserApp {
         this.id = id;
     }
 
-    public void addRole(Role role){
+    public void addRole(Role role) {
         roles.add(role);
     }
-    public void removeRole(Role role){
+
+    public void removeRole(Role role) {
         getRoles().remove(role);
     }
+
     public String getName() {
         return name;
     }
@@ -112,10 +114,11 @@ public class UserApp {
         this.password = password;
     }
 
-    public LocalDateTime getJoinedDate(){
+    public LocalDateTime getJoinedDate() {
         return joinedDate;
     }
-    public void setJoinedDate(LocalDateTime joinedDate){
+
+    public void setJoinedDate(LocalDateTime joinedDate) {
         this.joinedDate = joinedDate;
     }
 
