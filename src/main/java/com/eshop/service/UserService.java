@@ -56,13 +56,15 @@ public class UserService implements UserDetailsService {
 
     //save user on database
     public ResponseEntity<?> addUser(UserSignupDTO user) {
-
+        String email;
         boolean exist = userRepository.existsByEmail(user.getEmail().toLowerCase().trim());
         if (exist) {
             return new ResponseEntity<String>("User already exist", HttpStatus.BAD_REQUEST);
         } else {
+            email = user.getEmail().toLowerCase().trim();
             UserApp userApp = new UserApp();
-            userApp.setEmail(user.getEmail().trim().toLowerCase());
+            userApp.setEmail(email);
+            userApp.setUserName(email.substring(0, email.indexOf("@")));
             userApp.setName(user.getName().trim().toLowerCase());
             userApp.setLastName(user.getLastName().trim().toLowerCase());
             userApp.setPassword(bCryptPasswordEncoder.encode(user.getPassword()));
