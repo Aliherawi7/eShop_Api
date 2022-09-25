@@ -19,6 +19,7 @@ public class Product {
     private String description;
     private LocalDate productionDate;
     private String size;
+    private Long quantityInDepot;
 
     public Product() {
     }
@@ -114,5 +115,13 @@ public class Product {
 
     public void setSize(String size) {
         this.size = size;
+    }
+
+    public Long getQuantityInDepot() {
+        return quantityInDepot;
+    }
+
+    public void setQuantityInDepot(Long quantityInDepot) {
+        this.quantityInDepot = quantityInDepot;
     }
 }
