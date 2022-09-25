@@ -37,6 +37,7 @@ public class ProductService {
     // save the product to the database
     public ResponseEntity<String> addProduct(Product product) {
         productRepository.save(product);
+
         return new ResponseEntity<>("Successfully saved!", HttpStatus.CREATED);
     }
 
