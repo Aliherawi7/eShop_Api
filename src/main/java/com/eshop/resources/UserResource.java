@@ -26,7 +26,7 @@ public class UserResource {
     }
 
     @PostMapping("/signup")
-    public ResponseEntity<?> addUser(UserSignupDTO userInfo){
+    public ResponseEntity<?> addUser(@ RequestBody UserSignupDTO userInfo){
         return userService.addUser(userInfo);
     }
 
