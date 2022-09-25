@@ -2,11 +2,14 @@ package com.eshop.filter;
 
 import com.auth0.jwt.JWT;
 import com.auth0.jwt.algorithms.Algorithm;
+import com.eshop.dto.EmailAndPasswordDTO;
 import com.eshop.dto.LoginInformationDTO;
 import com.eshop.dto.UserInformationDTO;
+import com.eshop.model.Role;
 import com.eshop.model.UserApp;
 import com.eshop.service.UserService;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -16,6 +19,8 @@ import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.User;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
+import org.springframework.util.StreamUtils;
+import org.springframework.web.bind.annotation.CrossOrigin;
 
 import javax.servlet.FilterChain;
 import javax.servlet.ServletException;
@@ -23,7 +28,9 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.util.Date;
+import java.util.Map;
 import java.util.stream.Collectors;
+
 
 public class CustomAuthenticationFilter extends UsernamePasswordAuthenticationFilter {
 
@@ -38,11 +45,13 @@ public class CustomAuthenticationFilter extends UsernamePasswordAuthenticationFi
 
     @Override
     public Authentication attemptAuthentication(HttpServletRequest request, HttpServletResponse response) throws AuthenticationException {
-        String email = request.getParameter("email").trim().toLowerCase();
+        System.err.println("auth type:"+request.getAuthType());
+        String email = request.getParameter("email");
         String password = request.getParameter("password");
-
         UserApp user = null;
+
         if (email != null)
+            email = email.trim().toLowerCase();
             user = userService.getUser(email);
 
         // check if user is not lock and reach to limit attempt failed. the user can't attempt to login
@@ -106,7 +115,8 @@ public class CustomAuthenticationFilter extends UsernamePasswordAuthenticationFi
         // user common information
         UserInformationDTO userInformationDTO = new UserInformationDTO(
                 checkUserActivation.getName(), checkUserActivation.getLastName(),
-                checkUserActivation.getImgUrl(), checkUserActivation.getEmail());
+                checkUserActivation.getImgUrl(), checkUserActivation.getEmail(),
+                user.getAuthorities().stream().map(GrantedAuthority::getAuthority).collect(Collectors.toList()));
         response.setContentType(MediaType.APPLICATION_JSON_VALUE);
         response.setHeader("access_token", access_token);
         response.setHeader("refresh_token", refresh_token);
@@ -127,7 +137,7 @@ public class CustomAuthenticationFilter extends UsernamePasswordAuthenticationFi
                 response.setStatus(HttpStatus.FORBIDDEN.value());
                 response.setHeader("limit_attempt", "Your account is lock now try after expire date");
                 response.setHeader("lock_expireDate", user.getLockTime().toString());
-                response.setHeader("error_message", failed.getMessage());
+                response.setHeader("error_message", failed.getMessage()+", password is wrong");
                 response.setHeader("remained_attempts", (UserService.MAX_FAILED_ATTEMPTS - user.getFailedAttempt()) + " attempts chance");
                 response.setHeader("failed_attempts", user.getFailedAttempt() + " failed attempts");
                 response.setStatus(HttpStatus.FORBIDDEN.value());
@@ -147,15 +157,22 @@ public class CustomAuthenticationFilter extends UsernamePasswordAuthenticationFi
                 response.setHeader("error_message", failed.getMessage());
                 response.setHeader("remained_attempts", (UserService.MAX_FAILED_ATTEMPTS - user.getFailedAttempt()) + " attempts chance");
                 response.setHeader("failed_attempts", user.getFailedAttempt() + " failed attempts");
+                response.setStatus(HttpStatus.FORBIDDEN.value());
                 response.setHeader("lock_expireDate", user.getLockTime().toString());
                 return;
             }
+
+            response.setHeader("error_message", failed.getMessage()+", password is wrong");
+            response.setHeader("remained_attempts", (UserService.MAX_FAILED_ATTEMPTS - user.getFailedAttempt()) + " attempts chance");
+            response.setHeader("failed_attempts", user.getFailedAttempt() + " failed attempts");
+            response.setStatus(HttpStatus.FORBIDDEN.value());
+            response.setContentType(MediaType.APPLICATION_JSON_VALUE);
+
+        }else{
+            response.setHeader("error_message", failed.getMessage()+" user not found");
+            response.setStatus(HttpStatus.NOT_FOUND.value());
+            response.setContentType(MediaType.APPLICATION_JSON_VALUE);
         }
 
-        response.setHeader("error_message", failed.getMessage());
-        response.setHeader("remained_attempts", (UserService.MAX_FAILED_ATTEMPTS - user.getFailedAttempt()) + " attempts chance");
-        response.setHeader("failed_attempts", user.getFailedAttempt() + " failed attempts");
-        response.setStatus(HttpStatus.FORBIDDEN.value());
-        response.setContentType(MediaType.APPLICATION_JSON_VALUE);
     }
 }
