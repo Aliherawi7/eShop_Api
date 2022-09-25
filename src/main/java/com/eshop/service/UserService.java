@@ -1,22 +1,30 @@
 package com.eshop.service;
 
+import com.auth0.jwt.JWT;
+import com.auth0.jwt.algorithms.Algorithm;
+import com.eshop.dto.SignupInformationDTO;
+import com.eshop.dto.UserInformationDTO;
 import com.eshop.dto.UserSignupDTO;
 import com.eshop.model.Role;
 import com.eshop.model.UserApp;
 import com.eshop.repository.RoleRepository;
 import com.eshop.repository.UserAppRepository;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.web.header.Header;
 import org.springframework.stereotype.Service;
+import org.springframework.web.bind.annotation.CrossOrigin;
 
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.Date;
+import java.lang.reflect.Array;
+import java.util.*;
+import java.util.stream.Collector;
+import java.util.stream.Collectors;
 
 /*
  * @Author: Aliherawi
@@ -57,9 +65,12 @@ public class UserService implements UserDetailsService {
     //save user on database
     public ResponseEntity<?> addUser(UserSignupDTO user) {
         String email;
-        boolean exist = userRepository.existsByEmail(user.getEmail().toLowerCase().trim());
-        if (exist) {
-            return new ResponseEntity<String>("User already exist", HttpStatus.BAD_REQUEST);
+        UserApp exist = userRepository.findByEmail(user.getEmail().toLowerCase().trim());
+        if (exist != null) {
+            Map<String, String> body = new HashMap<>();
+            body.put("error_message", "User already exist!");
+            body.put("status_code", HttpStatus.BAD_REQUEST.name());
+            return ResponseEntity.badRequest().contentType(MediaType.APPLICATION_JSON).body(body);
         } else {
             email = user.getEmail().toLowerCase().trim();
             UserApp userApp = new UserApp();
@@ -71,7 +82,17 @@ public class UserService implements UserDetailsService {
             userApp.setImgUrl(user.getImgUrl());
             userApp.addRole(roleRepository.findByName("USER"));
             userRepository.save(userApp);
-            return new ResponseEntity<>("User save successfully!", HttpStatus.CREATED);
+            UserInformationDTO userInfo = new UserInformationDTO(userApp.getName(),userApp.getLastName(),
+                    userApp.getImgUrl(), userApp.getEmail(),
+                    userApp.getRoles().stream().map(Role::getName).collect(Collectors.toList()));
+            Algorithm algorithm = Algorithm.HMAC256("herawi".getBytes());
+            String accessToken = JWT.create()
+                    .withSubject(userApp.getEmail())
+                    .withExpiresAt(new Date(System.currentTimeMillis() + (1000*60*60*24*10)))
+                    .withClaim("roles", userApp.getRoles().stream().map(Role::getName).collect(Collectors.toList()))
+                    .sign(algorithm);
+
+            return new ResponseEntity<>(new SignupInformationDTO(accessToken, userInfo), HttpStatus.CREATED);
         }
     }
 
