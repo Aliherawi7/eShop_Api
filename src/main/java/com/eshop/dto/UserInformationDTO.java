@@ -1,19 +1,23 @@
 package com.eshop.dto;
 
+import java.util.List;
+
 public class UserInformationDTO {
     private String name;
     private String lastName;
     private String imgUrl;
     private String email;
+    private List<String> roles;
 
     public UserInformationDTO() {
     }
 
-    public UserInformationDTO(String name, String lastName, String imgUrl, String email) {
+    public UserInformationDTO(String name, String lastName, String imgUrl, String email, List<String> roles) {
         this.name = name;
         this.lastName = lastName;
         this.imgUrl = imgUrl;
         this.email = email;
+        this.roles = roles;
     }
 
     public String getName() {
@@ -46,5 +50,13 @@ public class UserInformationDTO {
 
     public void setEmail(String email) {
         this.email = email;
+    }
+
+    public List<String> getRoles() {
+        return roles;
+    }
+
+    public void setRoles(List<String> roles) {
+        this.roles = roles;
     }
 }
