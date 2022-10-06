@@ -12,7 +12,7 @@ public class IPFinderService {
     private final static String LOCALHOST_IPV4 = "127.0.0.1";
     private final static String LOCALHOST_IPV6 = "0:0:0:0:0:0:0:1";
 
-    public String getClientIP(HttpServletRequest request) {
+    public static String getClientIP(HttpServletRequest request) {
         String ipAddress = request.getHeader("X-Forwarded-For");
 
         if (StringUtils.isEmpty(ipAddress) || "unknown".equalsIgnoreCase(ipAddress)) {
@@ -37,4 +37,19 @@ public class IPFinderService {
         }
         return ipAddress;
     }
+    /*public static String getCountryName(String ipAddress){
+        String countryName = "";
+        try(WebServiceClient client =
+                    new WebServiceClient.Builder(42,"license_key").build()){
+            InetAddress ip = InetAddress.getByName(ipAddress);
+            CountryResponse countryRes = client.country(ip);
+            Country country = countryRes.getCountry();
+            countryName = country.getName();
+
+        } catch (GeoIp2Exception | IOException e) {
+            e.printStackTrace();
+        }
+
+        return countryName;
+    }*/
 }
