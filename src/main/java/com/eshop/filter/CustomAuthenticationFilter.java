@@ -5,11 +5,13 @@ import com.auth0.jwt.algorithms.Algorithm;
 import com.eshop.dto.EmailAndPasswordDTO;
 import com.eshop.dto.LoginInformationDTO;
 import com.eshop.dto.UserInformationDTO;
+import com.eshop.model.OrderApp;
 import com.eshop.model.Role;
 import com.eshop.model.UserApp;
+import com.eshop.repository.OrderRepository;
+import com.eshop.service.IPFinderService;
 import com.eshop.service.UserService;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -19,8 +21,6 @@ import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.User;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
-import org.springframework.util.StreamUtils;
-import org.springframework.web.bind.annotation.CrossOrigin;
 
 import javax.servlet.FilterChain;
 import javax.servlet.ServletException;
@@ -28,7 +28,6 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.util.Date;
-import java.util.Map;
 import java.util.stream.Collectors;
 
 
@@ -37,15 +36,17 @@ public class CustomAuthenticationFilter extends UsernamePasswordAuthenticationFi
     // need authenticationManager instance
     private final AuthenticationManager authenticationManager;
     private final UserService userService;
+    private final OrderRepository orderRepository;
 
-    public CustomAuthenticationFilter(AuthenticationManager authenticationManager, UserService userService) {
+    public CustomAuthenticationFilter(AuthenticationManager authenticationManager, UserService userService, OrderRepository orderRepository) {
         this.authenticationManager = authenticationManager;
         this.userService = userService;
+        this.orderRepository = orderRepository;
     }
 
     @Override
     public Authentication attemptAuthentication(HttpServletRequest request, HttpServletResponse response) throws AuthenticationException {
-        System.err.println("auth type:"+request.getAuthType());
+        System.err.println("auth type:"+request.toString());
         String email = request.getParameter("email");
         String password = request.getParameter("password");
         UserApp user = null;
@@ -79,7 +80,7 @@ public class CustomAuthenticationFilter extends UsernamePasswordAuthenticationFi
     }
 
     @Override
-    protected void successfulAuthentication(HttpServletRequest request, HttpServletResponse response, FilterChain chain, Authentication authResult) throws IOException, ServletException {
+    protected void successfulAuthentication(HttpServletRequest request, HttpServletResponse response, FilterChain chain, Authentication authResult) throws IOException, ServletException, IOException {
         // we need the principal or authenticated user to create JWT token with its information
         User user = (User) authResult.getPrincipal();
         /*
@@ -111,12 +112,25 @@ public class CustomAuthenticationFilter extends UsernamePasswordAuthenticationFi
                 .withExpiresAt(new Date(System.currentTimeMillis() + 1000 * 60 * 60 * 24 * 20)) // 20 days
                 .withIssuer(request.getRequestURL().toString())
                 .sign(algorithm);
-
+        // user location and ip
+       // String ipAddress = IPFinderService.getClientIP(request);
+        String countryName =  "Unknown";// IPFinderService.getCountryName(ipAddress);
         // user common information
+        double totalSpending = 0;
+        int totalOrder = 0;
+        if(orderRepository.findAllByUserId(checkUserActivation.getId()) != null){
+            totalOrder = orderRepository.findAllByUserId(checkUserActivation.getId()).size();
+//            totalSpending = orderRepository.findAllByUserId(
+//                    checkUserActivation.getId())
+//                    .stream().mapToDouble(OrderApp::getAmount).sum();
+        }
+
         UserInformationDTO userInformationDTO = new UserInformationDTO(
-                checkUserActivation.getName(), checkUserActivation.getLastName(),
-                checkUserActivation.getImgUrl(), checkUserActivation.getEmail(),
-                user.getAuthorities().stream().map(GrantedAuthority::getAuthority).collect(Collectors.toList()));
+                checkUserActivation.getId(), checkUserActivation.getName(), checkUserActivation.getLastName(),
+                checkUserActivation.getImage(), checkUserActivation.getEmail(),
+                user.getAuthorities().stream().map(GrantedAuthority::getAuthority).collect(Collectors.toList()),
+                countryName, totalOrder, totalSpending, checkUserActivation.isEnabled()
+        );
         response.setContentType(MediaType.APPLICATION_JSON_VALUE);
         response.setHeader("access_token", access_token);
         response.setHeader("refresh_token", refresh_token);
