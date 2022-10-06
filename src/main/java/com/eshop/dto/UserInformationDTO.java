@@ -5,17 +5,17 @@ import java.util.List;
 public class UserInformationDTO {
     private String name;
     private String lastName;
-    private String imgUrl;
+    private byte[] image;
     private String email;
     private List<String> roles;
 
     public UserInformationDTO() {
     }
 
-    public UserInformationDTO(String name, String lastName, String imgUrl, String email, List<String> roles) {
+    public UserInformationDTO(String name, String lastName, byte[] image, String email, List<String> roles) {
         this.name = name;
         this.lastName = lastName;
-        this.imgUrl = imgUrl;
+        this.image = image;
         this.email = email;
         this.roles = roles;
     }
@@ -36,12 +36,12 @@ public class UserInformationDTO {
         this.lastName = lastName;
     }
 
-    public String getImgUrl() {
-        return imgUrl;
+    public byte[] getImage() {
+        return image;
     }
 
-    public void setImgUrl(String imgUrl) {
-        this.imgUrl = imgUrl;
+    public void setImage(byte[] image) {
+        this.image = image;
     }
 
     public String getEmail() {
