@@ -10,6 +10,8 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import javax.servlet.http.HttpServletRequest;
+
 @RestController
 @RequestMapping("/api/users")
 public class UserResource {
@@ -26,7 +28,7 @@ public class UserResource {
     }
 
     @PostMapping("/signup")
-    public ResponseEntity<?> addUser(@ RequestBody UserSignupDTO userInfo){
+    public ResponseEntity<?> addUser(@ RequestBody UserSignupDTO userInfo, HttpServletRequest request){
         return userService.addUser(userInfo);
     }
 
