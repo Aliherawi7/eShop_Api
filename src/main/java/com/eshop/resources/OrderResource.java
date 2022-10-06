@@ -12,7 +12,7 @@ import java.util.Collection;
 import java.util.Map;
 
 @RestController
-@RequestMapping("/api/order")
+@RequestMapping("/api/orders")
 public class OrderResource {
 
     private final OrderService orderService;
@@ -22,7 +22,7 @@ public class OrderResource {
         this.orderService = orderService;
     }
 
-    @GetMapping("/all")
+    @GetMapping()
     public ResponseEntity<?> getAllOrder() {
         return orderService.getAllOrder();
     }
@@ -33,8 +33,8 @@ public class OrderResource {
     }
 
     @PostMapping("/save")
-    public ResponseEntity<?> addOrder(@RequestBody OrderApp order, HttpServletRequest request) {
-        return orderService.addOrder(order, request);
+    public ResponseEntity<?> addOrder(@RequestBody OrderApp order) {
+        return orderService.addOrder(order);
     }
 
     @PostMapping("/saveAll")
@@ -69,7 +69,6 @@ public class OrderResource {
     @GetMapping(value = "/find", params = {"orderDate"})
     public ResponseEntity<?> findAllByOrderDate(@RequestParam String orderDate) {
         LocalDate localDateTime = LocalDate.parse(orderDate);
-        System.out.println(localDateTime.toString());
         return orderService.findAllByOrderDate(localDateTime);
     }
 
