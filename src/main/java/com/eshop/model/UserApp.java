@@ -28,13 +28,15 @@ public class UserApp {
     @PrimaryKeyJoinColumn
     @Column(nullable = false)
     private String email;
-    private String imgUrl;
+    @Lob
+    private byte[] image;
     @ManyToMany(fetch = FetchType.EAGER)
     private Collection<Role> roles = new ArrayList<>();
     private boolean enabled;
     private boolean accountLocked;
     private int failedAttempt;
     private Date lockTime;
+    private String location;
 
 
     public UserApp() {
@@ -48,7 +50,7 @@ public class UserApp {
     public UserApp(Long id,
                    String name, String lastName,
                    LocalDate dob, String password,
-                   String email, String imgUrl) {
+                   String email, byte[] image) {
         this.id = id;
         this.name = name;
         this.lastName = lastName;
@@ -56,7 +58,7 @@ public class UserApp {
         this.password = password;
         this.joinedDate = LocalDateTime.now();
         this.email = email;
-        this.imgUrl = imgUrl;
+        this.image = image;
         this.enabled = true;
         this.accountLocked = false;
         this.failedAttempt = 0;
@@ -94,9 +96,9 @@ public class UserApp {
         this.lastName = lastName.trim().toLowerCase();
     }
 
-    public Integer getAge() {
-        return Period.between(dob, LocalDate.now()).getYears();
-    }
+//    public Integer getAge() {
+//        return Period.between(dob, LocalDate.now()).getYears();
+//    }
 
     public LocalDate getDob() {
         return dob;
@@ -130,12 +132,12 @@ public class UserApp {
         this.email = email.trim().toLowerCase();
     }
 
-    public String getImgUrl() {
-        return imgUrl;
+    public byte[] getImage() {
+        return image;
     }
 
-    public void setImgUrl(String imgUrl) {
-        this.imgUrl = imgUrl.trim();
+    public void setImgUrl(byte[] image) {
+        this.image = image;
     }
 
     public Collection<Role> getRoles() {
@@ -184,5 +186,17 @@ public class UserApp {
 
     public void setUserName(String userName) {
         this.userName = userName;
+    }
+
+    public void setImage(byte[] image) {
+        this.image = image;
+    }
+
+    public String getLocation() {
+        return location;
+    }
+
+    public void setLocation(String location) {
+        this.location = location;
     }
 }
