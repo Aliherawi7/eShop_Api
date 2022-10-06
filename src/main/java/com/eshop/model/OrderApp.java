@@ -20,8 +20,13 @@ public class OrderApp {
     private boolean delivered;
     private LocalDateTime deliveredDate;
     private String remoteAddress;
+    private String location;
+    private Double rate;
     private String customerComment;
     private String currency;
+    private boolean paid;
+    private Double amount;
+
 
     public OrderApp() {
         //default properties values
@@ -30,9 +35,10 @@ public class OrderApp {
         this.delivered = false;
         this.customerComment = "";
         this.currency = "USD";
+        this.amount = 0.0;
     }
 
-    public OrderApp(Long id, Long productId, Long userId, String shippingAddress, int quantity) {
+    public OrderApp(Long id, Long productId, Long userId, String shippingAddress, int quantity, Double amount) {
         this.id = id;
         this.productId = productId;
         this.userId = userId;
@@ -41,6 +47,7 @@ public class OrderApp {
         this.shippingAddress = shippingAddress;
         this.quantity = quantity;
         this.delivered = false;
+        this.amount = amount;
     }
 
     public Long getId() {
@@ -137,5 +144,37 @@ public class OrderApp {
 
     public void setCurrency(String currency) {
         this.currency = currency;
+    }
+
+    public String getLocation() {
+        return location;
+    }
+
+    public void setLocation(String location) {
+        this.location = location;
+    }
+
+    public Double getRate() {
+        return rate;
+    }
+
+    public void setRate(Double rate) {
+        this.rate = rate;
+    }
+
+    public boolean isPaid() {
+        return paid;
+    }
+
+    public void setPaid(boolean paid) {
+        this.paid = paid;
+    }
+
+    public Double getAmount() {
+        return amount;
+    }
+
+    public void setAmount(Double amount) {
+        this.amount = amount;
     }
 }
