@@ -8,10 +8,11 @@ public class Product {
     @Id
     @SequenceGenerator(sequenceName = "product_sequence", name = "product_sequence", allocationSize = 1)
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "product_sequence")
-    private Integer id;
+    private Long id;
     private String name;
     private String color;
-    private String imgUrl;
+    @Lob
+    private byte[] image;
     private String brandName;
     private String category;
     private Double price;
@@ -24,24 +25,27 @@ public class Product {
     public Product() {
     }
 
-    public Product(Integer id, String name, String color, String imgUrl, String brandName, String category, Double price, String description, LocalDate productionDate, String size) {
+    public Product(Long id, String name, String color, byte[] image,
+                   String brandName, String category, Double price,
+                   String description, LocalDate productionDate, String size, Long quantityInDepot) {
         this.id = id;
         this.name = name;
         this.color = color;
-        this.imgUrl = imgUrl;
+        this.image = image;
         this.brandName = brandName;
         this.category = category;
         this.price = price;
         this.description = description;
         this.productionDate = productionDate;
         this.size = size;
+        this.quantityInDepot = quantityInDepot;
     }
 
-    public Integer getId() {
+    public Long getId() {
         return id;
     }
 
-    public void setId(Integer id) {
+    public void setId(Long id) {
         this.id = id;
     }
 
@@ -61,12 +65,12 @@ public class Product {
         this.color = color;
     }
 
-    public String getImgUrl() {
-        return imgUrl;
+    public byte[] getImage() {
+        return image;
     }
 
-    public void setImgUrl(String imgUrl) {
-        this.imgUrl = imgUrl;
+    public void setImage(byte[] image) {
+        this.image = image;
     }
 
     public String getBrandName() {
