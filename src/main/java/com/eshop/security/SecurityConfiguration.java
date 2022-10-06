@@ -2,7 +2,9 @@ package com.eshop.security;
 
 import com.eshop.filter.CustomAuthenticationFilter;
 import com.eshop.filter.CustomAuthorizationFilter;
+import com.eshop.repository.OrderRepository;
 import com.eshop.service.UserService;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.http.HttpMethod;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -28,11 +30,13 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
     private final UserDetailsService userDetailsService;
     private final UserService userService;
     private final BCryptPasswordEncoder bCryptPasswordEncoder;
-
-    public SecurityConfiguration(UserDetailsService userDetailsService, BCryptPasswordEncoder bCryptPasswordEncoder, UserService userService) {
+    private final OrderRepository orderRepository;
+    @Autowired
+    public SecurityConfiguration(UserDetailsService userDetailsService, BCryptPasswordEncoder bCryptPasswordEncoder, UserService userService, OrderRepository orderRepository) {
         this.userDetailsService = userDetailsService;
         this.bCryptPasswordEncoder = bCryptPasswordEncoder;
         this.userService = userService;
+        this.orderRepository = orderRepository;
     }
 
     @Override
@@ -43,7 +47,7 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
     @Override
     protected void configure(HttpSecurity http) throws Exception {
         CustomAuthenticationFilter authenticationFilter =
-                new CustomAuthenticationFilter(authenticationManagerBean(), userService);
+                new CustomAuthenticationFilter(authenticationManagerBean(), userService, orderRepository);
         authenticationFilter.setFilterProcessesUrl("/api/login");
         http.csrf().disable();
         http.cors();
