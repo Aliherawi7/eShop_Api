@@ -24,7 +24,7 @@ public class CustomAuthorizationFilter extends OncePerRequestFilter {
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
         //if the request is coming from login page so do nothing and pass the request to the next filter
         if (request.getServletPath().equals("/api/login")) {
-            filterChain.doFilter(request, response);
+            filterChain. doFilter(request, response);
         } else {
             String authorizationHeader = request.getHeader("Authorization");
             if (authorizationHeader != null) {
