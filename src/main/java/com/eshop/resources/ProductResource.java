@@ -5,7 +5,9 @@ import com.eshop.service.ProductService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-
+import org.springframework.web.multipart.MultipartFile;
+import java.io.IOException;
+import java.time.LocalDate;
 import java.util.Collection;
 import java.util.Map;
 
@@ -37,28 +39,57 @@ public class ProductResource {
 
     //find by id
     @GetMapping("/{id}")
-    public ResponseEntity<?> getProductById(@PathVariable Integer id) {
+    public ResponseEntity<?> getProductById(@PathVariable Long id) {
         return productService.getProductById(id);
     }
 
     // save the product in database
-    @PostMapping("/save")
-    public ResponseEntity<?> addProduct(@RequestBody Product product) {
-        return productService.addProduct(product);
+    @PostMapping(value = "/save")
+    public ResponseEntity<?> addProduct(@RequestParam("image")MultipartFile file, @RequestParam Map<String, String> param) throws IOException {
+        byte[] bytes = file.getBytes();
+        Product product = new Product(
+                null,
+                param.get("name"),
+                param.get("color"),
+                bytes,
+                param.get("brandName"),
+                param.get("category"),
+                Double.parseDouble(param.get("price")),
+                param.get("description"),
+                LocalDate.parse(param.get("productionDate")),
+                param.get("size"),
+                Long.parseLong(param.get("quantityInDepot"))
+        );
+        productService.addProduct(product);
+        return new ResponseEntity<>(product, HttpStatus.CREATED);
+
     }
 
     //update th existed product
-    @PutMapping("update")
-    public ResponseEntity<String> updateProduct(@RequestBody Product product) {
-        if (product.getId() == null) {
-            return new ResponseEntity<>("error_message: the id should not be null!", HttpStatus.BAD_REQUEST);
+    @PutMapping("/{id}")
+    public ResponseEntity<String> updateProduct(@RequestParam("id") Long id, @RequestParam("image") MultipartFile image, @RequestParam Map<String, String> params) {
+        Product product = new Product();
+        product.setId(id);
+        product.setName(params.get("name"));
+        product.setCategory(params.get("category"));
+        product.setBrandName(params.get("brandName"));
+        product.setPrice(Double.parseDouble(params.get("price")));
+        product.setProductionDate(LocalDate.parse(params.get("productionDate")));
+        product.setColor(params.get("color"));
+        product.setDescription(params.get("description"));
+        product.setQuantityInDepot(Long.parseLong(params.get("quantityInDepot")));
+        product.setSize(params.get("size"));
+        try {
+            product.setImage(image.getBytes());
+        } catch (IOException e) {
+            e.printStackTrace();
         }
         return productService.updateProduct(product);
     }
 
     //remove product by id
     @DeleteMapping("/delete/{id}")
-    public ResponseEntity<?> deleteProductById(@PathVariable Integer id) {
+    public ResponseEntity<?> deleteProductById(@PathVariable Long id) {
         return productService.deleteProductById(id);
     }
 
