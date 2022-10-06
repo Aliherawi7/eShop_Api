@@ -8,18 +8,18 @@ public class UserSignupDTO {
     private String email;
     private LocalDate dob;
     private String password;
-    private String imgUrl;
+    private byte[] image;
 
     public UserSignupDTO() {
     }
 
-    public UserSignupDTO(String name, String lastName, String email, LocalDate dob, String password, String imgUrl) {
+    public UserSignupDTO(String name, String lastName, String email, LocalDate dob, String password, byte[] image) {
         this.name = name;
         this.lastName = lastName;
         this.email = email;
         this.dob = dob;
         this.password = password;
-        this.imgUrl = imgUrl;
+        this.image = image;
     }
 
     public String getName() {
@@ -62,11 +62,11 @@ public class UserSignupDTO {
         this.password = password;
     }
 
-    public String getImgUrl() {
-        return imgUrl;
+    public byte[] getImgUrl() {
+        return image;
     }
 
-    public void setImgUrl(String imgUrl) {
-        this.imgUrl = imgUrl;
+    public void setImgUrl(byte[] image) {
+        this.image = image;
     }
 }
