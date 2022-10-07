@@ -3,13 +3,16 @@ package com.eshop.service;
 import com.eshop.model.OrderApp;
 import com.eshop.repository.OrderRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
+import org.springframework.util.MultiValueMap;
 
 import javax.servlet.http.HttpServletRequest;
 import java.time.LocalDate;
 import java.util.Collection;
+import java.util.HashMap;
 
 @Service
 public class OrderService {
@@ -29,7 +32,7 @@ public class OrderService {
         if (order != null) {
             return new ResponseEntity<>(order, HttpStatus.OK);
         } else {
-            return new ResponseEntity<>("order not found with id: " + id, HttpStatus.NOT_FOUND);
+            return new ResponseEntity<>("order not found with id: " + id, HttpStatus.NO_CONTENT);
         }
     }
 
@@ -39,15 +42,15 @@ public class OrderService {
         if (orders.size() > 0) {
             return ResponseEntity.ok(orders);
         } else {
-            return new ResponseEntity<>(orders, HttpStatus.NOT_FOUND);
+            MultiValueMap<String, String> m = new HttpHeaders();
+            m.add("statusText","No content");
+            return new ResponseEntity<>(orders, m, HttpStatus.NO_CONTENT);
         }
     }
 
     // save order
-    public ResponseEntity<?> addOrder(OrderApp order, HttpServletRequest request) {
+    public ResponseEntity<?> addOrder(OrderApp order) {
         // get user remoteAddress
-        String userIPAddress = ipFinderService.getClientIP(request);
-        order.setRemoteAddress(userIPAddress);
         orderRepository.save(order);
         return new ResponseEntity<>("order save successfully.", HttpStatus.CREATED);
     }
@@ -55,7 +58,7 @@ public class OrderService {
     // saves orders
 
     public ResponseEntity<String> addOrders(Collection<OrderApp> orders, HttpServletRequest request) {
-        orders.forEach(orderApp -> addOrder(orderApp, request));
+        orders.forEach(this::addOrder);
         return ResponseEntity.ok("orders save successfully");
     }
 
@@ -77,7 +80,7 @@ public class OrderService {
         if (orders.size() > 0) {
             return new ResponseEntity<>(orders, HttpStatus.OK);
         } else {
-            return new ResponseEntity<>(orders, HttpStatus.NOT_FOUND);
+            return new ResponseEntity<>(orders, HttpStatus.NO_CONTENT);
         }
     }
 
@@ -88,7 +91,7 @@ public class OrderService {
         if (orders.size() > 0) {
             return new ResponseEntity<>(orders, HttpStatus.OK);
         } else {
-            return new ResponseEntity<>(orders, HttpStatus.NOT_FOUND);
+            return new ResponseEntity<>(orders, HttpStatus.NO_CONTENT);
         }
     }
 
@@ -98,7 +101,7 @@ public class OrderService {
         if (orders.size() > 0) {
             return new ResponseEntity<>(orders, HttpStatus.OK);
         } else {
-            return new ResponseEntity<>(orders, HttpStatus.NOT_FOUND);
+            return new ResponseEntity<>(orders, HttpStatus.NO_CONTENT);
         }
     }
 
@@ -108,7 +111,7 @@ public class OrderService {
         if (orders.size() > 0) {
             return new ResponseEntity<>(orders, HttpStatus.OK);
         } else {
-            return new ResponseEntity<>(orders, HttpStatus.NOT_FOUND);
+            return new ResponseEntity<>(orders, HttpStatus.NO_CONTENT);
         }
     }
 
@@ -118,7 +121,7 @@ public class OrderService {
         if (orders.size() > 0) {
             return new ResponseEntity<>(orders, HttpStatus.OK);
         } else {
-            return new ResponseEntity<>(orders, HttpStatus.NOT_FOUND);
+            return new ResponseEntity<>(orders, HttpStatus.NO_CONTENT);
         }
     }
 
@@ -128,7 +131,7 @@ public class OrderService {
         if (orders.size() > 0) {
             return new ResponseEntity<>(orders, HttpStatus.OK);
         } else {
-            return new ResponseEntity<>(orders, HttpStatus.NOT_FOUND);
+            return new ResponseEntity<>(orders, HttpStatus.NO_CONTENT);
         }
     }
 
@@ -138,7 +141,7 @@ public class OrderService {
         if (orders.size() > 0) {
             return new ResponseEntity<>(orders, HttpStatus.OK);
         } else {
-            return new ResponseEntity<>(orders, HttpStatus.NOT_FOUND);
+            return new ResponseEntity<>(orders, HttpStatus.NO_CONTENT);
         }
     }
 
@@ -148,7 +151,7 @@ public class OrderService {
         if (orders.size() > 0) {
             return new ResponseEntity<>(orders, HttpStatus.OK);
         } else {
-            return new ResponseEntity<>(orders, HttpStatus.NOT_FOUND);
+            return new ResponseEntity<>(orders, HttpStatus.NO_CONTENT);
         }
     }
 
@@ -158,7 +161,7 @@ public class OrderService {
         if (orders.size() > 0) {
             return new ResponseEntity<>(orders, HttpStatus.OK);
         } else {
-            return new ResponseEntity<>(orders, HttpStatus.NOT_FOUND);
+            return new ResponseEntity<>(orders, HttpStatus.NO_CONTENT);
         }
     }
 
@@ -168,7 +171,7 @@ public class OrderService {
         if (orders.size() > 0) {
             return new ResponseEntity<>(orders, HttpStatus.OK);
         } else {
-            return new ResponseEntity<>(orders, HttpStatus.NOT_FOUND);
+            return new ResponseEntity<>(orders, HttpStatus.NO_CONTENT);
         }
     }
 
@@ -178,7 +181,7 @@ public class OrderService {
         if (orders.size() > 0) {
             return new ResponseEntity<>(orders, HttpStatus.OK);
         } else {
-            return new ResponseEntity<>(orders, HttpStatus.NOT_FOUND);
+            return new ResponseEntity<>(orders, HttpStatus.NO_CONTENT);
         }
     }
 }
