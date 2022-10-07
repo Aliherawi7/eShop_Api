@@ -19,13 +19,13 @@ public class ProductService {
 
     //find product by id
 
-    public ResponseEntity<?> getProductById(int id) {
+    public ResponseEntity<?> getProductById(Long id) {
         Optional<Product> product = productRepository.findById(id);
         if (product.isPresent()) {
             return new ResponseEntity<>(product.get(), HttpStatus.OK);
 
         } else {
-            return new ResponseEntity<>("product with id: " + id + " not found!", HttpStatus.NOT_FOUND);
+            return new ResponseEntity<>("product with id: " + id + " not found!", HttpStatus.NO_CONTENT);
         }
     }
 
@@ -48,7 +48,7 @@ public class ProductService {
             productRepository.save(product);
             return new ResponseEntity<String>("Successfully updated! !", HttpStatus.CREATED);
         } else {
-            return new ResponseEntity<>("not Found such product with id: " + product.getId(), HttpStatus.NOT_FOUND);
+            return new ResponseEntity<>("not Found such product with id: " + product.getId(), HttpStatus.NO_CONTENT);
         }
     }
 
@@ -109,13 +109,13 @@ public class ProductService {
 
     // danger area
     //removed product
-    public ResponseEntity<String> deleteProductById(Integer id) {
+    public ResponseEntity<String> deleteProductById(Long id) {
         boolean isExist = productRepository.existsById(id);
         productRepository.deleteById(id);
         if (isExist) {
             return new ResponseEntity<>("product with id: " + id + " successfully removed", HttpStatus.OK);
         } else {
-            return new ResponseEntity<>("not found any product with id: " + id, HttpStatus.NOT_FOUND);
+            return new ResponseEntity<>("not found any product with id: " + id, HttpStatus.NO_CONTENT);
         }
 
     }
