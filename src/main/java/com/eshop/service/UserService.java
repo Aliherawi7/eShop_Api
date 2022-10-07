@@ -5,10 +5,14 @@ import com.auth0.jwt.algorithms.Algorithm;
 import com.eshop.dto.SignupInformationDTO;
 import com.eshop.dto.UserInformationDTO;
 import com.eshop.dto.UserSignupDTO;
+import com.eshop.model.OrderApp;
 import com.eshop.model.Role;
 import com.eshop.model.UserApp;
+import com.eshop.repository.OrderRepository;
 import com.eshop.repository.RoleRepository;
 import com.eshop.repository.UserAppRepository;
+
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
@@ -17,13 +21,9 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
-import org.springframework.security.web.header.Header;
 import org.springframework.stereotype.Service;
-import org.springframework.web.bind.annotation.CrossOrigin;
-
-import java.lang.reflect.Array;
+import javax.servlet.http.HttpServletRequest;
 import java.util.*;
-import java.util.stream.Collector;
 import java.util.stream.Collectors;
 
 /*
@@ -41,7 +41,9 @@ public class UserService implements UserDetailsService {
     private final UserAppRepository userRepository;
     private final RoleRepository roleRepository;
     private final BCryptPasswordEncoder bCryptPasswordEncoder;
-
+    @Autowired
+    private OrderRepository orderRepository;
+    @Autowired
     public UserService(UserAppRepository userRepository, RoleRepository roleRepository, BCryptPasswordEncoder bCryptPasswordEncoder) {
         this.userRepository = userRepository;
         this.roleRepository = roleRepository;
@@ -82,9 +84,11 @@ public class UserService implements UserDetailsService {
             userApp.setImgUrl(user.getImgUrl());
             userApp.addRole(roleRepository.findByName("USER"));
             userRepository.save(userApp);
-            UserInformationDTO userInfo = new UserInformationDTO(userApp.getName(),userApp.getLastName(),
-                    userApp.getImgUrl(), userApp.getEmail(),
-                    userApp.getRoles().stream().map(Role::getName).collect(Collectors.toList()));
+
+
+            UserInformationDTO userInfo = new UserInformationDTO(userApp.getId(), userApp.getName(),userApp.getLastName(),
+                    userApp.getImage(), userApp.getEmail(),
+                    userApp.getRoles().stream().map(Role::getName).collect(Collectors.toList()),"Unknown" ,0, 0, userApp.isEnabled());
             Algorithm algorithm = Algorithm.HMAC256("herawi".getBytes());
             String accessToken = JWT.create()
                     .withSubject(userApp.getEmail())
@@ -113,21 +117,40 @@ public class UserService implements UserDetailsService {
             return new ResponseEntity<>(
                     "user with email: " + email + "" +
                             " and role with name: " +
-                            roleName + " not found!", HttpStatus.NOT_FOUND);
+                            roleName + " not found!", HttpStatus.NO_CONTENT);
         } else if (user == null) {
-            return new ResponseEntity<>("user with email: " + email + "", HttpStatus.NOT_FOUND);
+            return new ResponseEntity<>("user with email: " + email + "", HttpStatus.NO_CONTENT);
         } else {
-            return new ResponseEntity<>("role with name: " + roleName + " not found!", HttpStatus.NOT_FOUND);
+            return new ResponseEntity<>("role with name: " + roleName + " not found!", HttpStatus.NO_CONTENT);
         }
     }
 
     // get all users from the database
     public ResponseEntity<?> getAllUsers() {
         Collection<UserApp> users = userRepository.findAll();
+        // user location and ip
+        //String ipAddress = IPFinderService.getClientIP(request);
+        String countryName ="Unknown"; //IPFinderService.getCountryName(ipAddress);
+
+        // user common information
+        Collection<UserInformationDTO> usersInfo = users.stream()
+                .map(userApp -> {
+                    int totalOrder =0;
+                    double totalSpending = 0;
+                    if(orderRepository.findAllByUserId(userApp.getId()) != null){
+                        totalOrder = orderRepository.findAllByUserId(userApp.getId()).size();
+                        totalSpending = orderRepository.findAllByUserId(userApp.getId()).stream().mapToDouble(OrderApp::getAmount).sum();
+                    }
+                    return new UserInformationDTO(userApp.getId(), userApp.getName(), userApp.getLastName(),
+                            userApp.getImage(), userApp.getEmail(),
+                            userApp.getRoles().stream().map((Role::getName)).collect(Collectors.toList()),
+                            countryName,totalOrder ,totalSpending, userApp.isEnabled());
+                })
+                .collect(Collectors.toList());
         if (users.size() > 0) {
-            return new ResponseEntity<>(users, HttpStatus.OK);
+            return new ResponseEntity<>(usersInfo, HttpStatus.OK);
         } else {
-            return new ResponseEntity<>("no user is available!", HttpStatus.NOT_FOUND);
+            return new ResponseEntity<>("no user is available!", HttpStatus.NO_CONTENT);
         }
     }
 
