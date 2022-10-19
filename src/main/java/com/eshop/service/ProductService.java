@@ -23,7 +23,6 @@ public class ProductService {
         Optional<Product> product = productRepository.findById(id);
         if (product.isPresent()) {
             return new ResponseEntity<>(product.get(), HttpStatus.OK);
-
         } else {
             return new ResponseEntity<>("product with id: " + id + " not found!", HttpStatus.NO_CONTENT);
         }
@@ -37,7 +36,6 @@ public class ProductService {
     // save the product to the database
     public ResponseEntity<String> addProduct(Product product) {
         productRepository.save(product);
-
         return new ResponseEntity<>("Successfully saved!", HttpStatus.CREATED);
     }
 
