@@ -26,9 +26,9 @@ class ProductServiceTest {
     @BeforeEach
     void setUp() {
         underTest = new ProductService(productRepository);
-        product = new Product(1, "L2400", "green", "img",
+        product = new Product(1l, "L2400", "green", null,
                 "dell", "laptop", 599.99,
-                "description", LocalDate.now(), "small");
+                "description", LocalDate.now(), "small",120l, 5d);
     }
 
 
@@ -194,7 +194,7 @@ class ProductServiceTest {
     @Test
     void deleteProductById() {
         //when
-        int id = 1;
+        Long id = 1l;
         underTest.deleteProductById(id);
         //then
         verify(productRepository).deleteById(id);

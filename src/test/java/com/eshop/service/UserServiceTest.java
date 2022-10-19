@@ -45,14 +45,14 @@ class UserServiceTest {
         userSingup.setLastName("herawi");
         userSingup.setEmail("aliherawi7@gmail.com");
         userSingup.setPassword("1234");
-        userSingup.setImgUrl("imgurl");
+        userSingup.setImage(new byte[5]);
 
         user = new UserApp();
         user.setName("ali");
         user.setLastName("herawi");
         user.setEmail("aliherawi7@gmail.com");
         user.setPassword("1234");
-        user.setImgUrl("imgurl");
+        user.setImgUrl(new byte[20]);
     }
 
     @Test
