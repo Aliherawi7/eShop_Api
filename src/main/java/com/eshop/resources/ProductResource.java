@@ -2,6 +2,7 @@ package com.eshop.resources;
 
 import com.eshop.model.Product;
 import com.eshop.service.ProductService;
+import com.sun.deploy.net.proxy.pac.PACFunctions;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -58,7 +59,8 @@ public class ProductResource {
                 param.get("description"),
                 LocalDate.parse(param.get("productionDate")),
                 param.get("size"),
-                Long.parseLong(param.get("quantityInDepot"))
+                Long.parseLong(param.get("quantityInDepot")),
+                Double.parseDouble(param.get("rate"))
         );
         productService.addProduct(product);
         return new ResponseEntity<>(product, HttpStatus.CREATED);
@@ -67,7 +69,7 @@ public class ProductResource {
 
     //update th existed product
     @PutMapping("/{id}")
-    public ResponseEntity<String> updateProduct(@RequestParam("id") Long id, @RequestParam("image") MultipartFile image, @RequestParam Map<String, String> params) {
+    public ResponseEntity<String> updateProduct(@PathVariable("id") Long id, @RequestParam("image") MultipartFile image, @RequestParam Map<String, String> params) {
         Product product = new Product();
         product.setId(id);
         product.setName(params.get("name"));
