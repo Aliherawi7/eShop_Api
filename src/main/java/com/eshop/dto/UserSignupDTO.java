@@ -9,17 +9,19 @@ public class UserSignupDTO {
     private LocalDate dob;
     private String password;
     private byte[] image;
-
+    private String location;
     public UserSignupDTO() {
     }
 
-    public UserSignupDTO(String name, String lastName, String email, LocalDate dob, String password, byte[] image) {
+    public UserSignupDTO(String name, String lastName, String email,
+                         LocalDate dob, String password, byte[] image, String location) {
         this.name = name;
         this.lastName = lastName;
         this.email = email;
         this.dob = dob;
         this.password = password;
         this.image = image;
+        this.location = location;
     }
 
     public String getName() {
@@ -62,11 +64,19 @@ public class UserSignupDTO {
         this.password = password;
     }
 
-    public byte[] getImgUrl() {
+    public byte[] getImage() {
         return image;
     }
 
-    public void setImgUrl(byte[] image) {
+    public void setImage(byte[] image) {
         this.image = image;
+    }
+
+    public String getLocation() {
+        return location;
+    }
+
+    public void setLocation(String location) {
+        this.location = location;
     }
 }
