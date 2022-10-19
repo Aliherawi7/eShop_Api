@@ -1,7 +1,9 @@
 package com.eshop.service;
 
 import com.eshop.model.OrderApp;
+import com.eshop.model.Product;
 import com.eshop.repository.OrderRepository;
+import com.eshop.repository.ProductRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
@@ -13,17 +15,20 @@ import javax.servlet.http.HttpServletRequest;
 import java.time.LocalDate;
 import java.util.Collection;
 import java.util.HashMap;
+import java.util.Optional;
 
 @Service
 public class OrderService {
 
     private final OrderRepository orderRepository;
+    private final ProductRepository productRepository;
     private final IPFinderService ipFinderService;
 
     @Autowired
-    public OrderService(OrderRepository orderRepository, IPFinderService ipFinderService) {
+    public OrderService(OrderRepository orderRepository, ProductRepository productRepository, IPFinderService ipFinderService) {
         this.orderRepository = orderRepository;
         this.ipFinderService = ipFinderService;
+        this.productRepository = productRepository;
     }
 
     // find order by id
@@ -51,6 +56,13 @@ public class OrderService {
     // save order
     public ResponseEntity<?> addOrder(OrderApp order) {
         // get user remoteAddress
+        Optional<Product>  optionalProduct = productRepository.findById(order.getProductId());
+        Product product = null;
+        if(optionalProduct.isPresent()){
+            product = optionalProduct.get();
+            product.setQuantityInDepot(product.getQuantityInDepot() - order.getQuantity());
+            productRepository.save(product);
+        }
         orderRepository.save(order);
         return new ResponseEntity<>("order save successfully.", HttpStatus.CREATED);
     }
@@ -58,6 +70,15 @@ public class OrderService {
     // saves orders
 
     public ResponseEntity<String> addOrders(Collection<OrderApp> orders, HttpServletRequest request) {
+        orders.forEach(orderApp -> {
+            Optional<Product> productOptional = productRepository.findById(orderApp.getProductId());
+            Product product = null;
+            if(productOptional.isPresent()){
+                product = productOptional.get();
+                product.setQuantityInDepot(product.getQuantityInDepot() - orderApp.getQuantity());
+                productRepository.save(product);
+            }
+        });
         orders.forEach(this::addOrder);
         return ResponseEntity.ok("orders save successfully");
     }
