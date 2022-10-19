@@ -48,11 +48,11 @@ class CustomAuthenticationFilterTest {
     @Mock
     ServletOutputStream servletOutputStream;
 
-
-    @BeforeEach
-    void setUp() {
-        underTest = new CustomAuthenticationFilter(authenticationManager, userService);
-    }
+//
+//    @BeforeEach
+//    void setUp() {
+//        underTest = new CustomAuthenticationFilter(authenticationManager, userService);
+//    }
 
     @Test
         // attempt authentication when user is not lock
