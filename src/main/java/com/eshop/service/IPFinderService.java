@@ -1,9 +1,14 @@
 package com.eshop.service;
 
+import com.maxmind.geoip2.WebServiceClient;
+import com.maxmind.geoip2.exception.GeoIp2Exception;
+import com.maxmind.geoip2.model.CountryResponse;
+import com.maxmind.geoip2.record.Country;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
 
 import javax.servlet.http.HttpServletRequest;
+import java.io.IOException;
 import java.net.InetAddress;
 import java.net.UnknownHostException;
 
@@ -37,7 +42,7 @@ public class IPFinderService {
         }
         return ipAddress;
     }
-    /*public static String getCountryName(String ipAddress){
+    public static String getCountryName(String ipAddress){
         String countryName = "";
         try(WebServiceClient client =
                     new WebServiceClient.Builder(42,"license_key").build()){
@@ -51,5 +56,5 @@ public class IPFinderService {
         }
 
         return countryName;
-    }*/
+    }
 }
