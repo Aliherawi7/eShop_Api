@@ -21,13 +21,14 @@ public class Product {
     private LocalDate productionDate;
     private String size;
     private Long quantityInDepot;
+    private Double rate;
 
     public Product() {
     }
 
     public Product(Long id, String name, String color, byte[] image,
                    String brandName, String category, Double price,
-                   String description, LocalDate productionDate, String size, Long quantityInDepot) {
+                   String description, LocalDate productionDate, String size, Long quantityInDepot, Double rate) {
         this.id = id;
         this.name = name;
         this.color = color;
@@ -39,6 +40,7 @@ public class Product {
         this.productionDate = productionDate;
         this.size = size;
         this.quantityInDepot = quantityInDepot;
+        this.rate = rate;
     }
 
     public Long getId() {
@@ -127,5 +129,13 @@ public class Product {
 
     public void setQuantityInDepot(Long quantityInDepot) {
         this.quantityInDepot = quantityInDepot;
+    }
+
+    public Double getRate() {
+        return rate;
+    }
+
+    public void setRate(Double rate) {
+        this.rate = rate;
     }
 }
