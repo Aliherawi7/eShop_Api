@@ -81,14 +81,16 @@ public class UserService implements UserDetailsService {
             userApp.setName(user.getName().trim().toLowerCase());
             userApp.setLastName(user.getLastName().trim().toLowerCase());
             userApp.setPassword(bCryptPasswordEncoder.encode(user.getPassword()));
-            userApp.setImgUrl(user.getImgUrl());
+            userApp.setImgUrl(user.getImage());
+            userApp.setLocation(user.getLocation());
             userApp.addRole(roleRepository.findByName("USER"));
             userRepository.save(userApp);
 
 
             UserInformationDTO userInfo = new UserInformationDTO(userApp.getId(), userApp.getName(),userApp.getLastName(),
                     userApp.getImage(), userApp.getEmail(),
-                    userApp.getRoles().stream().map(Role::getName).collect(Collectors.toList()),"Unknown" ,0, 0, userApp.isEnabled());
+                    userApp.getRoles().stream().map(Role::getName).collect(Collectors.toList()),
+                    userApp.getLocation() ,0, 0, userApp.isEnabled());
             Algorithm algorithm = Algorithm.HMAC256("herawi".getBytes());
             String accessToken = JWT.create()
                     .withSubject(userApp.getEmail())
@@ -128,10 +130,6 @@ public class UserService implements UserDetailsService {
     // get all users from the database
     public ResponseEntity<?> getAllUsers() {
         Collection<UserApp> users = userRepository.findAll();
-        // user location and ip
-        //String ipAddress = IPFinderService.getClientIP(request);
-        String countryName ="Unknown"; //IPFinderService.getCountryName(ipAddress);
-
         // user common information
         Collection<UserInformationDTO> usersInfo = users.stream()
                 .map(userApp -> {
@@ -144,7 +142,7 @@ public class UserService implements UserDetailsService {
                     return new UserInformationDTO(userApp.getId(), userApp.getName(), userApp.getLastName(),
                             userApp.getImage(), userApp.getEmail(),
                             userApp.getRoles().stream().map((Role::getName)).collect(Collectors.toList()),
-                            countryName,totalOrder ,totalSpending, userApp.isEnabled());
+                            userApp.getLocation(), totalOrder, totalSpending, userApp.isEnabled());
                 })
                 .collect(Collectors.toList());
         if (users.size() > 0) {
