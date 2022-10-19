@@ -50,7 +50,7 @@ public class UserApp {
     public UserApp(Long id,
                    String name, String lastName,
                    LocalDate dob, String password,
-                   String email, byte[] image) {
+                   String email, byte[] image, String location) {
         this.id = id;
         this.name = name;
         this.lastName = lastName;
@@ -62,6 +62,7 @@ public class UserApp {
         this.enabled = true;
         this.accountLocked = false;
         this.failedAttempt = 0;
+        this.location = location;
     }
 
     public Long getId() {
