@@ -109,4 +109,6 @@ public class UserInformationDTO {
     public void setActive(boolean isActive) {
         this.isActive = isActive;
     }
+
+
 }
