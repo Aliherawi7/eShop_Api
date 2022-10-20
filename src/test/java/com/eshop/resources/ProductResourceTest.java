@@ -36,7 +36,7 @@ class ProductResourceTest {
                 null, "apple",
                 "computer", 99.4,
                 "desc", LocalDate.now(),
-                "small",120l, 4d
+                "small",120l, 4d, 10D
         );
     }
 

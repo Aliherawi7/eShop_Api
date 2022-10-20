@@ -28,7 +28,7 @@ class ProductServiceTest {
         underTest = new ProductService(productRepository);
         product = new Product(1l, "L2400", "green", null,
                 "dell", "laptop", 599.99,
-                "description", LocalDate.now(), "small",120l, 5d);
+                "description", LocalDate.now(), "small",120l, 5d, 10D);
     }
 
 
