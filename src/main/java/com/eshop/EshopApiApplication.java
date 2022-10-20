@@ -56,45 +56,45 @@ public class EshopApiApplication {
             fIn1.read(bytes1);
             Product p1 = new Product(
                     null, "iphone 13 pro",
-                    "red", bytes1,
+                    "#ebebe7", bytes1,
                     "apple", "mobile",
-                    1000d, "latest iphone", LocalDate.now(), "mdeuim",12L, 4d
+                    1000d, "latest iphone", LocalDate.now(), "mdeuim",12L, 4d, 14D
             );
             File f2 = new File("src/main/resources/templates/image/7.png");
             FileInputStream fIn2 = new FileInputStream(f2);
             byte[] bytes2 = new byte[(int) f2.length()];
             fIn2.read(bytes2);
             Product p2 = new Product(
-                    null, "apple TV", "yellow", bytes2,
+                    null, "apple TV", "#171717", bytes2,
                     "apple", "TV", 500d, "family tv",
-                    LocalDate.now(), "mdeuim",15L, 3d
+                    LocalDate.now(), "mdeuim",15L, 3d, 10D
             );
             File f3 = new File("src/main/resources/templates/image/3.png");
             FileInputStream fIn3 = new FileInputStream(f3);
             byte[] bytes3 = new byte[(int) f3.length()];
             fIn3.read(bytes3);
             Product p3 = new Product(
-                    null, "macbook pro", "white", bytes3,
-                    "apple", "Laptop", 960d, "laptop pc",
-                    LocalDate.now(), "mdeuim",15L, 5d
+                    null, "macbook pro", "#c0c1c4", bytes3,
+                    "apple", "pc", 960d, "laptop pc",
+                    LocalDate.now(), "mdeuim",15L, 5d, 10D
             );
             File f4 = new File("src/main/resources/templates/image/4.png");
             FileInputStream fIn4 = new FileInputStream(f4);
             byte[] bytes4 = new byte[(int) f4.length()];
             fIn4.read(bytes4);
             Product p4 = new Product(
-                    null, "iphone 13", "red", bytes4,
+                    null, "iphone 13", "#c81e30", bytes4,
                     "apple", "Mobile", 960d, "latest iphone",
-                    LocalDate.now(), "mini",100L, 5d
+                    LocalDate.now(), "mini",100L, 5d, 6D
             );
             File f5 = new File("src/main/resources/templates/image/5.png");
             FileInputStream fIn5 = new FileInputStream(f5);
             byte[] bytes5 = new byte[(int) f5.length()];
             fIn5.read(bytes5);
             Product p5 = new Product(
-                    null, "MacBook 14 pro", "black", bytes5,
-                    "apple", "Laptop pc", 1000d, "latest mac",
-                    LocalDate.now(), "mini",100L, 4d
+                    null, "MacBook 14 pro", "#c0c1c6", bytes5,
+                    "apple", "pc", 1000d, "latest mac",
+                    LocalDate.now(), "mini",100L, 4d, 5D
             );
 
             File f6 = new File("src/main/resources/templates/image/asus-gaming.png");
@@ -102,45 +102,45 @@ public class EshopApiApplication {
             byte[] bytes6 = new byte[(int) f6.length()];
             fIn6.read(bytes6);
             Product p6 = new Product(
-                    null, "asus-gaming", "black", bytes6,
+                    null, "asus-gaming", "#121212", bytes6,
                     "asus", "pc", 30d, "latest asus-gaming",
-                    LocalDate.now(), "large",230L, 5d
+                    LocalDate.now(), "large",230L, 5d, 10D
             );
             File f7 = new File("src/main/resources/templates/image/2.png");
             FileInputStream fIn7 = new FileInputStream(f7);
             byte[] bytes7 = new byte[(int) f7.length()];
             fIn7.read(bytes7);
             Product p7 = new Product(
-                    null, "Netflix TV", "black", bytes7,
+                    null, "Netflix TV", "#eaeaea", bytes7,
                     "Netflix", "TV", 30d, "latest netflix",
-                    LocalDate.now(), "large",230L, 4d
+                    LocalDate.now(), "large",230L, 4d, 0D
             );
             File f8 = new File("src/main/resources/templates/image/8.png");
             FileInputStream fIn8 = new FileInputStream(f8);
             byte[] bytes8 = new byte[(int) f8.length()];
             fIn8.read(bytes8);
             Product p8 = new Product(
-                    null, "Apple watch 14 pro", "white", bytes8,
-                    "apple", "watch", 300d, "latest apple watch",
-                    LocalDate.now(), "medium",200L, 3d
+                    null, "Apple watch 14 pro", "#dcdcdc", bytes8,
+                    "apple", "tools", 300d, "latest apple watch",
+                    LocalDate.now(), "medium",200L, 3d, 10D
             );
             File f9 = new File("src/main/resources/templates/image/9.png");
             FileInputStream fIn9 = new FileInputStream(f9);
             byte[] bytes9 = new byte[(int) f9.length()];
             fIn9.read(bytes9);
             Product p9 = new Product(
-                    null, "iphone 13 mini", "blue", bytes9,
+                    null, "iphone 13 mini", "#f7f6f2", bytes9,
                     "apple", "mobile", 990d, "latest apple phone",
-                    LocalDate.now(), "mini",200L, 5d
+                    LocalDate.now(), "mini",200L, 5d, 8D
             );
             File f10 = new File("src/main/resources/templates/image/11.png");
             FileInputStream fIn10 = new FileInputStream(f10);
             byte[] bytes10 = new byte[(int) f10.length()];
             fIn10.read(bytes10);
             Product p10 = new Product(
-                    null, "Samsung A71", "blue", bytes10,
+                    null, "Samsung A71", "#94e3d0", bytes10,
                     "samsung", "mobile", 500d, "latest samsung phone",
-                    LocalDate.now(), "large",200L, 4d
+                    LocalDate.now(), "large",200L, 4d, 5D
             );
 
             File f11 = new File("src/main/resources/templates/image/headphone.png");
@@ -148,9 +148,9 @@ public class EshopApiApplication {
             byte[] bytes11 = new byte[(int) f11.length()];
             fIn11.read(bytes11);
             Product p11 = new Product(
-                    null, "Modern Headphone", "blue", bytes11,
-                    "jax", "headphone", 500d, "latest jax headphone",
-                    LocalDate.now(), "large",200L, 4d
+                    null, "Modern Headphone", "#4f659f", bytes11,
+                    "jax", "tools", 500d, "latest jax headphone",
+                    LocalDate.now(), "large",200L, 5d, 10D
             );
 
             File f12 = new File("src/main/resources/templates/image/headphone600x.png");
@@ -158,18 +158,18 @@ public class EshopApiApplication {
             byte[] bytes12 = new byte[(int) f12.length()];
             fIn12.read(bytes12);
             Product p12 = new Product(
-                    null, "Headphone 600x", "red", bytes12,
-                    "jax", "headphone", 500d, "latest jax headphone",
-                    LocalDate.now(), "large",200L, 4d
+                    null, "Headphone 600x", "#c23533", bytes12,
+                    "jax", "tools", 500d, "latest jax headphone",
+                    LocalDate.now(), "large",200L, 4d, 8D
             );
             File f13 = new File("src/main/resources/templates/image/airpods-3.png");
             FileInputStream fIn13 = new FileInputStream(f13);
             byte[] bytes13 = new byte[(int) f13.length()];
             fIn13.read(bytes13);
             Product p13 = new Product(
-                    null, "airpods", "red", bytes13,
-                    "apple", "headphone", 500d, "latest airpod",
-                    LocalDate.now(), "large",200L, 4d
+                    null, "airpods", "#ebecf0", bytes13,
+                    "apple", "tools", 500d, "latest airpod",
+                    LocalDate.now(), "large",200L, 3d, 10D
             );
 
             File f14 = new File("src/main/resources/templates/image/r9.png");
@@ -177,18 +177,18 @@ public class EshopApiApplication {
             byte[] bytes14 = new byte[(int) f14.length()];
             fIn14.read(bytes14);
             Product p14 = new Product(
-                    null, "r9", "red", bytes14,
+                    null, "r9", "#05c7c9", bytes14,
                     "Xiaomi", "mobile", 500d, "latest Xiaomi headphone",
-                    LocalDate.now(), "large",200L, 4d
+                    LocalDate.now(), "large",200L, 5d, 15D
             );
             File f15 = new File("src/main/resources/templates/image/H10_ID.png");
             FileInputStream fIn15 = new FileInputStream(f15);
             byte[] bytes15 = new byte[(int) f15.length()];
             fIn15.read(bytes15);
             Product p15 = new Product(
-                    null, "H10", "red", bytes15,
+                    null, "H10", "#3cbdbb", bytes15,
                     "Xiaomi", "mobile", 500d, "latest Xiaomi ",
-                    LocalDate.now(), "large",200L, 4d
+                    LocalDate.now(), "large",200L, 3d, 10D
             );
 
             File f16 = new File("src/main/resources/templates/image/c06.png");
@@ -196,9 +196,9 @@ public class EshopApiApplication {
             byte[] bytes16 = new byte[(int) f16.length()];
             fIn16.read(bytes16);
             Product p16 = new Product(
-                    null, "Laptop c06", "red", bytes16,
-                    "HP", "laptop", 500d, "latest HP ",
-                    LocalDate.now(), "large",200L, 4d
+                    null, "Laptop c06", "#525252", bytes16,
+                    "HP", "pc", 500d, "latest HP ",
+                    LocalDate.now(), "large",200L, 5d, 5D
             );
 
             File f17 = new File("src/main/resources/templates/image/c9.png");
@@ -206,9 +206,9 @@ public class EshopApiApplication {
             byte[] bytes17 = new byte[(int) f17.length()];
             fIn17.read(bytes17);
             Product p17 = new Product(
-                    null, "Laptop c9", "red", bytes17,
-                    "HP", "laptop", 500d, "latest HP ",
-                    LocalDate.now(), "large",200L, 4d
+                    null, "Laptop c9", "#edeeec", bytes17,
+                    "HP", "pc", 500d, "latest HP ",
+                    LocalDate.now(), "large",200L, 4d, 10D
             );
 
             File f18 = new File("src/main/resources/templates/image/laptop.png");
@@ -216,48 +216,48 @@ public class EshopApiApplication {
             byte[] bytes18 = new byte[(int) f18.length()];
             fIn18.read(bytes18);
             Product p18 = new Product(
-                    null, "ASUS studio Book", "red", bytes18,
-                    "Asus", "laptop", 500d, "latest Asus ",
-                    LocalDate.now(), "large",200L, 4d
+                    null, "ASUS studio Book", "#494753", bytes18,
+                    "Asus", "pc", 500d, "latest Asus ",
+                    LocalDate.now(), "large",200L, 4d, 8D
             );
             File f19 = new File("src/main/resources/templates/image/laptop-acer-1.png");
             FileInputStream fIn19 = new FileInputStream(f19);
             byte[] bytes19 = new byte[(int) f19.length()];
             fIn19.read(bytes19);
             Product p19 = new Product(
-                    null, "acer studio Book", "white", bytes19,
-                    "acer", "laptop", 500d, "latest acer ",
-                    LocalDate.now(), "large",200L, 4d
+                    null, "acer studio Book", "#aeafb3", bytes19,
+                    "acer", "pc", 500d, "latest acer ",
+                    LocalDate.now(), "large",200L, 4d, 10D
             );
             File f20 = new File("src/main/resources/templates/image/philips-takh402.png");
             FileInputStream fIn20 = new FileInputStream(f20);
             byte[] bytes20 = new byte[(int) f20.length()];
             fIn20.read(bytes20);
             Product p20 = new Product(
-                    null, "philips-takh 402", "white", bytes20,
-                    "philips", "headphone", 500d, "latest philips headphone ",
-                    LocalDate.now(), "large",200L, 4d
+                    null, "philips-takh 402", "#59c3fd", bytes20,
+                    "philips", "tools", 500d, "latest philips headphone ",
+                    LocalDate.now(), "large",200L, 4d, 5D
             );
 
             p.addProduct(p1);
             p.addProduct(p2);
-            p.addProduct(p3);
-            p.addProduct(p4);
-            p.addProduct(p5);
-            p.addProduct(p6);
-            p.addProduct(p7);
-            p.addProduct(p8);
-            p.addProduct(p9);
-            p.addProduct(p10);
-            p.addProduct(p11);
-            p.addProduct(p12);
             p.addProduct(p13);
-            p.addProduct(p14);
+            p.addProduct(p3);
             p.addProduct(p15);
             p.addProduct(p16);
             p.addProduct(p17);
+            p.addProduct(p4);
+            p.addProduct(p5);
+            p.addProduct(p6);
             p.addProduct(p18);
             p.addProduct(p19);
+            p.addProduct(p7);
+            p.addProduct(p12);
+            p.addProduct(p8);
+            p.addProduct(p14);
+            p.addProduct(p9);
+            p.addProduct(p10);
+            p.addProduct(p11);
             p.addProduct(p20);
 
             // static orders
