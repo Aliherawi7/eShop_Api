@@ -60,7 +60,8 @@ public class ProductResource {
                 LocalDate.parse(param.get("productionDate")),
                 param.get("size"),
                 Long.parseLong(param.get("quantityInDepot")),
-                Double.parseDouble(param.get("rate"))
+                Double.parseDouble(param.get("rate")),
+                Double.parseDouble(param.get("discount"))
         );
         productService.addProduct(product);
         return new ResponseEntity<>(product, HttpStatus.CREATED);
