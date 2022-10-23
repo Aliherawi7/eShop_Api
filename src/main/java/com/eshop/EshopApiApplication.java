@@ -111,8 +111,8 @@ public class EshopApiApplication {
             byte[] bytes7 = new byte[(int) f7.length()];
             fIn7.read(bytes7);
             Product p7 = new Product(
-                    null, "Netflix TV", "#eaeaea", bytes7,
-                    "Netflix", "TV", 30d, "latest netflix",
+                    null, "Full HD LED TV", "#eaeaea", bytes7,
+                    "Sharp", "TV", 30d, "latest Sharp",
                     LocalDate.now(), "large",230L, 4d, 0D
             );
             File f8 = new File("src/main/resources/templates/image/8.png");
