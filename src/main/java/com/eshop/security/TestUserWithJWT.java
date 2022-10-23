@@ -22,7 +22,7 @@ public class TestUserWithJWT {
     public TestUserWithJWT(UserAppRepository userAppRepository){
         this.userAppRepository = userAppRepository;
     }
-    public boolean testJWTOfUser(HttpServletRequest request){
+    public boolean testJWTOfUser(HttpServletRequest request, String userEmail){
         String authorizationHeader = request.getHeader("Authorization");
         if (authorizationHeader != null) {
             try {
@@ -38,7 +38,7 @@ public class TestUserWithJWT {
                 UsernamePasswordAuthenticationToken authenticationToken =
                         new UsernamePasswordAuthenticationToken(email, null, authorities);
                 SecurityContextHolder.getContext().setAuthentication(authenticationToken);
-                return true;
+                return userEmail.trim().equalsIgnoreCase(email);
             }catch (Exception e){
                 e.printStackTrace();
                 return false;
@@ -46,6 +46,22 @@ public class TestUserWithJWT {
 
         }else {
             return false;
+        }
+    }
+
+    public String getUserEmailByJWT(HttpServletRequest request){
+        String authorizationHeader = request.getHeader("Authorization");
+        if (authorizationHeader != null) {
+            try {
+                Algorithm algorithm = Algorithm.HMAC256("herawi".getBytes());
+                JWTVerifier jwtVerifier = JWT.require(algorithm).build();
+                DecodedJWT decodedJWT = jwtVerifier.verify(authorizationHeader);
+                return decodedJWT.getSubject();
+            } catch (Exception e) {
+                return null;
+            }
+        }else{
+            return null;
         }
     }
 }
