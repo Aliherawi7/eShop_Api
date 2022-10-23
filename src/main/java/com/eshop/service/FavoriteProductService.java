@@ -10,16 +10,16 @@ import java.util.ArrayList;
 import java.util.Collection;
 
 @Service
-public class FavoriteProductSevice {
+public class FavoriteProductService {
      private final FavoriteProductRepository favoriteProductRepository;
      private final ProductRepository productRepository;
 
-    public FavoriteProductSevice(FavoriteProductRepository favoriteProductRepository, ProductRepository productRepository){
+    public FavoriteProductService(FavoriteProductRepository favoriteProductRepository, ProductRepository productRepository){
         this.favoriteProductRepository = favoriteProductRepository;
         this.productRepository = productRepository;
     }
 
-    public Collection<Product> getFavoriteProducts(String email ){
+    public Collection<Product> getFavoriteProducts(String email){
        Collection<FavoriteProduct> favoriteProducts = favoriteProductRepository.findAllByUserEmail(email);
        Collection<Product> products = new ArrayList<>();
 
