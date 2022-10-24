@@ -28,6 +28,8 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.util.Date;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.stream.Collectors;
 
 
@@ -49,7 +51,7 @@ public class CustomAuthenticationFilter extends UsernamePasswordAuthenticationFi
         System.err.println("auth type:"+request.toString());
         String email = request.getParameter("email");
         String password = request.getParameter("password");
-        UserApp user = null;
+        UserApp user;
 
         if (email != null)
             email = email.trim().toLowerCase();
@@ -66,7 +68,7 @@ public class CustomAuthenticationFilter extends UsernamePasswordAuthenticationFi
                     userService.unlockWhenTimeExpired(user);
 
                     // if user lock time is remained yet
-                } else if (remainMillisSecond > 0) {
+                } else {
                     response.setStatus(HttpStatus.FORBIDDEN.value());
                     response.setHeader("error_message", "Your account is lock now try after expire date");
                     response.setHeader("lock_expireDate", user.getLockTime().toString());
@@ -88,6 +90,7 @@ public class CustomAuthenticationFilter extends UsernamePasswordAuthenticationFi
          * we have to unlock the user and reset the failedAttempt
          * */
         UserApp checkUserActivation = userService.getUser(user.getUsername());
+
         //if user has failed attempts. then reset the failed attempt to zero
         if (checkUserActivation.getFailedAttempt() > 0) {
             userService.resetFailedAttempts(checkUserActivation.getEmail());
@@ -144,48 +147,57 @@ public class CustomAuthenticationFilter extends UsernamePasswordAuthenticationFi
     protected void unsuccessfulAuthentication(HttpServletRequest request, HttpServletResponse response, AuthenticationException failed) throws IOException, ServletException {
         String email = request.getParameter("email");
         UserApp user = userService.getUser(email);
+        Map<String, String> responseMassage = new HashMap<>();
         //check user exist
         if (user != null) {
             // if user account is locked
             if (userService.isAccountLocked(user)) {
-                response.setStatus(HttpStatus.FORBIDDEN.value());
                 response.setHeader("limit_attempt", "Your account is lock now try after expire date");
                 response.setHeader("lock_expireDate", user.getLockTime().toString());
-                response.setHeader("error_message", failed.getMessage()+", password is wrong");
+                response.setHeader("error_message", failed.getMessage()+", Your account is lock now ");
                 response.setHeader("remained_attempts", (UserService.MAX_FAILED_ATTEMPTS - user.getFailedAttempt()) + " attempts chance");
                 response.setHeader("failed_attempts", user.getFailedAttempt() + " failed attempts");
-                response.setStatus(HttpStatus.FORBIDDEN.value());
+                System.out.println("account is lock in password wrong");
+                new ObjectMapper().writeValue(response.getOutputStream(), "Your account is lock now try after expire date");
+                response.setStatus(HttpStatus.NO_CONTENT.value());
                 response.setContentType(MediaType.APPLICATION_JSON_VALUE);
                 return;
             }
             //check if user is not locked increase failed attempts
-            if (!userService.isAccountLocked(user)) {
+            else{
                 userService.increaseFailedAttempts(user);
                 user = userService.getUser(user.getEmail());
             }
             if (user.getFailedAttempt() >= UserService.MAX_FAILED_ATTEMPTS) {
                 userService.lock(user);
                 user = userService.getUser(user.getEmail());
-                response.setStatus(HttpStatus.FORBIDDEN.value());
                 response.setHeader("limit_attempt", "Your account is lock now try after expire date");
                 response.setHeader("error_message", failed.getMessage());
                 response.setHeader("remained_attempts", (UserService.MAX_FAILED_ATTEMPTS - user.getFailedAttempt()) + " attempts chance");
                 response.setHeader("failed_attempts", user.getFailedAttempt() + " failed attempts");
-                response.setStatus(HttpStatus.FORBIDDEN.value());
+                response.setStatus(HttpStatus.NO_CONTENT.value());
                 response.setHeader("lock_expireDate", user.getLockTime().toString());
                 return;
             }
 
-            response.setHeader("error_message", failed.getMessage()+", password is wrong");
+            System.out.println("password is wrong");
+            response.setContentType(MediaType.APPLICATION_JSON_VALUE);
+            response.setHeader("error_message", "password is wrong");
             response.setHeader("remained_attempts", (UserService.MAX_FAILED_ATTEMPTS - user.getFailedAttempt()) + " attempts chance");
             response.setHeader("failed_attempts", user.getFailedAttempt() + " failed attempts");
-            response.setStatus(HttpStatus.FORBIDDEN.value());
-            response.setContentType(MediaType.APPLICATION_JSON_VALUE);
+            response.setStatus(HttpStatus.NO_CONTENT.value());
+
+            responseMassage.put("error_message", "password is wrong");
+            responseMassage.put("remained_attempts",(UserService.MAX_FAILED_ATTEMPTS - user.getFailedAttempt()) + " attempts chance");
+            responseMassage.put("failed_attempts", user.getFailedAttempt() + " failed attempts");
+            new ObjectMapper().writeValue(response.getOutputStream(), responseMassage);
 
         }else{
-            response.setHeader("error_message", failed.getMessage()+" user not found");
-            response.setStatus(HttpStatus.NOT_FOUND.value());
+            System.out.println("email not found");
+            response.setHeader("error_message", "email not found");
+            response.setStatus(HttpStatus.NO_CONTENT.value());
             response.setContentType(MediaType.APPLICATION_JSON_VALUE);
+            new ObjectMapper().writeValue(response.getOutputStream(), "email not found");
         }
 
     }
