@@ -43,7 +43,7 @@ public class UserResource {
         userInfo.setPassword(params.get("password"));
         userInfo.setImage(file.getBytes());
         userInfo.setDob(LocalDate.parse(params.get("dob")));
-        String ipAddress = IPFinderService.getClientIP(request);
+        String ipAddress = IPFinderService.getClientIP(request).equals("127.0.0.1") ? "127.211.152.24" : IPFinderService.getClientIP(request);
         String countryName = IPFinderService.getCountryName(ipAddress);
         userInfo.setLocation(countryName);
         return userService.addUser(userInfo);
