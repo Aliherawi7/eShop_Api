@@ -8,6 +8,7 @@ import com.eshop.model.Role;
 import com.eshop.model.UserApp;
 import com.eshop.service.IPFinderService;
 import com.eshop.service.UserService;
+import org.springframework.boot.context.properties.bind.DefaultValue;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -15,6 +16,9 @@ import org.springframework.web.multipart.MultipartFile;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.websocket.server.PathParam;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
 import java.io.IOException;
 import java.time.LocalDate;
 import java.util.Map;
@@ -35,15 +39,25 @@ public class UserResource {
     }
 
     @PostMapping("/signup")
-    public ResponseEntity<?> addUser(@RequestParam("image")MultipartFile file, @RequestParam Map<String, String> params, HttpServletRequest request) throws IOException {
+    public ResponseEntity<?> addUser(@RequestParam("image") MultipartFile file, @RequestParam Map<String, String> params, HttpServletRequest request) throws IOException {
         UserSignupDTO userInfo = new UserSignupDTO();
         userInfo.setName(params.get("name"));
         userInfo.setLastName(params.get("lastName"));
         userInfo.setEmail(params.get("email"));
         userInfo.setPassword(params.get("password"));
-        userInfo.setImage(file.getBytes());
+        //check if there no file then set the default avatar to the user
+        if(file.isEmpty()){
+            File avatar = new File("src/main/resources/templates/image/ali.jpg");
+            byte[] avatarBytes = new byte[(int)avatar.length()];
+            FileInputStream fileInputStream = new FileInputStream(avatar);
+            fileInputStream.read(avatarBytes);
+            userInfo.setImage(avatarBytes);
+        }else{
+            userInfo.setImage(file.getBytes());
+        }
+
         userInfo.setDob(LocalDate.parse(params.get("dob")));
-        String ipAddress = IPFinderService.getClientIP(request).equals("127.0.0.1") ? "127.211.152.24" : IPFinderService.getClientIP(request);
+        String ipAddress = IPFinderService.getClientIP(request).equals("127.0.0.1") ? "168.211.152.24" : IPFinderService.getClientIP(request);
         String countryName = IPFinderService.getCountryName(ipAddress);
         userInfo.setLocation(countryName);
         return userService.addUser(userInfo);
