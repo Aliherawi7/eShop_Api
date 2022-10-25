@@ -50,6 +50,11 @@ public class UserService implements UserDetailsService {
         this.bCryptPasswordEncoder = bCryptPasswordEncoder;
     }
 
+
+    // find all users size
+    public int getAllUserSize(){
+        return userRepository.findAll().size();
+    }
     // implementing UserDetailService interface for authenticating user
     @Override
     public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException {
@@ -70,9 +75,9 @@ public class UserService implements UserDetailsService {
         UserApp exist = userRepository.findByEmail(user.getEmail().toLowerCase().trim());
         if (exist != null) {
             Map<String, String> body = new HashMap<>();
-            body.put("error_message", "User already exist!");
-            body.put("status_code", HttpStatus.BAD_REQUEST.name());
-            return ResponseEntity.badRequest().contentType(MediaType.APPLICATION_JSON).body(body);
+            body.put("error_message", "email has taken. User already exist!");
+            body.put("status_code", HttpStatus.NON_AUTHORITATIVE_INFORMATION.name());
+            return new ResponseEntity<>(body, HttpStatus.NON_AUTHORITATIVE_INFORMATION);
         } else {
             email = user.getEmail().toLowerCase().trim();
             UserApp userApp = new UserApp();
