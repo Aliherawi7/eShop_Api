@@ -11,6 +11,7 @@ import java.io.IOException;
 import java.time.LocalDate;
 import java.util.Collection;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 /*
  * @Author: Aliherawi
@@ -34,7 +35,7 @@ public class ProductResource {
         if (products.size() > 0) {
             return ResponseEntity.ok().body(products);
         } else {
-            return new ResponseEntity<String>("No Product is available!", HttpStatus.NOT_FOUND);
+            return new ResponseEntity<String>("No Product is available!", HttpStatus.NO_CONTENT);
         }
     }
 
@@ -106,6 +107,20 @@ public class ProductResource {
     /*===========================================*
      *============   query methods   ============*
      *===========================================*/
+    // find product by name
+    @GetMapping(value = "/find", params = {"all"})
+    public ResponseEntity<?> searchProducts(@RequestParam String all) {
+        Collection<Product> products = productService.getAllProducts();
+        String finalAll = all.toLowerCase();
+        products = products.stream().filter(item -> item.getName().toLowerCase().contains(finalAll) || item.getCategory().toLowerCase().contains(finalAll))
+                .collect(Collectors.toList());
+
+        if (products.size() > 0) {
+            return new ResponseEntity<>(products, HttpStatus.OK);
+        } else {
+            return new ResponseEntity<>(products + all, HttpStatus.NO_CONTENT);
+        }
+    }
 
     // find product by name
     @GetMapping(value = "/find", params = {"name"})
