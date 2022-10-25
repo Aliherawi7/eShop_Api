@@ -21,6 +21,7 @@ import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.User;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
+import org.springframework.web.bind.annotation.ResponseBody;
 
 import javax.servlet.FilterChain;
 import javax.servlet.ServletException;
@@ -50,13 +51,16 @@ public class CustomAuthenticationFilter extends UsernamePasswordAuthenticationFi
     public Authentication attemptAuthentication(HttpServletRequest request, HttpServletResponse response) throws AuthenticationException {
         System.err.println("auth type:"+request.toString());
         String email = request.getParameter("email");
+        System.out.println(email + "before if");
         String password = request.getParameter("password");
-        UserApp user;
+        UserApp user = null;
 
-        if (email != null)
+        if (email != null) {
             email = email.trim().toLowerCase();
+            System.out.println(email +"in if");
             user = userService.getUser(email);
 
+        }
         // check if user is not lock and reach to limit attempt failed. the user can't attempt to login
         if (user != null) {
 
@@ -69,9 +73,16 @@ public class CustomAuthenticationFilter extends UsernamePasswordAuthenticationFi
 
                     // if user lock time is remained yet
                 } else {
-                    response.setStatus(HttpStatus.FORBIDDEN.value());
+                    Map<String, String> messages = new HashMap<>();
+                    messages.put("error_message", "Your account is lock now try after expire date");
+                    messages.put("lock_expireDate", user.getLockTime().toString());
                     response.setHeader("error_message", "Your account is lock now try after expire date");
                     response.setHeader("lock_expireDate", user.getLockTime().toString());
+                    try {
+                        new ObjectMapper().writeValue(response.getOutputStream(), messages);
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
                     throw new RuntimeException("Your account is lock now try after expire date. try after: " + user.getLockTime().toString());
                 }
             }
@@ -82,6 +93,7 @@ public class CustomAuthenticationFilter extends UsernamePasswordAuthenticationFi
     }
 
     @Override
+    @ResponseBody
     protected void successfulAuthentication(HttpServletRequest request, HttpServletResponse response, FilterChain chain, Authentication authResult) throws IOException, ServletException, IOException {
         // we need the principal or authenticated user to create JWT token with its information
         User user = (User) authResult.getPrincipal();
@@ -145,22 +157,20 @@ public class CustomAuthenticationFilter extends UsernamePasswordAuthenticationFi
 
     @Override
     protected void unsuccessfulAuthentication(HttpServletRequest request, HttpServletResponse response, AuthenticationException failed) throws IOException, ServletException {
-        String email = request.getParameter("email");
+        String email = request.getParameter("email").trim().toLowerCase();
         UserApp user = userService.getUser(email);
         Map<String, String> responseMassage = new HashMap<>();
         //check user exist
         if (user != null) {
             // if user account is locked
             if (userService.isAccountLocked(user)) {
-                response.setHeader("limit_attempt", "Your account is lock now try after expire date");
-                response.setHeader("lock_expireDate", user.getLockTime().toString());
-                response.setHeader("error_message", failed.getMessage()+", Your account is lock now ");
-                response.setHeader("remained_attempts", (UserService.MAX_FAILED_ATTEMPTS - user.getFailedAttempt()) + " attempts chance");
-                response.setHeader("failed_attempts", user.getFailedAttempt() + " failed attempts");
-                System.out.println("account is lock in password wrong");
-                new ObjectMapper().writeValue(response.getOutputStream(), "Your account is lock now try after expire date");
-                response.setStatus(HttpStatus.NO_CONTENT.value());
+                responseMassage.put("limit_attempt", "Your account is lock now try after expire date");
+                responseMassage.put("lock_expireDate", user.getLockTime().toString());
+                responseMassage.put("error_message", failed.getMessage()+", Your account is lock now ");
+                responseMassage.put("remained_attempts", (UserService.MAX_FAILED_ATTEMPTS - user.getFailedAttempt()) + " attempts chance");
+                responseMassage.put("failed_attempts", user.getFailedAttempt() + " failed attempts");
                 response.setContentType(MediaType.APPLICATION_JSON_VALUE);
+                new ObjectMapper().writeValue(response.getOutputStream(), responseMassage);
                 return;
             }
             //check if user is not locked increase failed attempts
@@ -171,22 +181,19 @@ public class CustomAuthenticationFilter extends UsernamePasswordAuthenticationFi
             if (user.getFailedAttempt() >= UserService.MAX_FAILED_ATTEMPTS) {
                 userService.lock(user);
                 user = userService.getUser(user.getEmail());
-                response.setHeader("limit_attempt", "Your account is lock now try after expire date");
+                responseMassage.put("limit_attempt", "Your account is lock now try after expire date");
+                responseMassage.put("error_message", "Your account is lock now try after expire date");
+                responseMassage.put("remained_attempts", (UserService.MAX_FAILED_ATTEMPTS - user.getFailedAttempt()) + " attempts chance");
+                responseMassage.put("failed_attempts", user.getFailedAttempt() + " failed attempts");
+                responseMassage.put("lock_expireDate", user.getLockTime().toString());
                 response.setHeader("error_message", failed.getMessage());
-                response.setHeader("remained_attempts", (UserService.MAX_FAILED_ATTEMPTS - user.getFailedAttempt()) + " attempts chance");
-                response.setHeader("failed_attempts", user.getFailedAttempt() + " failed attempts");
-                response.setStatus(HttpStatus.NO_CONTENT.value());
-                response.setHeader("lock_expireDate", user.getLockTime().toString());
+                new ObjectMapper().writeValue(response.getOutputStream(), responseMassage);
                 return;
             }
 
             System.out.println("password is wrong");
             response.setContentType(MediaType.APPLICATION_JSON_VALUE);
             response.setHeader("error_message", "password is wrong");
-            response.setHeader("remained_attempts", (UserService.MAX_FAILED_ATTEMPTS - user.getFailedAttempt()) + " attempts chance");
-            response.setHeader("failed_attempts", user.getFailedAttempt() + " failed attempts");
-            response.setStatus(HttpStatus.NO_CONTENT.value());
-
             responseMassage.put("error_message", "password is wrong");
             responseMassage.put("remained_attempts",(UserService.MAX_FAILED_ATTEMPTS - user.getFailedAttempt()) + " attempts chance");
             responseMassage.put("failed_attempts", user.getFailedAttempt() + " failed attempts");
@@ -195,9 +202,9 @@ public class CustomAuthenticationFilter extends UsernamePasswordAuthenticationFi
         }else{
             System.out.println("email not found");
             response.setHeader("error_message", "email not found");
-            response.setStatus(HttpStatus.NO_CONTENT.value());
             response.setContentType(MediaType.APPLICATION_JSON_VALUE);
-            new ObjectMapper().writeValue(response.getOutputStream(), "email not found");
+            responseMassage.put("error_message", "email not found");
+            new ObjectMapper().writeValue(response.getOutputStream(), responseMassage);
         }
 
     }
