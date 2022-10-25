@@ -16,6 +16,11 @@ public class BrandService {
         this.brandRepository = brandRepository;
     }
 
+
+    public int getAllBrandSize(){
+        return brandRepository.findAll().size();
+    }
+
     public Collection<Brand> getAllBrands(){
         return brandRepository.findAll();
     }
