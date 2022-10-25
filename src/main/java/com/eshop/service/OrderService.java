@@ -30,6 +30,10 @@ public class OrderService {
         this.ipFinderService = ipFinderService;
         this.productRepository = productRepository;
     }
+    // find number of orders
+    public int getAllOrderSize(){
+        return orderRepository.findAll().size();
+    }
 
     // find order by id
     public ResponseEntity<?> getOrder(Long id) {
