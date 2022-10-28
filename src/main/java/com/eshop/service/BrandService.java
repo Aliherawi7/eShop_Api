@@ -17,10 +17,6 @@ public class BrandService {
     }
 
 
-    public int getAllBrandSize(){
-        return brandRepository.findAll().size();
-    }
-
     public Collection<Brand> getAllBrands(){
         return brandRepository.findAll();
     }
