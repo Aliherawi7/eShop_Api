@@ -6,7 +6,7 @@ import java.time.LocalDate;
 import java.time.LocalDateTime;
 
 @Entity
-public class OrderApp {
+public class OrderApp implements Comparable{
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
@@ -48,6 +48,18 @@ public class OrderApp {
         this.quantity = quantity;
         this.delivered = false;
         this.amount = amount;
+    }
+
+    @Override
+    public int compareTo(Object o){
+        OrderApp orderApp = (OrderApp) o;
+        if(this.orderDate.getYear() > ((OrderApp) o).getOrderDate().getYear()){
+            return this.orderDate.getMonth().compareTo(orderApp.getOrderDate().getMonth());
+        }else if(this.orderDate.getYear() < ((OrderApp) o).getOrderDate().getYear()){
+            return -1;
+        }else{
+            return 0;
+        }
     }
 
     public Long getId() {
@@ -177,4 +189,6 @@ public class OrderApp {
     public void setAmount(Double amount) {
         this.amount = amount;
     }
+
+
 }
