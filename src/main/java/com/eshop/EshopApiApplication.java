@@ -263,8 +263,10 @@ public class EshopApiApplication {
             // static orders
 
             OrderApp order1 = new OrderApp(1L, 1L, 1L, "Afghanistan", 2, 10.0);
-            OrderApp order2 = new OrderApp(2L, 1L, 1L, "Afghanistan", 3, 20.3);
-            OrderApp order3 = new OrderApp(2L, 1L, 1L, "Afghanistan", 5, 100.5);
+            OrderApp order2 = new OrderApp(2L, 1L, 2L, "Afghanistan", 3, 20.3);
+            OrderApp order3 = new OrderApp(3L, 1L, 1L, "Afghanistan", 4, 100.5);
+            order3.setOrderDate(LocalDate.of(2022, 7, 2));
+            order2.setOrderDate(LocalDate.of(2022, 5, 23));
             orderService.addOrder(order1);
             orderService.addOrder(order2);
             orderService.addOrder(order3);
@@ -286,7 +288,7 @@ public class EshopApiApplication {
             FileInputStream logoFIS3 = new FileInputStream(lgLogo);
             byte[] lgByte = new byte[(int) hpLogo.length()];
             logoFIS3.read(lgByte);
-            Brand b3 = new Brand(null, "lg",lgByte);
+            Brand b3 = new Brand(null, "lg", lgByte);
 
             File msLogo = new File("src/main/resources/templates/image/brands/microsoft.png");
             FileInputStream logoFIS4 = new FileInputStream(msLogo);
