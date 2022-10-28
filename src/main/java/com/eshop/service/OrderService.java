@@ -30,10 +30,6 @@ public class OrderService {
         this.ipFinderService = ipFinderService;
         this.productRepository = productRepository;
     }
-    // find number of orders
-    public int getAllOrderSize(){
-        return orderRepository.findAll().size();
-    }
 
     // find order by id
     public ResponseEntity<?> getOrder(Long id) {
@@ -55,6 +51,9 @@ public class OrderService {
             m.add("statusText","No content");
             return new ResponseEntity<>(orders, m, HttpStatus.NO_CONTENT);
         }
+    }
+    public Collection<OrderApp> getAllOrders(){
+        return orderRepository.findAll();
     }
 
     // save order
