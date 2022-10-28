@@ -51,10 +51,7 @@ public class UserService implements UserDetailsService {
     }
 
 
-    // find all users size
-    public int getAllUserSize(){
-        return userRepository.findAll().size();
-    }
+
     // implementing UserDetailService interface for authenticating user
     @Override
     public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException {
