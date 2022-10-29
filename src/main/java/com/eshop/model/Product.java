@@ -23,10 +23,12 @@ public class Product {
     private Long quantityInDepot;
     private Double rate;
     private Double discount;
+    private LocalDate addedDate;
 
     public Product() {
         this.discount = 0D;
         this.rate = 4.3;
+        this.addedDate = LocalDate.now();
     }
 
     public Product(Long id, String name, String color, byte[] image,
@@ -45,6 +47,7 @@ public class Product {
         this.quantityInDepot = quantityInDepot;
         this.rate = rate;
         this.discount = discount;
+        this.addedDate = LocalDate.now();
     }
 
     public Long getId() {
@@ -149,5 +152,13 @@ public class Product {
 
     public void setDiscount(Double discount) {
         this.discount = discount;
+    }
+
+    public LocalDate getAddedDate() {
+        return addedDate;
+    }
+
+    public void setAddedDate(LocalDate addedDate) {
+        this.addedDate = addedDate;
     }
 }
