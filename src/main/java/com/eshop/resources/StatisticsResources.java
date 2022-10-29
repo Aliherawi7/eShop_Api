@@ -44,7 +44,11 @@ public class StatisticsResources {
                 break;
             }
             case "users":{
-
+                monthlyDataDTO = statisticsService.totalJoinedUserMonthly();
+                break;
+            }
+            case "products":{
+                monthlyDataDTO = statisticsService.totalAddedProductsMonthly();
                 break;
             }
             default:{
