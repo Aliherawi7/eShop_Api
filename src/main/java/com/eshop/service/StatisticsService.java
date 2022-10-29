@@ -35,8 +35,8 @@ public class StatisticsService {
     }
 
     public SummeryDTO getModelSummery(){
-        int products = productRepository.findAll().size();
-        int orders = orderRepository.findAll().size();
+        long products = productRepository.findAll().stream().mapToLong(Product::getQuantityInDepot).sum();
+        long orders = orderRepository.findAll().stream().mapToLong(OrderApp::getQuantity).sum();
         int users = userAppRepository.findAll().size();
         int categories = 5;
         int brands = brandRepository.findAll().size();
@@ -128,11 +128,11 @@ public class StatisticsService {
             }
             int tempIndex = index;
             int tempCurrentYear = year;
-            int totalOrders = (int) getAllUsers().stream().filter(item -> item.getJoinedDate().getYear() == tempCurrentYear &&
+            int totalUsers = (int) getAllUsers().stream().filter(item -> item.getJoinedDate().getYear() == tempCurrentYear &&
                     item.getJoinedDate().getMonth().toString()
                             .toLowerCase().startsWith(monthsArray[tempIndex].toLowerCase())).count();
             // add the total orders of the month to data array
-            data.add(totalOrders);
+            data.add(totalUsers);
             // add the month name to the month array
             months.add(monthsArray[index].substring(0, 3));
 
@@ -154,8 +154,8 @@ public class StatisticsService {
         // calculate the total joined users of the current month
         int currentYear = year;
         int dataOfLastMonth = (int) getAllProducts().stream().filter(item ->
-                item.getAddedDate().getYear() == currentYear && item.getAddedDate().getMonth()
-                        .toString().toLowerCase().startsWith(lastMonth)).count();
+                item.getUpdateInDepot().getYear() == currentYear && item.getUpdateInDepot().getMonth()
+                        .toString().toLowerCase().startsWith(lastMonth)).mapToLong(Product::getQuantityInDepot).sum();
 
         // add the total added products of the current month into data array
         data.add(dataOfLastMonth);
@@ -172,11 +172,13 @@ public class StatisticsService {
             }
             int tempIndex = index;
             int tempCurrentYear = year;
-            int totalAddedProducts = (int) getAllProducts().stream().filter(item -> item.getAddedDate().getYear() == tempCurrentYear &&
-                    item.getAddedDate().getMonth().toString()
-                            .toLowerCase().startsWith(monthsArray[tempIndex].toLowerCase())).count();
+            int totalAddedProducts = (int) getAllProducts().stream().filter(item -> item.getUpdateInDepot().getYear() == tempCurrentYear &&
+                         item.getUpdateInDepot().getMonth().toString()
+                                .toLowerCase().startsWith(monthsArray[tempIndex].toLowerCase()))
+                    .mapToLong(Product::getQuantityInDepot).sum();
             // add the total added products of the month to data array
             data.add(totalAddedProducts);
+
             // add the month name to the month array
             months.add(monthsArray[index].substring(0, 3));
         }
