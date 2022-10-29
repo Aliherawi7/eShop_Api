@@ -1,8 +1,8 @@
 package com.eshop.dto;
 
 public class SummeryDTO {
-    private int products;
-    private int orders;
+    private Long products;
+    private Long orders;
     private int categories;
     private int users;
     private int brands;
@@ -10,7 +10,7 @@ public class SummeryDTO {
     public SummeryDTO() {
     }
 
-    public SummeryDTO(int products, int orders, int categories, int users, int brands) {
+    public SummeryDTO(Long products, Long orders, int categories, int users, int brands) {
         this.products = products;
         this.orders = orders;
         this.categories = categories;
@@ -18,19 +18,19 @@ public class SummeryDTO {
         this.brands = brands;
     }
 
-    public int getProducts() {
+    public Long getProducts() {
         return products;
     }
 
-    public void setProducts(int products) {
+    public void setProducts(Long products) {
         this.products = products;
     }
 
-    public int getOrders() {
+    public Long getOrders() {
         return orders;
     }
 
-    public void setOrders(int orders) {
+    public void setOrders(Long orders) {
         this.orders = orders;
     }
 
