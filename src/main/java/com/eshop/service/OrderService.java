@@ -64,6 +64,8 @@ public class OrderService {
         if(optionalProduct.isPresent()){
             product = optionalProduct.get();
             product.setQuantityInDepot(product.getQuantityInDepot() - order.getQuantity());
+            // calculate the total of price automatically
+            order.setAmount(order.getQuantity() * product.getPrice());
             productRepository.save(product);
         }
         orderRepository.save(order);
