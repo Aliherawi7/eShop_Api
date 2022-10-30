@@ -10,9 +10,9 @@ import java.time.LocalDateTime;
 public class Comment {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
-    private Long id;
-    private Long productId;
-    private Long userId;
+    private long id;
+    private long productId;
+    private long userId;
     private LocalDateTime commentDate;
     private String comment;
     private int rate;
@@ -20,7 +20,7 @@ public class Comment {
     public Comment() {
     }
 
-    public Comment(Long id, Long productId, Long userId, LocalDateTime commentDate, String comment, int rate) {
+    public Comment(long id, long productId, long userId, LocalDateTime commentDate, String comment, int rate) {
         this.id = id;
         this.productId = productId;
         this.userId = userId;
@@ -29,27 +29,27 @@ public class Comment {
         this.rate = rate;
     }
 
-    public Long getId() {
+    public long getId() {
         return id;
     }
 
-    public void setId(Long id) {
+    public void setId(long id) {
         this.id = id;
     }
 
-    public Long getProductId() {
+    public long getProductId() {
         return productId;
     }
 
-    public void setProductId(Long productId) {
+    public void setProductId(long productId) {
         this.productId = productId;
     }
 
-    public Long getUserId() {
+    public long getUserId() {
         return userId;
     }
 
-    public void setUserId(Long userId) {
+    public void setUserId(long userId) {
         this.userId = userId;
     }
 
