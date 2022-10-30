@@ -1,10 +1,10 @@
 package com.eshop.resources;
 
-import com.eshop.model.Comment;
+import com.eshop.dto.CommentDTO;
+import com.eshop.dto.SaveCommentDTO;
 import com.eshop.service.CommentService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-
 import javax.servlet.http.HttpServletRequest;
 import java.util.Collection;
 
@@ -13,54 +13,59 @@ import java.util.Collection;
 public class CommentResource {
     private final CommentService commentService;
 
-    public CommentResource(CommentService commentService){
+    public CommentResource(CommentService commentService) {
         this.commentService = commentService;
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<?> getComment(@PathVariable long id){
-        Comment comment = commentService.getComment(id);
-        if(comment != null){
+    public ResponseEntity<?> getComment(@PathVariable long id) {
+        CommentDTO comment = commentService.getComment(id);
+        if (comment != null) {
             return ResponseEntity.ok().body(comment);
-        }else{
+        } else {
             return ResponseEntity.noContent().build();
         }
     }
 
     @GetMapping
-    public ResponseEntity<?> getAllComments(){
-        Collection<Comment> comments = commentService.getAllComments();
-        if(comments.size() > 0){
+    public ResponseEntity<?> getAllComments() {
+        Collection<CommentDTO> comments = commentService.getAllComments();
+        if (comments.size() > 0) {
             return ResponseEntity.ok().body(comments);
-        }else{
+        } else {
             return ResponseEntity.noContent().build();
         }
     }
 
     @GetMapping("/products/{id}")
-    public ResponseEntity<?> getAllCommentByProductId(@PathVariable(value = "id") long productId){
-        Collection<Comment> comments = commentService.getAllCommentsByProductId(productId);
-        if(comments.size() >0){
+    public ResponseEntity<?> getAllCommentByProductId(@PathVariable(value = "id") long productId) {
+        Collection<CommentDTO> comments = commentService.getAllCommentsByProductId(productId);
+        if (comments.size() > 0) {
             return ResponseEntity.ok().body(comments);
-        }else{
+        } else {
             return ResponseEntity.noContent().build();
         }
     }
 
     @GetMapping("users/{id}")
-    public ResponseEntity<?> getAllCommentByUserId(@PathVariable(value = "id") long userId){
-        Collection<Comment> comments = commentService.getAllCommentByUserId(userId);
-        if(comments.size() > 0){
+    public ResponseEntity<?> getAllCommentByUserId(@PathVariable(value = "id") long userId) {
+        Collection<CommentDTO> comments = commentService.getAllCommentByUserId(userId);
+        if (comments.size() > 0) {
             return ResponseEntity.ok().body(comments);
-        }else {
+        } else {
             return ResponseEntity.noContent().build();
         }
     }
 
     @PostMapping
-    public ResponseEntity<?> addComment(Comment comment, HttpServletRequest request){
-
+    public ResponseEntity<?> addComment(SaveCommentDTO saveCommentDTO, HttpServletRequest request) {
+        commentService.addComment(saveCommentDTO, request);
+        return ResponseEntity.ok().body("save successfully");
     }
-
+    @PutMapping
+    public ResponseEntity<?> updateComment(SaveCommentDTO saveCommentDTO, HttpServletRequest request) {
+        commentService.updateComment(saveCommentDTO, request);
+        return ResponseEntity.ok().body("save successfully");
+    }
 
 }
