@@ -5,24 +5,19 @@ import com.auth0.jwt.JWTVerifier;
 import com.auth0.jwt.algorithms.Algorithm;
 import com.auth0.jwt.interfaces.DecodedJWT;
 import com.eshop.repository.UserAppRepository;
-import com.fasterxml.jackson.databind.ObjectMapper;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.MediaType;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
-
 import javax.servlet.http.HttpServletRequest;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collection;
 
 @Service
 public class TestUserWithJWT {
-    private final UserAppRepository userAppRepository;
-    public TestUserWithJWT(UserAppRepository userAppRepository){
-        this.userAppRepository = userAppRepository;
-    }
-    public boolean testJWTOfUser(HttpServletRequest request, String userEmail){
+
+    public static boolean testJWTOfUser(HttpServletRequest request, String userEmail){
         String authorizationHeader = request.getHeader("Authorization");
         if (authorizationHeader != null) {
             try {
@@ -49,7 +44,7 @@ public class TestUserWithJWT {
         }
     }
 
-    public String getUserEmailByJWT(HttpServletRequest request){
+    public static String getUserEmailByJWT(HttpServletRequest request){
         String authorizationHeader = request.getHeader("Authorization");
         if (authorizationHeader != null) {
             try {
