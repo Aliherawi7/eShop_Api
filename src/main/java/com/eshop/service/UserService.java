@@ -109,6 +109,11 @@ public class UserService implements UserDetailsService {
         return userRepository.findByEmail(email);
     }
 
+    // find user by id
+    public UserApp getUser(long id) {
+        return userRepository.findById(id).orElse(null);
+    }
+
     // add role to the user
     public ResponseEntity<?> addRoleToUser(String email, String roleName) {
         UserApp user = userRepository.findByEmail(email);
