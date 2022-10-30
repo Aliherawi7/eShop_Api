@@ -7,7 +7,6 @@ import com.eshop.service.FavoriteProductService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-
 import javax.servlet.http.HttpServletRequest;
 import java.util.Collection;
 
@@ -15,16 +14,14 @@ import java.util.Collection;
 @RequestMapping("/api/favorites")
 public class FavoriteProductResource {
     private final FavoriteProductService favoriteProductService;
-    private final TestUserWithJWT testUserWithJWT;
 
-    public FavoriteProductResource(FavoriteProductService favoriteProductService, TestUserWithJWT testUserWithJWT){
+    public FavoriteProductResource(FavoriteProductService favoriteProductService){
         this.favoriteProductService = favoriteProductService;
-        this.testUserWithJWT = testUserWithJWT;
     }
 
     @GetMapping
     public ResponseEntity<?> getAllFavoriteProducts(HttpServletRequest request){
-        String email = testUserWithJWT.getUserEmailByJWT(request);
+        String email = TestUserWithJWT.getUserEmailByJWT(request);
         if(email != null){
             Collection<Product> products = favoriteProductService.getFavoriteProducts(email);
             if(products.size() > 0){
@@ -38,7 +35,7 @@ public class FavoriteProductResource {
     }
     @PostMapping
     public ResponseEntity<?> addFavoriteProduct(HttpServletRequest request, @RequestBody FavoriteProduct favoriteProduct){
-        String email = testUserWithJWT.getUserEmailByJWT(request);
+        String email = TestUserWithJWT.getUserEmailByJWT(request);
         favoriteProduct.setUserEmail(email);
         favoriteProductService.addFavoriteProduct(favoriteProduct);
         return ResponseEntity.ok().body("product successfully added");
@@ -46,7 +43,7 @@ public class FavoriteProductResource {
 
     @DeleteMapping("/{productId}")
     public ResponseEntity<?> deleteFavoriteProduct(@PathVariable Long productId, HttpServletRequest request){
-        String email = testUserWithJWT.getUserEmailByJWT(request);
+        String email = TestUserWithJWT.getUserEmailByJWT(request);
         System.out.println(productId);
         System.out.println(email);
         favoriteProductService.deleteFavoriteProduct(productId, email);
