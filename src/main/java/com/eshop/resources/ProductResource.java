@@ -2,11 +2,11 @@ package com.eshop.resources;
 
 import com.eshop.model.Product;
 import com.eshop.service.ProductService;
-import com.sun.deploy.net.proxy.pac.PACFunctions;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
+
 import java.io.IOException;
 import java.time.LocalDate;
 import java.util.Collection;
@@ -47,23 +47,23 @@ public class ProductResource {
 
     // save the product in database
     @PostMapping(value = "/save")
-    public ResponseEntity<?> addProduct(@RequestParam("image")MultipartFile file, @RequestParam Map<String, String> param) throws IOException {
-        byte[] bytes = file.getBytes();
-        Product product = new Product(
-                null,
-                param.get("name"),
-                param.get("color"),
-                bytes,
-                param.get("brandName"),
-                param.get("category"),
-                Double.parseDouble(param.get("price")),
-                param.get("description"),
-                LocalDate.parse(param.get("productionDate")),
-                param.get("size"),
-                Long.parseLong(param.get("quantityInDepot")),
-                Double.parseDouble(param.get("rate")),
-                Double.parseDouble(param.get("discount"))
-        );
+    public ResponseEntity<?> addProduct(@RequestParam("image")MultipartFile file, @RequestParam Map<String, String> params) throws IOException {
+        Product product = new Product();
+        product.setName(params.get("name"));
+        product.setCategory(params.get("category"));
+        product.setBrandName(params.get("brandName"));
+        product.setPrice(Double.parseDouble(params.get("price")));
+        product.setProductionDate(LocalDate.parse(params.get("productionDate")));
+        product.setColor(params.get("color"));
+        product.setDescription(params.get("description"));
+        product.setQuantityInDepot(Long.parseLong(params.get("quantityInDepot")));
+        product.setSize(params.get("size"));
+        product.setDiscount(Double.parseDouble(params.get("discount")));
+        try {
+            product.setImage(file.getBytes());
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
         productService.addProduct(product);
         return new ResponseEntity<>(product, HttpStatus.CREATED);
 
@@ -83,6 +83,7 @@ public class ProductResource {
         product.setDescription(params.get("description"));
         product.setQuantityInDepot(Long.parseLong(params.get("quantityInDepot")));
         product.setSize(params.get("size"));
+        product.setDiscount(Double.parseDouble(params.get("discount")));
         try {
             product.setImage(image.getBytes());
         } catch (IOException e) {
