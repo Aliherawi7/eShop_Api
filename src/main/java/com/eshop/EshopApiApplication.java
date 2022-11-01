@@ -2,6 +2,7 @@ package com.eshop;
 
 import com.eshop.dto.UserSignupDTO;
 import com.eshop.model.*;
+import com.eshop.repository.CommentRepository;
 import com.eshop.repository.RoleRepository;
 import com.eshop.service.BrandService;
 import com.eshop.service.OrderService;
@@ -15,6 +16,7 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import java.io.File;
 import java.io.FileInputStream;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 
 
 @SpringBootApplication
@@ -32,22 +34,42 @@ public class EshopApiApplication {
 
     @Bean
     CommandLineRunner run(ProductService p, UserService userService,
-                          RoleRepository roleRepository, OrderService orderService, BrandService brandService) {
+                          RoleRepository roleRepository, OrderService orderService,
+                          BrandService brandService, CommentRepository commentRepository) {
         return args -> {
 
-            File avatar1 = new File("src/main/resources/templates/image/ali.jpg");
+            File avatar1 = new File("src/main/resources/templates/image/users/user1.jpg");
             byte[] avatarBytes1 = new byte[(int)avatar1.length()];
-            FileInputStream fileInputStream = new FileInputStream(avatar1);
-            fileInputStream.read(avatarBytes1);
-            UserSignupDTO user = new UserSignupDTO("Ali", "herawi",
+            FileInputStream fileInputStream1 = new FileInputStream(avatar1);
+            fileInputStream1.read(avatarBytes1);
+            UserSignupDTO user1 = new UserSignupDTO("Ali", "herawi",
                     "aliherawi7@gmail.com", LocalDate.of(1999, 3, 25),
                     "12345",avatarBytes1 , "Afghanistan");
+            File avatar2 = new File("src/main/resources/templates/image/users/user2.jpg");
+            byte[] avatarBytes2 = new byte[(int)avatar2.length()];
+            FileInputStream fileInputStream2 = new FileInputStream(avatar2);
+            fileInputStream2.read(avatarBytes2);
+            UserSignupDTO user2 = new UserSignupDTO("Alexa", "Jhonson",
+                    "Alexajhonson@gmail.com", LocalDate.of(2000, 3, 25),
+                    "12345",avatarBytes2 , "USA");
+
+            File avatar3 = new File("src/main/resources/templates/image/users/user3.jpg");
+            byte[] avatarBytes3 = new byte[(int)avatar3.length()];
+            FileInputStream fileInputStream3 = new FileInputStream(avatar3);
+            fileInputStream3.read(avatarBytes3);
+            UserSignupDTO user3 = new UserSignupDTO("Amanda", "Jepson",
+                    "Amandajepson@gmail.com", LocalDate.of(2000, 3, 25),
+                    "12345",avatarBytes3 , "UK");
+
+
             Role role_user = new Role(1, "USER");
             Role role_admin = new Role(2, "ADMIN");
             roleRepository.save(role_admin);
             roleRepository.save(role_user);
-            userService.addUser(user);
-            userService.addRoleToUser(user.getEmail(), role_admin.getName());
+            userService.addUser(user1);
+            userService.addUser(user2);
+            userService.addUser(user3);
+            userService.addRoleToUser(user1.getEmail(), role_admin.getName());
 
             // static products
             File f1 = new File("src/main/resources/templates/image/1.png");
@@ -308,12 +330,6 @@ public class EshopApiApplication {
             logoFIS2.read(hpByte);
             Brand b2 = new Brand(null, "hp",hpByte);
 
-            File lgLogo = new File("src/main/resources/templates/image/brands/lg-electronics.png");
-            FileInputStream logoFIS3 = new FileInputStream(lgLogo);
-            byte[] lgByte = new byte[(int) hpLogo.length()];
-            logoFIS3.read(lgByte);
-            Brand b3 = new Brand(null, "lg", lgByte);
-
             File msLogo = new File("src/main/resources/templates/image/brands/microsoft.png");
             FileInputStream logoFIS4 = new FileInputStream(msLogo);
             byte[] msByte = new byte[(int) msLogo.length()];
@@ -340,11 +356,24 @@ public class EshopApiApplication {
 
             brandService.addBrand(b1);
             brandService.addBrand(b2);
-          //  brandService.addBrand(b3);
             brandService.addBrand(b4);
             brandService.addBrand(b5);
             brandService.addBrand(b6);
             brandService.addBrand(b7);
+
+
+            // static comments
+
+
+            p.getAllProducts().forEach(item ->{
+                Comment c2 = new Comment(2L, item.getId(), 2, LocalDateTime.now(),
+                        "oh so expensive!", 5, 2, 0);
+                Comment c3 = new Comment(3L, item.getId(), 3, LocalDateTime.now(),
+                        "is there any role for changing the arrived product?", 4, 0, 1);
+                commentRepository.save(c2);
+                commentRepository.save(c3);
+            });
+
         };
     }
 
