@@ -58,14 +58,12 @@ public class CommentResource {
     }
 
     @PostMapping
-    public ResponseEntity<?> addComment(SaveCommentDTO saveCommentDTO, HttpServletRequest request) {
-        commentService.addComment(saveCommentDTO, request);
-        return ResponseEntity.ok().body("save successfully");
+    public ResponseEntity<?> addComment(@RequestBody SaveCommentDTO saveCommentDTO, HttpServletRequest request) {
+        return ResponseEntity.ok().body(commentService.addComment(saveCommentDTO, request));
     }
     @PutMapping
-    public ResponseEntity<?> updateComment(SaveCommentDTO saveCommentDTO, HttpServletRequest request) {
-        commentService.updateComment(saveCommentDTO, request);
-        return ResponseEntity.ok().body("save successfully");
+    public ResponseEntity<?> updateComment(@RequestBody SaveCommentDTO saveCommentDTO, HttpServletRequest request) {
+        return ResponseEntity.ok().body(commentService.updateComment(saveCommentDTO, request));
     }
 
 }

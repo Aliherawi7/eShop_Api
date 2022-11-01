@@ -3,21 +3,36 @@ package com.eshop.dto;
 import java.time.LocalDateTime;
 
 public class CommentDTO {
+    private long commentId;
     private String userName;
-    private String comment;
+    private String message;
     private int rate;
     private LocalDateTime commentDate;
     private byte[] userImage;
+    private long likes;
+    private long disLikes;
 
     public CommentDTO() {
     }
 
-    public CommentDTO(String userName, String comment, int rate, LocalDateTime commentDate, byte[] userImage) {
+    public CommentDTO(long commentId, String userName, String message,
+                      int rate, LocalDateTime commentDate, byte[] userImage) {
+        this.commentId = commentId;
         this.userName = userName;
-        this.comment = comment;
+        this.message = message;
         this.rate = rate;
         this.commentDate = commentDate;
         this.userImage = userImage;
+        this.likes = 0;
+        this.disLikes = 0;
+    }
+
+    public long getCommentId() {
+        return commentId;
+    }
+
+    public void setCommentId(long commentId) {
+        this.commentId = commentId;
     }
 
     public String getUserName() {
@@ -28,12 +43,12 @@ public class CommentDTO {
         this.userName = userName;
     }
 
-    public String getComment() {
-        return comment;
+    public String getMessage() {
+        return message;
     }
 
-    public void setComment(String comment) {
-        this.comment = comment;
+    public void setMessage(String message) {
+        this.message = message;
     }
 
     public int getRate() {
@@ -58,5 +73,21 @@ public class CommentDTO {
 
     public void setUserImage(byte[] userImage) {
         this.userImage = userImage;
+    }
+
+    public long getLikes() {
+        return likes;
+    }
+
+    public void setLikes(long likes) {
+        this.likes = likes;
+    }
+
+    public long getDisLikes() {
+        return disLikes;
+    }
+
+    public void setDisLikes(long disLikes) {
+        this.disLikes = disLikes;
     }
 }

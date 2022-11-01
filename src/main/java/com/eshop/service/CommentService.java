@@ -30,8 +30,8 @@ public class CommentService {
                     CommentDTO commentDTO = new CommentDTO();
                     UserApp user = userService.getUser(item.getUserId());
                     commentDTO.setUserName(user.getName() + " " + user.getLastName());
-                    commentDTO.setComment(item.getComment());
-                    commentDTO.setRate(item.getRete());
+                    commentDTO.setMessage(item.getMessage());
+                    commentDTO.setRate(item.getRate());
                     commentDTO.setUserImage(user.getImage());
                     commentDTO.setCommentDate(item.getCommentDate());
                     return commentDTO;
@@ -45,48 +45,87 @@ public class CommentService {
         if (comment != null) {
             UserApp user = userService.getUser(comment.getUserId());
             commentDTO.setUserName(user.getName() + " " + user.getLastName());
-            commentDTO.setComment(comment.getComment());
-            commentDTO.setRate(comment.getRete());
+            commentDTO.setMessage(comment.getMessage());
+            commentDTO.setRate(comment.getRate());
             commentDTO.setUserImage(user.getImage());
             commentDTO.setCommentDate(comment.getCommentDate());
+            commentDTO.setLikes(0);
+            commentDTO.setDisLikes(0);
         }
         return commentDTO;
     }
 
-    public void addComment(SaveCommentDTO saveCommentDTO, HttpServletRequest request) {
+    public CommentDTO addComment(SaveCommentDTO saveCommentDTO, HttpServletRequest request) {
         Comment comment = new Comment();
         long userId = userService.getUser(TestUserWithJWT.getUserEmailByJWT(request)).getId();
         comment.setUserId(userId);
-        comment.setComment(saveCommentDTO.getComment());
+        comment.setMessage(saveCommentDTO.getMessage());
         comment.setCommentDate(LocalDateTime.now());
         comment.setProductId(saveCommentDTO.getProductId());
-        comment.setRete(saveCommentDTO.getRate());
-        commentRepository.save(comment);
+        comment.setRate(saveCommentDTO.getRate());
+        // save the comment and get the comment id back
+        long commentId = commentRepository.save(comment).getId();
+
+        return new CommentDTO(
+                commentId,
+                userService.getUser(userId).getName()+" "+userService.getUser(userId).getLastName(),
+                saveCommentDTO.getMessage(),
+                saveCommentDTO.getRate(),
+                LocalDateTime.now(),
+                userService.getUser(userId).getImage()
+        );
     }
 
-    public void updateComment(SaveCommentDTO saveCommentDTO ,HttpServletRequest request) {
+    public CommentDTO updateComment(SaveCommentDTO saveCommentDTO ,HttpServletRequest request) {
         if (commentRepository.findById(saveCommentDTO.getId()).isPresent()) {
             Comment comment = new Comment();
-            long userId = userService.getUser(TestUserWithJWT.getUserEmailByJWT(request)).getId();
+            UserApp user = userService.getUser(TestUserWithJWT.getUserEmailByJWT(request));
             comment.setId(saveCommentDTO.getId());
-            comment.setUserId(userId);
-            comment.setComment(saveCommentDTO.getComment());
+            comment.setUserId(user.getId());
+            comment.setMessage(saveCommentDTO.getMessage());
             comment.setCommentDate(LocalDateTime.now());
             comment.setProductId(saveCommentDTO.getProductId());
-            comment.setRete(saveCommentDTO.getRate());
+            comment.setRate(saveCommentDTO.getRate());
             commentRepository.save(comment);
+            return new CommentDTO(
+                    saveCommentDTO.getId(),
+                    user.getName() + " " + user.getLastName(),
+                    saveCommentDTO.getMessage(),
+                    saveCommentDTO.getRate(),
+                    LocalDateTime.now(),
+                    user.getImage()
+            );
+        }else{
+            return null;
         }
     }
 
-    public Collection<CommentDTO> getAllCommentsByProductId(Long id) {
+    public Collection<CommentDTO> getAllCommentsByProductId(long id) {
         return commentRepository.findAllByProductId(id)
                 .stream()
                 .map(item -> {
                     CommentDTO commentDTO = new CommentDTO();
                     UserApp user = userService.getUser(item.getUserId());
                     commentDTO.setUserName(user.getName() + " " + user.getLastName());
-                    commentDTO.setComment(item.getComment());
-                    commentDTO.setRate(item.getRete());
+                    commentDTO.setMessage(item.getMessage());
+                    commentDTO.setRate(item.getRate());
+                    commentDTO.setUserImage(user.getImage());
+                    commentDTO.setCommentDate(item.getCommentDate());
+                    System.out.println(item.getUserId()+ " "+ item.getMessage()+" " +item.getProductId());
+                    return commentDTO;
+                })
+                .collect(Collectors.toList());
+    }
+
+    public Collection<CommentDTO> getAllCommentByUserId(long userId) {
+        return commentRepository.findAllByUserId(userId)
+                .stream()
+                .map(item -> {
+                    CommentDTO commentDTO = new CommentDTO();
+                    UserApp user = userService.getUser(item.getUserId());
+                    commentDTO.setUserName(user.getName() + " " + user.getLastName());
+                    commentDTO.setMessage(item.getMessage());
+                    commentDTO.setRate(item.getRate());
                     commentDTO.setUserImage(user.getImage());
                     commentDTO.setCommentDate(item.getCommentDate());
                     return commentDTO;
@@ -94,19 +133,9 @@ public class CommentService {
                 .collect(Collectors.toList());
     }
 
-    public Collection<CommentDTO> getAllCommentByUserId(Long userId) {
-        return commentRepository.findAllByUserId(userId)
-                .stream()
-                .map(item -> {
-                    CommentDTO commentDTO = new CommentDTO();
-                    UserApp user = userService.getUser(item.getUserId());
-                    commentDTO.setUserName(user.getName() + " " + user.getLastName());
-                    commentDTO.setComment(item.getComment());
-                    commentDTO.setRate(item.getRete());
-                    commentDTO.setUserImage(user.getImage());
-                    commentDTO.setCommentDate(item.getCommentDate());
-                    return commentDTO;
-                })
-                .collect(Collectors.toList());
+    public long icreaseLikes(long commentId, HttpServletRequest request){
+        long likes = 0;
+
+        return likes;
     }
 }

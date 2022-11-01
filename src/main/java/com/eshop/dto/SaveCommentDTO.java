@@ -3,16 +3,16 @@ package com.eshop.dto;
 public class SaveCommentDTO {
     private long id;
     private long productId;
-    private String comment;
+    private String message;
     private int rate;
 
     public SaveCommentDTO() {
     }
 
-    public SaveCommentDTO(long id, long productId, String comment, int rate) {
+    public SaveCommentDTO(long id, long productId, String message, int rate) {
         this.id = id;
         this.productId = productId;
-        this.comment = comment;
+        this.message = message;
         this.rate = rate;
     }
 
@@ -32,12 +32,12 @@ public class SaveCommentDTO {
         this.productId = productId;
     }
 
-    public String getComment() {
-        return comment;
+    public String getMessage() {
+        return message;
     }
 
-    public void setComment(String comment) {
-        this.comment = comment;
+    public void setMessage(String message) {
+        this.message = message;
     }
 
     public int getRate() {

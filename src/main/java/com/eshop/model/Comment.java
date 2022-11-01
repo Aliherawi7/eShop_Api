@@ -14,18 +14,21 @@ public class Comment {
     private long productId;
     private long userId;
     private LocalDateTime commentDate;
-    private String comment;
+    private String message;
     private int rate;
 
     public Comment() {
+        this.message = "";
+        commentDate = LocalDateTime.now();
+        rate = 4;
     }
 
-    public Comment(long id, long productId, long userId, LocalDateTime commentDate, String comment, int rate) {
+    public Comment(long id, long productId, long userId, LocalDateTime commentDate, String message, int rate) {
         this.id = id;
         this.productId = productId;
         this.userId = userId;
         this.commentDate = commentDate;
-        this.comment = comment;
+        this.message = message;
         this.rate = rate;
     }
 
@@ -61,19 +64,19 @@ public class Comment {
         this.commentDate = commentDate;
     }
 
-    public String getComment() {
-        return comment;
+    public String getMessage() {
+        return message;
     }
 
-    public void setComment(String comment) {
-        this.comment = comment;
+    public void setMessage(String comment) {
+        this.message = comment;
     }
 
-    public int getRete() {
+    public int getRate() {
         return rate;
     }
 
-    public void setRete(int rate) {
+    public void setRate(int rate) {
         this.rate = rate;
     }
 }
