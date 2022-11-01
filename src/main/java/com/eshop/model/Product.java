@@ -8,33 +8,34 @@ public class Product {
     @Id
     @SequenceGenerator(sequenceName = "product_sequence", name = "product_sequence", allocationSize = 1)
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "product_sequence")
-    private Long id;
+    private long id;
     private String name;
     private String color;
     @Lob
     private byte[] image;
     private String brandName;
     private String category;
-    private Double price;
+    private double price;
     @Column(columnDefinition = "TEXT")
     private String description;
     private LocalDate productionDate;
     private String size;
-    private Long quantityInDepot;
-    private Double rate;
-    private Double discount;
+    private long quantityInDepot;
+    private double rate;
+    private double discount;
     private LocalDate addedDate;
     private LocalDate updateInDepot;
 
+    // default values
     public Product() {
-        this.discount = 0D;
+        this.discount = 0.0;
         this.rate = 4.3;
         this.addedDate = this.updateInDepot = LocalDate.now();
     }
 
-    public Product(Long id, String name, String color, byte[] image,
-                   String brandName, String category, Double price,
-                   String description, LocalDate productionDate, String size, Long quantityInDepot, Double rate, Double discount) {
+    public Product(long id, String name, String color, byte[] image,
+                   String brandName, String category, double price,
+                   String description, LocalDate productionDate, String size, long quantityInDepot, double rate, double discount) {
         this.id = id;
         this.name = name;
         this.color = color;
@@ -51,11 +52,11 @@ public class Product {
         this.addedDate = this.updateInDepot = LocalDate.now();
     }
 
-    public Long getId() {
+    public long getId() {
         return id;
     }
 
-    public void setId(Long id) {
+    public void setId(long id) {
         this.id = id;
     }
 
@@ -99,11 +100,11 @@ public class Product {
         this.category = category;
     }
 
-    public Double getPrice() {
+    public double getPrice() {
         return price;
     }
 
-    public void setPrice(Double price) {
+    public void setPrice(double price) {
         this.price = price;
     }
 
@@ -131,28 +132,28 @@ public class Product {
         this.size = size;
     }
 
-    public Long getQuantityInDepot() {
+    public long getQuantityInDepot() {
         return quantityInDepot;
     }
 
-    public void setQuantityInDepot(Long quantityInDepot) {
+    public void setQuantityInDepot(long quantityInDepot) {
         this.quantityInDepot = quantityInDepot;
         this.updateInDepot = LocalDate.now();
     }
 
-    public Double getRate() {
+    public double getRate() {
         return rate;
     }
 
-    public void setRate(Double rate) {
+    public void setRate(double rate) {
         this.rate = rate;
     }
 
-    public Double getDiscount() {
+    public double getDiscount() {
         return discount;
     }
 
-    public void setDiscount(Double discount) {
+    public void setDiscount(double discount) {
         this.discount = discount;
     }
 
