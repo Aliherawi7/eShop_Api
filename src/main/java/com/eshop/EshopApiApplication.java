@@ -2,6 +2,7 @@ package com.eshop;
 
 import com.eshop.dto.UserSignupDTO;
 import com.eshop.model.*;
+import com.eshop.repository.CommentAgreeDisagreeRepository;
 import com.eshop.repository.CommentRepository;
 import com.eshop.repository.RoleRepository;
 import com.eshop.service.BrandService;
@@ -35,7 +36,10 @@ public class EshopApiApplication {
     @Bean
     CommandLineRunner run(ProductService p, UserService userService,
                           RoleRepository roleRepository, OrderService orderService,
-                          BrandService brandService, CommentRepository commentRepository) {
+                          BrandService brandService,
+                          CommentRepository commentRepository,
+                          CommentAgreeDisagreeRepository commentAgreeDisagreeRepository
+                          ) {
         return args -> {
 
             File avatar1 = new File("src/main/resources/templates/image/users/user1.jpg");
@@ -366,13 +370,17 @@ public class EshopApiApplication {
 
 
             p.getAllProducts().forEach(item ->{
-                Comment c2 = new Comment(2L, item.getId(), 2, LocalDateTime.now(),
-                        "oh so expensive!", 5, 2, 0);
-                Comment c3 = new Comment(3L, item.getId(), 3, LocalDateTime.now(),
-                        "is there any role for changing the arrived product?", 4, 0, 1);
+                Comment c2 = new Comment(null, item.getId(), 2, LocalDateTime.now(),
+                        "oh so expensive!", 5);
+                Comment c3 = new Comment(null, item.getId(), 3, LocalDateTime.now(),
+                        "is there any role for changing the arrived product?", 4);
                 commentRepository.save(c2);
                 commentRepository.save(c3);
             });
+
+//            AgreeDisagree like1 =
+//                    new AgreeDisagree(null, true, false, LocalDateTime.now(),2L, 2L);
+//            commentAgreeDisagreeRepository.save(like1);
 
         };
     }
