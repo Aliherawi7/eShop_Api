@@ -16,15 +16,15 @@ public class CommentDTO {
     }
 
     public CommentDTO(long commentId, String userName, String message,
-                      int rate, LocalDateTime commentDate, byte[] userImage) {
+                      int rate, LocalDateTime commentDate, byte[] userImage, long likes, long dislikes) {
         this.commentId = commentId;
         this.userName = userName;
         this.message = message;
         this.rate = rate;
         this.commentDate = commentDate;
         this.userImage = userImage;
-        this.likes = 0;
-        this.disLikes = 0;
+        this.likes = likes;
+        this.disLikes = dislikes;
     }
 
     public long getCommentId() {
