@@ -8,7 +8,7 @@ public class Product {
     @Id
     @SequenceGenerator(sequenceName = "product_sequence", name = "product_sequence", allocationSize = 1)
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "product_sequence")
-    private long id;
+    private Long id;
     private String name;
     private String color;
     @Lob
@@ -33,7 +33,7 @@ public class Product {
         this.addedDate = this.updateInDepot = LocalDate.now();
     }
 
-    public Product(long id, String name, String color, byte[] image,
+    public Product(Long id, String name, String color, byte[] image,
                    String brandName, String category, double price,
                    String description, LocalDate productionDate, String size, long quantityInDepot, double rate, double discount) {
         this.id = id;
@@ -52,11 +52,11 @@ public class Product {
         this.addedDate = this.updateInDepot = LocalDate.now();
     }
 
-    public long getId() {
+    public Long getId() {
         return id;
     }
 
-    public void setId(long id) {
+    public void setId(Long id) {
         this.id = id;
     }
 
