@@ -84,7 +84,7 @@ public class EshopApiApplication {
                     null, "iphone 13 pro",
                     "#ebebe7", bytes1,
                     "apple", "mobile",
-                    1000d, "latest iphone", LocalDate.now(), "mdeuim",120L, 4d, 14D
+                    1000d, "latest iphone", LocalDate.now(), "medium",120L, 4d, 14D
             );
             File f2 = new File("src/main/resources/templates/image/7.png");
             FileInputStream fIn2 = new FileInputStream(f2);
@@ -93,7 +93,7 @@ public class EshopApiApplication {
             Product p2 = new Product(
                     null, "apple TV", "#171717", bytes2,
                     "apple", "TV", 500d, "family tv",
-                    LocalDate.now(), "mdeuim",168L, 3d, 10D
+                    LocalDate.now(), "medium",168L, 3d, 10D
             );
             File f3 = new File("src/main/resources/templates/image/3.png");
             FileInputStream fIn3 = new FileInputStream(f3);
@@ -102,7 +102,7 @@ public class EshopApiApplication {
             Product p3 = new Product(
                     null, "macbook pro", "#c0c1c4", bytes3,
                     "apple", "pc", 960d, "laptop pc",
-                    LocalDate.now(), "mdeuim",650L, 5d, 10D
+                    LocalDate.now(), "medium",650L, 5d, 10D
             );
             File f4 = new File("src/main/resources/templates/image/4.png");
             FileInputStream fIn4 = new FileInputStream(f4);
@@ -303,12 +303,12 @@ public class EshopApiApplication {
 
             // static orders
 
-            OrderApp order1 = new OrderApp(1L, 1L, 1L, "Afghanistan", 200, 10.0);
-            OrderApp order2 = new OrderApp(2L, 1L, 2L, "Afghanistan", 300, 20.3);
-            OrderApp order3 = new OrderApp(3L, 1L, 1L, "Afghanistan", 400, 100.5);
-            OrderApp order4 = new OrderApp(4L, 5L, 1L, "Afghanistan", 300, 10.0);
-            OrderApp order5 = new OrderApp(5L, 6L, 2L, "Afghanistan", 800, 20.3);
-            OrderApp order6 = new OrderApp(6L, 8L, 1L, "Afghanistan", 500, 100.5);
+            OrderApp order1 = new OrderApp(1L, 9L, 1L, "Afghanistan", 10, 10.0);
+            OrderApp order2 = new OrderApp(2L, 8L, 2L, "Afghanistan", 20, 20.3);
+            OrderApp order3 = new OrderApp(3L, 2L, 1L, "Afghanistan", 40, 100.5);
+            OrderApp order4 = new OrderApp(4L, 5L, 1L, "Afghanistan", 30, 10.0);
+            OrderApp order5 = new OrderApp(5L, 6L, 2L, "Afghanistan", 80, 20.3);
+            OrderApp order6 = new OrderApp(6L, 8L, 1L, "Afghanistan", 50, 100.5);
             order1.setOrderDate(LocalDate.of(2022, 7, 2));
             order2.setOrderDate(LocalDate.of(2022, 6, 23));
             order3.setOrderDate(LocalDate.of(2022, 5, 23));
