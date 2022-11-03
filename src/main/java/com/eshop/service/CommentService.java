@@ -152,13 +152,9 @@ public class CommentService {
     public CommentDTO likeComment(long commentId, HttpServletRequest request){
         long userId = userService.getUser(TestUserWithJWT.getUserEmailByJWT(request)).getId();
         Map<String, Integer> likesAndDislikes = commentAgreeDisagreeService.addLikeToComment(commentId, userId);
-        System.out.println("likes "+likesAndDislikes.get("likes"));
-        System.out.println("dislikes "+likesAndDislikes.get("dislikes"));
         CommentDTO commentDTO = new CommentDTO();
         Comment comment = commentRepository.findById(commentId).orElse(null);
-        System.out.println("before if in comment service like method");
         if (comment != null) {
-            System.out.println(comment.getUserId() + "in if in comment service like method");
             UserApp user = userService.getUser(comment.getUserId());
             commentDTO.setUserName(user.getName() + " " + user.getLastName());
             commentDTO.setMessage(comment.getMessage());
