@@ -11,8 +11,6 @@ public class Product {
     private Long id;
     private String name;
     private String color;
-    @Lob
-    private byte[] image;
     private String brandName;
     private String category;
     private double price;
@@ -33,13 +31,12 @@ public class Product {
         this.addedDate = this.updateInDepot = LocalDate.now();
     }
 
-    public Product(Long id, String name, String color, byte[] image,
+    public Product(Long id, String name, String color,
                    String brandName, String category, double price,
                    String description, LocalDate productionDate, String size, long quantityInDepot, double rate, double discount) {
         this.id = id;
         this.name = name;
         this.color = color;
-        this.image = image;
         this.brandName = brandName;
         this.category = category;
         this.price = price;
@@ -74,14 +71,6 @@ public class Product {
 
     public void setColor(String color) {
         this.color = color;
-    }
-
-    public byte[] getImage() {
-        return image;
-    }
-
-    public void setImage(byte[] image) {
-        this.image = image;
     }
 
     public String getBrandName() {
