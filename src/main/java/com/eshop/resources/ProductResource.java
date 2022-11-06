@@ -1,7 +1,11 @@
 package com.eshop.resources;
 
+import com.eshop.dto.ProductDTO;
+import com.eshop.model.ProductSidesImages;
 import com.eshop.model.Product;
+import com.eshop.repository.ProductImageRepository;
 import com.eshop.service.ProductService;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -9,6 +13,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
 import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Map;
 import java.util.stream.Collectors;
@@ -23,55 +28,47 @@ import java.util.stream.Collectors;
 public class ProductResource {
 
     private final ProductService productService;
+    private final ProductImageRepository productImageRepository;
 
-    public ProductResource(ProductService productService) {
+    @Autowired
+    public ProductResource(ProductService productService, ProductImageRepository productImageRepository) {
         this.productService = productService;
+        this.productImageRepository = productImageRepository;
     }
 
     //get all the product from database
     @GetMapping
     public ResponseEntity<?> getAllProducts() {
-        Collection<Product> products = productService.getAllProducts();
+        Collection<ProductDTO> products = productService.getAllProducts();
         if (products.size() > 0) {
             return ResponseEntity.ok().body(products);
         } else {
-            return new ResponseEntity<String>("No Product is available!", HttpStatus.NO_CONTENT);
+            return new ResponseEntity<>("No Product is available!", HttpStatus.NO_CONTENT);
         }
     }
 
     //find by id
     @GetMapping("/{id}")
     public ResponseEntity<?> getProductById(@PathVariable Long id) {
-        return productService.getProductById(id);
+        ProductDTO productDTO = productService.getProductById(id);
+        if(productDTO != null){
+            return ResponseEntity.ok().body(productDTO);
+        }else{
+            return ResponseEntity.noContent().build();
+        }
     }
 
     // save the product in database
     @PostMapping(value = "/save")
-    public ResponseEntity<?> addProduct(@RequestParam("image")MultipartFile file, @RequestParam Map<String, String> params) throws IOException {
-        Product product = new Product();
-        product.setName(params.get("name"));
-        product.setCategory(params.get("category"));
-        product.setBrandName(params.get("brandName"));
-        product.setPrice(Double.parseDouble(params.get("price")));
-        product.setProductionDate(LocalDate.parse(params.get("productionDate")));
-        product.setColor(params.get("color"));
-        product.setDescription(params.get("description"));
-        product.setQuantityInDepot(Long.parseLong(params.get("quantityInDepot")));
-        product.setSize(params.get("size"));
-        product.setDiscount(Double.parseDouble(params.get("discount")));
-        try {
-            product.setImage(file.getBytes());
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-        productService.addProduct(product);
-        return new ResponseEntity<>(product, HttpStatus.CREATED);
+    public ResponseEntity<?> addProduct(@RequestParam("image") ArrayList<MultipartFile>  files, @RequestParam Map<String, String> params) throws IOException {
+
+        return new ResponseEntity<>(productService.addProduct(files, params), HttpStatus.CREATED);
 
     }
 
     //update th existed product
     @PutMapping("/{id}")
-    public ResponseEntity<String> updateProduct(@PathVariable("id") Long id, @RequestParam("image") MultipartFile image, @RequestParam Map<String, String> params) {
+    public ResponseEntity<String> updateProduct(@PathVariable("id") Long id, @RequestParam("image") ArrayList<MultipartFile>  files, @RequestParam Map<String, String> params) {
         Product product = new Product();
         product.setId(id);
         product.setName(params.get("name"));
@@ -85,7 +82,12 @@ public class ProductResource {
         product.setSize(params.get("size"));
         product.setDiscount(Double.parseDouble(params.get("discount")));
         try {
-            product.setImage(image.getBytes());
+            ProductSidesImages productSidesImages = new ProductSidesImages();
+            productSidesImages.setProductId(product.getId());
+            productSidesImages.setSide1(files.get(0).getBytes());
+            productSidesImages.setSide2(files.get(1).getBytes());
+            productSidesImages.setSide3(files.get(2).getBytes());
+            productImageRepository.save(productSidesImages);
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -111,7 +113,7 @@ public class ProductResource {
     // find product by name
     @GetMapping(value = "/find", params = {"all"})
     public ResponseEntity<?> searchProducts(@RequestParam String all) {
-        Collection<Product> products = productService.getAllProducts();
+        Collection<ProductDTO> products = productService.getAllProducts();
         String finalAll = all.toLowerCase();
         products = products.stream().filter(item -> item.getName().toLowerCase().contains(finalAll) || item.getCategory().toLowerCase().contains(finalAll))
                 .collect(Collectors.toList());
@@ -137,7 +139,7 @@ public class ProductResource {
     // find by brand name
     @GetMapping(value = "/find", params = {"brand"})
     public ResponseEntity<?> getAllByBrandName(@RequestParam String brand) {
-        Collection<Product> products = productService.getAllByBrandName(brand);
+        Collection<ProductDTO> products = productService.getAllByBrandName(brand);
         if (products.size() > 0) {
             return new ResponseEntity<>(products, HttpStatus.OK);
         } else {
@@ -148,7 +150,7 @@ public class ProductResource {
     // find product by category
     @GetMapping(value = "/find", params = {"category"})
     public ResponseEntity<?> getAllByCategory(@RequestParam String category) {
-        Collection<Product> products = productService.getAllByCategory(category);
+        Collection<ProductDTO> products = productService.getAllByCategory(category);
         if (products.size() > 0) {
             return new ResponseEntity<>(products, HttpStatus.OK);
         } else {
@@ -159,7 +161,7 @@ public class ProductResource {
     // find products by price greater than or equal to the given price
     @GetMapping(value = "/find", params = {"minprice"})
     public ResponseEntity<?> getAllByPriceGreaterThanEqual(@RequestParam Double minprice) {
-        Collection<Product> products = productService.getAllByPriceGreaterThanEqual(minprice);
+        Collection<ProductDTO> products = productService.getAllByPriceGreaterThanEqual(minprice);
         if (products.size() > 0) {
             return new ResponseEntity<>(products, HttpStatus.OK);
         } else {
@@ -170,7 +172,7 @@ public class ProductResource {
     // find products by price Less than or equal to the given price
     @GetMapping(value = "/find", params = {"maxprice"})
     public ResponseEntity<?> getAllByPriceLessThanEqual(@RequestParam Double maxprice) {
-        Collection<Product> products = productService.getAllByPriceLessThanEqual(maxprice);
+        Collection<ProductDTO> products = productService.getAllByPriceLessThanEqual(maxprice);
         if (products.size() > 0) {
             return new ResponseEntity<>(products, HttpStatus.OK);
         } else {
@@ -185,7 +187,7 @@ public class ProductResource {
         String category = params.get("category");
         Double maxprice = Double.parseDouble(params.get("maxprice"));
 
-        Collection<Product> products = productService.getAllByCategoryAndPriceLessThanEqual(category, maxprice);
+        Collection<ProductDTO> products = productService.getAllByCategoryAndPriceLessThanEqual(category, maxprice);
         if (products.size() > 0) {
             return new ResponseEntity<>(products, HttpStatus.OK);
         } else {
@@ -199,7 +201,7 @@ public class ProductResource {
     (@RequestParam Map<String, String> params) {
         String category = params.get("category");
         Double minprice = Double.parseDouble(params.get("minprice"));
-        Collection<Product> products = productService.getAllByCategoryAndPriceGreaterThanEqual(category, minprice);
+        Collection<ProductDTO> products = productService.getAllByCategoryAndPriceGreaterThanEqual(category, minprice);
         if (products.size() > 0) {
             return new ResponseEntity<>(products, HttpStatus.OK);
         } else {
@@ -213,7 +215,7 @@ public class ProductResource {
         String category = params.get("category");
         String brandName = params.get("brand");
         Double minprice = Double.parseDouble(params.get("minprice"));
-        Collection<Product> products =
+        Collection<ProductDTO> products =
                 productService.getAllByCategoryAndBrandNameAndPriceGreaterThanEqual(category, brandName, minprice);
         if (products.size() > 0) {
             return new ResponseEntity<>(products, HttpStatus.OK);
@@ -230,7 +232,7 @@ public class ProductResource {
         String category = params.get("category");
         String brandName = params.get("brand");
         Double maxprice = Double.parseDouble(params.get("maxprice"));
-        Collection<Product> products =
+        Collection<ProductDTO> products =
                 productService.getAllByCategoryAndBrandNameAndPriceLessThanEqual(category, brandName, maxprice);
         if (products.size() > 0) return new ResponseEntity<>(products, HttpStatus.OK);
         else return new ResponseEntity<>
@@ -244,7 +246,7 @@ public class ProductResource {
     public ResponseEntity<?> getAllByBrandNameAndPriceLessThanEqual(@RequestParam Map<String, String> params) {
         String brandName = params.get("brand");
         Double maxprice = Double.parseDouble(params.get("maxprice"));
-        Collection<Product> products = productService.getAllByBrandNameAndPriceLessThanEqual(brandName, maxprice);
+        Collection<ProductDTO> products = productService.getAllByBrandNameAndPriceLessThanEqual(brandName, maxprice);
         if (products.size() > 0) {
             return new ResponseEntity<>(products, HttpStatus.OK);
         } else {
@@ -258,7 +260,7 @@ public class ProductResource {
     public ResponseEntity<?> getAllByBrandNameAndPriceGreaterThanEqual(@RequestParam Map<String, String> params) {
         String brandName = params.get("brand");
         Double minprice = Double.parseDouble(params.get("minprice"));
-        Collection<Product> products = productService.getAllByBrandNameAndPriceGreaterThanEqual(brandName, minprice);
+        Collection<ProductDTO> products = productService.getAllByBrandNameAndPriceGreaterThanEqual(brandName, minprice);
         if (products.size() > 0) {
             return new ResponseEntity<>(products, HttpStatus.OK);
         } else {
