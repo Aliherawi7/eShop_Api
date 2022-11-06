@@ -1,4 +1,4 @@
-package com.eshop.dto;
+package com.eshop.model;
 
 import javax.persistence.*;
 import java.util.ArrayList;
@@ -7,9 +7,6 @@ import java.util.Collection;
 @Entity
 public class ProductSidesImages {
     @Id
-    @SequenceGenerator(sequenceName = "product_sequence", name = "product_sequence", allocationSize = 1)
-    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "product_sequence")
-    private Long id;
     private long productId;
     @Lob
     private byte[] side1;
@@ -21,21 +18,21 @@ public class ProductSidesImages {
     public ProductSidesImages() {
     }
 
-    public ProductSidesImages(Long id, long productId, byte[] side1, byte[] side2, byte[] side3) {
-        this.id = id;
+    public ProductSidesImages( long productId, byte[] side1, byte[] side2, byte[] side3) {
+//        this.id = id;
         this.productId = productId;
         this.side1 = side1;
         this.side2 = side2;
         this.side3 = side3;
     }
 
-    public Long getId() {
-        return id;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
-    }
+//    public Long getId() {
+//        return id;
+//    }
+//
+//    public void setId(Long id) {
+//        this.id = id;
+//    }
 
     public long getProductId() {
         return productId;
