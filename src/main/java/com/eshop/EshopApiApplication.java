@@ -1,9 +1,11 @@
 package com.eshop;
 
+import com.eshop.model.ProductSidesImages;
 import com.eshop.dto.UserSignupDTO;
 import com.eshop.model.*;
 import com.eshop.repository.CommentAgreeDisagreeRepository;
 import com.eshop.repository.CommentRepository;
+import com.eshop.repository.ProductImageRepository;
 import com.eshop.repository.RoleRepository;
 import com.eshop.service.BrandService;
 import com.eshop.service.OrderService;
@@ -38,7 +40,8 @@ public class EshopApiApplication {
                           RoleRepository roleRepository, OrderService orderService,
                           BrandService brandService,
                           CommentRepository commentRepository,
-                          CommentAgreeDisagreeRepository commentAgreeDisagreeRepository
+                          CommentAgreeDisagreeRepository commentAgreeDisagreeRepository,
+                          ProductImageRepository productImageRepository
                           ) {
         return args -> {
 
@@ -76,13 +79,33 @@ public class EshopApiApplication {
             userService.addRoleToUser(user1.getEmail(), role_admin.getName());
 
             // static products
-            File f1 = new File("src/main/resources/templates/image/1.png");
-            FileInputStream fIn1 = new FileInputStream(f1);
-            byte[] bytes1 = new byte[(int) f1.length()];
-            fIn1.read(bytes1);
+
+
+
+            File f1side1 = new File("src/main/resources/templates/image/iPhone-14-Pro-Max-Purple-side1.png");
+            FileInputStream fIn1side1 = new FileInputStream(f1side1);
+            byte[] bytes1side1 = new byte[(int) f1side1.length()];
+            fIn1side1.read(bytes1side1);
+
+            File f1side2 = new File("src/main/resources/templates/image/iPhone-14-Pro-Max-Purple-side1.png");
+            FileInputStream fIn1side2 = new FileInputStream(f1side2);
+            byte[] bytes1side2 = new byte[(int) f1side2.length()];
+            fIn1side2.read(bytes1side2);
+
+            File f1side3 = new File("src/main/resources/templates/image/iPhone-14-Pro-Max-Purple-side3.png");
+            FileInputStream fIn1side3 = new FileInputStream(f1side3);
+            byte[] bytes1side3 = new byte[(int) f1side3.length()];
+            fIn1side3.read(bytes1side3);
+
+            ProductSidesImages primg1 = new ProductSidesImages();
+            primg1.setSide1(bytes1side1);
+            primg1.setSide2(bytes1side2);
+            primg1.setSide3(bytes1side3);
+            primg1.setProductId(1);
+            productImageRepository.save(primg1);
             Product p1 = new Product(
-                    null, "iphone 13 pro",
-                    "#ebebe7", bytes1,
+                    1L, "iPhone-14-Pro-Max-Purple",
+                    "#ebebe7",
                     "apple", "mobile",
                     1000d, "latest iphone", LocalDate.now(), "medium",120L, 4d, 14D
             );
@@ -90,8 +113,12 @@ public class EshopApiApplication {
             FileInputStream fIn2 = new FileInputStream(f2);
             byte[] bytes2 = new byte[(int) f2.length()];
             fIn2.read(bytes2);
+            ProductSidesImages primg2 = new ProductSidesImages();
+            primg2.setSide1(bytes2);
+            primg2.setProductId(2);
+            productImageRepository.save(primg2);
             Product p2 = new Product(
-                    null, "apple TV", "#171717", bytes2,
+                    2L, "apple TV", "#171717",
                     "apple", "TV", 500d, "family tv",
                     LocalDate.now(), "medium",168L, 3d, 10D
             );
@@ -99,8 +126,12 @@ public class EshopApiApplication {
             FileInputStream fIn3 = new FileInputStream(f3);
             byte[] bytes3 = new byte[(int) f3.length()];
             fIn3.read(bytes3);
+            ProductSidesImages primg3 = new ProductSidesImages();
+            primg3.setSide1(bytes3);
+            primg3.setProductId(3);
+            productImageRepository.save(primg3);
             Product p3 = new Product(
-                    null, "macbook pro", "#c0c1c4", bytes3,
+                    3L, "macbook pro", "#c0c1c4",
                     "apple", "pc", 960d, "laptop pc",
                     LocalDate.now(), "medium",650L, 5d, 10D
             );
@@ -108,8 +139,12 @@ public class EshopApiApplication {
             FileInputStream fIn4 = new FileInputStream(f4);
             byte[] bytes4 = new byte[(int) f4.length()];
             fIn4.read(bytes4);
+            ProductSidesImages primg4 = new ProductSidesImages();
+            primg4.setSide1(bytes4);
+            primg4.setProductId(4);
+            productImageRepository.save(primg4);
             Product p4 = new Product(
-                    null, "iphone 13", "#c81e30", bytes4,
+                    4L, "iphone 13", "#c81e30",
                     "apple", "Mobile", 960d, "latest iphone",
                     LocalDate.now(), "mini",1500L, 5d, 6D
             );
@@ -117,8 +152,12 @@ public class EshopApiApplication {
             FileInputStream fIn5 = new FileInputStream(f5);
             byte[] bytes5 = new byte[(int) f5.length()];
             fIn5.read(bytes5);
+            ProductSidesImages primg5 = new ProductSidesImages();
+            primg5.setSide1(bytes5);
+            primg5.setProductId(5);
+            productImageRepository.save(primg5);
             Product p5 = new Product(
-                    null, "MacBook 14 pro", "#c0c1c6", bytes5,
+                    5L, "MacBook 14 pro", "#c0c1c6",
                     "apple", "pc", 1000d, "latest mac",
                     LocalDate.now(), "mini",1000L, 4d, 5D
             );
@@ -127,8 +166,12 @@ public class EshopApiApplication {
             FileInputStream fIn6 = new FileInputStream(f6);
             byte[] bytes6 = new byte[(int) f6.length()];
             fIn6.read(bytes6);
+            ProductSidesImages primg6 = new ProductSidesImages();
+            primg6.setSide1(bytes6);
+            primg6.setProductId(6);
+            productImageRepository.save(primg6);
             Product p6 = new Product(
-                    null, "asus-gaming", "#121212", bytes6,
+                    6L, "asus-gaming", "#121212",
                     "asus", "pc", 30d, "latest asus-gaming",
                     LocalDate.now(), "large",623L, 5d, 10D
             );
@@ -136,35 +179,95 @@ public class EshopApiApplication {
             FileInputStream fIn7 = new FileInputStream(f7);
             byte[] bytes7 = new byte[(int) f7.length()];
             fIn7.read(bytes7);
+            ProductSidesImages primg7 = new ProductSidesImages();
+            primg7.setSide1(bytes7);
+            primg7.setProductId(7);
+            productImageRepository.save(primg7);
             Product p7 = new Product(
-                    null, "Full HD LED TV", "#eaeaea", bytes7,
+                    7L, "Full HD LED TV", "#eaeaea",
                     "Sharp", "TV", 30d, "latest Sharp",
                     LocalDate.now(), "large",23L, 4d, 0D
             );
-            File f8 = new File("src/main/resources/templates/image/8.png");
-            FileInputStream fIn8 = new FileInputStream(f8);
-            byte[] bytes8 = new byte[(int) f8.length()];
-            fIn8.read(bytes8);
+
+            File f8side1 = new File("src/main/resources/templates/image/watch1_side1.png");
+            FileInputStream fIn8side1 = new FileInputStream(f8side1);
+            byte[] bytes8side1 = new byte[(int) f8side1.length()];
+            fIn8side1.read(bytes8side1);
+
+            File f8side2 = new File("src/main/resources/templates/image/watch1_side2.png");
+            FileInputStream fIn8side2 = new FileInputStream(f8side2);
+            byte[] bytes8side2 = new byte[(int) f8side2.length()];
+            fIn8side2.read(bytes8side2);
+
+            File f8side3 = new File("src/main/resources/templates/image/watch1_side3.png");
+            FileInputStream fIn8side3 = new FileInputStream(f8side3);
+            byte[] bytes8side3 = new byte[(int) f8side3.length()];
+            fIn8side3.read(bytes8side3);
+
+            ProductSidesImages primg8 = new ProductSidesImages();
+            primg8.setSide1(bytes8side1);
+            primg8.setSide2(bytes8side2);
+            primg8.setSide3(bytes8side3);
+            primg8.setProductId(8);
+            productImageRepository.save(primg8);
             Product p8 = new Product(
-                    null, "Apple watch 14 pro", "#dcdcdc", bytes8,
+                    8L, "Apple watch 14 pro", "#dcdcdc",
                     "apple", "tools", 300d, "latest apple watch",
                     LocalDate.now(), "medium",730L, 3d, 10D
             );
-            File f9 = new File("src/main/resources/templates/image/9.png");
-            FileInputStream fIn9 = new FileInputStream(f9);
-            byte[] bytes9 = new byte[(int) f9.length()];
-            fIn9.read(bytes9);
+
+
+            File f9side1 = new File("src/main/resources/templates/image/watch2_side1.png");
+            FileInputStream fIn9side1 = new FileInputStream(f9side1);
+            byte[] bytes9side1 = new byte[(int) f9side1.length()];
+            fIn9side1.read(bytes9side1);
+
+            File f9side2 = new File("src/main/resources/templates/image/watch2_side2.png");
+            FileInputStream fIn9side2 = new FileInputStream(f9side2);
+            byte[] bytes9side2 = new byte[(int) f9side2.length()];
+            fIn9side2.read(bytes9side2);
+
+            File f9side3 = new File("src/main/resources/templates/image/watch2_side3.png");
+            FileInputStream fIn9side3 = new FileInputStream(f9side3);
+            byte[] bytes9side3 = new byte[(int) f9side3.length()];
+            fIn9side3.read(bytes9side3);
+
+            ProductSidesImages primg9 = new ProductSidesImages();
+            primg9.setSide1(bytes9side1);
+            primg9.setSide2(bytes9side2);
+            primg9.setSide3(bytes9side3);
+            primg9.setProductId(9);
+            productImageRepository.save(primg9);
             Product p9 = new Product(
-                    null, "iphone 13 mini", "#f7f6f2", bytes9,
-                    "apple", "mobile", 990d, "latest apple phone",
+                    9L, "modern stylish watch", "#f7f6f2",
+                    "apple", "tools", 99d, "latest apple watch",
                     LocalDate.now(), "mini",200L, 5d, 8D
             );
-            File f10 = new File("src/main/resources/templates/image/11.png");
-            FileInputStream fIn10 = new FileInputStream(f10);
-            byte[] bytes10 = new byte[(int) f10.length()];
-            fIn10.read(bytes10);
+
+
+            File f10side1 = new File("src/main/resources/templates/image/watch3_side1.png");
+            FileInputStream fIn10side1 = new FileInputStream(f10side1);
+            byte[] bytes10side1 = new byte[(int) f10side1.length()];
+            fIn10side1.read(bytes10side1);
+
+            File f10side2 = new File("src/main/resources/templates/image/watch3_side2.png");
+            FileInputStream fIn10side2 = new FileInputStream(f10side2);
+            byte[] bytes10side2 = new byte[(int) f10side2.length()];
+            fIn10side2.read(bytes10side2);
+
+            File f10side3 = new File("src/main/resources/templates/image/watch3_side3.png");
+            FileInputStream fIn10side3 = new FileInputStream(f10side3);
+            byte[] bytes10side3 = new byte[(int) f10side3.length()];
+            fIn10side3.read(bytes10side3);
+
+            ProductSidesImages primg10 = new ProductSidesImages();
+            primg10.setSide1(bytes10side1);
+            primg10.setSide2(bytes10side2);
+            primg10.setSide3(bytes10side3);
+            primg10.setProductId(10);
+            productImageRepository.save(primg10);
             Product p10 = new Product(
-                    null, "Samsung A71", "#94e3d0", bytes10,
+                    10L, "Samsung A71", "#94e3d0",
                     "samsung", "mobile", 500d, "latest samsung phone",
                     LocalDate.now(), "large",1600L, 4d, 5D
             );
@@ -173,8 +276,12 @@ public class EshopApiApplication {
             FileInputStream fIn11 = new FileInputStream(f11);
             byte[] bytes11 = new byte[(int) f11.length()];
             fIn11.read(bytes11);
+            ProductSidesImages primg11 = new ProductSidesImages();
+            primg11.setSide1(bytes11);
+            primg11.setProductId(11);
+            productImageRepository.save(primg11);
             Product p11 = new Product(
-                    null, "Modern Headphone", "#4f659f", bytes11,
+                    11L, "Modern Headphone", "#4f659f",
                     "jax", "tools", 500d, "latest jax headphone",
                     LocalDate.now(), "large",900L, 5d, 10D
             );
@@ -183,8 +290,12 @@ public class EshopApiApplication {
             FileInputStream fIn12 = new FileInputStream(f12);
             byte[] bytes12 = new byte[(int) f12.length()];
             fIn12.read(bytes12);
+            ProductSidesImages primg12 = new ProductSidesImages();
+            primg12.setSide1(bytes12);
+            primg12.setProductId(12);
+            productImageRepository.save(primg12);
             Product p12 = new Product(
-                    null, "Headphone 600x", "#c23533", bytes12,
+                    12L, "Headphone 600x", "#c23533",
                     "jax", "tools", 500d, "latest jax headphone",
                     LocalDate.now(), "large",1180L, 4d, 8D
             );
@@ -192,8 +303,12 @@ public class EshopApiApplication {
             FileInputStream fIn13 = new FileInputStream(f13);
             byte[] bytes13 = new byte[(int) f13.length()];
             fIn13.read(bytes13);
+            ProductSidesImages primg13= new ProductSidesImages();
+            primg13.setSide1(bytes13);
+            primg13.setProductId(13);
+            productImageRepository.save(primg13);
             Product p13 = new Product(
-                    null, "airpods", "#ebecf0", bytes13,
+                    13L, "airpods", "#ebecf0",
                     "apple", "tools", 500d, "latest airpod",
                     LocalDate.now(), "large",1700L, 3d, 10D
             );
@@ -203,8 +318,12 @@ public class EshopApiApplication {
             FileInputStream fIn14 = new FileInputStream(f14);
             byte[] bytes14 = new byte[(int) f14.length()];
             fIn14.read(bytes14);
+            ProductSidesImages primg14 = new ProductSidesImages();
+            primg14.setSide1(bytes14);
+            primg14.setProductId(14);
+            productImageRepository.save(primg14);
             Product p14 = new Product(
-                    null, "r9", "#05c7c9", bytes14,
+                    14L, "r9", "#05c7c9",
                     "Xiaomi", "mobile", 500d, "latest Xiaomi headphone",
                     LocalDate.now(), "large",1400L, 5d, 15D
             );
@@ -212,8 +331,12 @@ public class EshopApiApplication {
             FileInputStream fIn15 = new FileInputStream(f15);
             byte[] bytes15 = new byte[(int) f15.length()];
             fIn15.read(bytes15);
+            ProductSidesImages primg15 = new ProductSidesImages();
+            primg15.setSide1(bytes15);
+            primg15.setProductId(15);
+            productImageRepository.save(primg15);
             Product p15 = new Product(
-                    null, "H10", "#3cbdbb", bytes15,
+                    15L, "H10", "#3cbdbb",
                     "Xiaomi", "mobile", 500d, "latest Xiaomi ",
                     LocalDate.now(), "large",1490L, 3d, 10D
             );
@@ -222,8 +345,12 @@ public class EshopApiApplication {
             FileInputStream fIn16 = new FileInputStream(f16);
             byte[] bytes16 = new byte[(int) f16.length()];
             fIn16.read(bytes16);
+            ProductSidesImages primg16 = new ProductSidesImages();
+            primg16.setSide1(bytes16);
+            primg16.setProductId(16);
+            productImageRepository.save(primg16);
             Product p16 = new Product(
-                    null, "Laptop c06", "#525252", bytes16,
+                    16L, "Laptop c06", "#525252",
                     "HP", "pc", 500d, "latest HP ",
                     LocalDate.now(), "large",120L, 5d, 5D
             );
@@ -232,8 +359,12 @@ public class EshopApiApplication {
             FileInputStream fIn17 = new FileInputStream(f17);
             byte[] bytes17 = new byte[(int) f17.length()];
             fIn17.read(bytes17);
+            ProductSidesImages primg17 = new ProductSidesImages();
+            primg17.setSide1(bytes17);
+            primg17.setProductId(17);
+            productImageRepository.save(primg17);
             Product p17 = new Product(
-                    null, "Laptop c9", "#edeeec", bytes17,
+                    17L, "Laptop c9", "#edeeec",
                     "HP", "pc", 500d, "latest HP ",
                     LocalDate.now(), "large",100L, 4d, 10D
             );
@@ -242,8 +373,12 @@ public class EshopApiApplication {
             FileInputStream fIn18 = new FileInputStream(f18);
             byte[] bytes18 = new byte[(int) f18.length()];
             fIn18.read(bytes18);
+            ProductSidesImages primg18 = new ProductSidesImages();
+            primg18.setSide1(bytes18);
+            primg18.setProductId(18);
+            productImageRepository.save(primg18);
             Product p18 = new Product(
-                    null, "ASUS studio Book", "#494753", bytes18,
+                    18L, "ASUS studio Book", "#494753",
                     "Asus", "pc", 500d, "latest Asus ",
                     LocalDate.now(), "large",70L, 4d, 8D
             );
@@ -251,8 +386,12 @@ public class EshopApiApplication {
             FileInputStream fIn19 = new FileInputStream(f19);
             byte[] bytes19 = new byte[(int) f19.length()];
             fIn19.read(bytes19);
+            ProductSidesImages primg19 = new ProductSidesImages();
+            primg19.setSide1(bytes19);
+            primg19.setProductId(19);
+            productImageRepository.save(primg19);
             Product p19 = new Product(
-                    null, "acer studio Book", "#aeafb3", bytes19,
+                    19L, "acer studio Book", "#aeafb3",
                     "acer", "pc", 500d, "latest acer ",
                     LocalDate.now(), "large",320L, 4d, 10D
             );
@@ -260,8 +399,12 @@ public class EshopApiApplication {
             FileInputStream fIn20 = new FileInputStream(f20);
             byte[] bytes20 = new byte[(int) f20.length()];
             fIn20.read(bytes20);
+            ProductSidesImages primg20 = new ProductSidesImages();
+            primg20.setSide1(bytes20);
+            primg20.setProductId(20);
+            productImageRepository.save(primg20);
             Product p20 = new Product(
-                    null, "philips-takh 402", "#59c3fd", bytes20,
+                    20L, "philips-takh 402", "#59c3fd",
                     "philips", "tools", 500d, "latest philips headphone ",
                     LocalDate.now(), "large",50L, 4d, 5D
             );
@@ -282,23 +425,23 @@ public class EshopApiApplication {
 
             p.addProduct(p1);
             p.addProduct(p2);
-            p.addProduct(p13);
             p.addProduct(p3);
-            p.addProduct(p15);
-            p.addProduct(p16);
-            p.addProduct(p17);
             p.addProduct(p4);
             p.addProduct(p5);
             p.addProduct(p6);
-            p.addProduct(p18);
-            p.addProduct(p19);
             p.addProduct(p7);
-            p.addProduct(p12);
             p.addProduct(p8);
-            p.addProduct(p14);
             p.addProduct(p9);
             p.addProduct(p10);
             p.addProduct(p11);
+            p.addProduct(p12);
+            p.addProduct(p13);
+            p.addProduct(p14);
+            p.addProduct(p15);
+            p.addProduct(p16);
+            p.addProduct(p17);
+            p.addProduct(p18);
+            p.addProduct(p19);
             p.addProduct(p20);
 
             // static orders
@@ -370,9 +513,9 @@ public class EshopApiApplication {
 
 
             p.getAllProducts().forEach(item ->{
-                Comment c2 = new Comment(null, item.getId(), 2, LocalDateTime.now(),
+                Comment c2 = new Comment(null, item.getProductId(), 2, LocalDateTime.now(),
                         "oh so expensive!", 5);
-                Comment c3 = new Comment(null, item.getId(), 3, LocalDateTime.now(),
+                Comment c3 = new Comment(null, item.getProductId(), 3, LocalDateTime.now(),
                         "is there any role for changing the arrived product?", 4);
                 commentRepository.save(c2);
                 commentRepository.save(c3);
