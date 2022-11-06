@@ -60,24 +60,32 @@ public class OrderService {
     public ResponseEntity<?> addOrder(OrderApp order) {
         // get user remoteAddress
         Optional<Product>  optionalProduct = productRepository.findById(order.getProductId());
-        Product product = null;
+        Product product;
         if(optionalProduct.isPresent()){
             product = optionalProduct.get();
-            product.setQuantityInDepot(product.getQuantityInDepot() - order.getQuantity());
-            // calculate the total of price automatically
-            order.setAmount(order.getQuantity() * product.getPrice());
-            productRepository.save(product);
+
+            // if there are enough products in depot to sell
+            if(product.getQuantityInDepot() >= order.getQuantity()){
+                // Subtracts the number of orders from the number products in depot
+                product.setQuantityInDepot(product.getQuantityInDepot() - order.getQuantity());
+                // calculate the total of price automatically
+                order.setAmount(order.getQuantity() * product.getPrice());
+                productRepository.save(product);
+
+            // if there are not enough products in depot to sell
+            }else{
+                return new ResponseEntity<>("sorry there is not enough " + product.getName() + " in depot", HttpStatus.OK);
+            }
         }
         orderRepository.save(order);
         return new ResponseEntity<>("order save successfully.", HttpStatus.CREATED);
     }
 
     // saves orders
-
     public ResponseEntity<String> addOrders(Collection<OrderApp> orders, HttpServletRequest request) {
         orders.forEach(orderApp -> {
             Optional<Product> productOptional = productRepository.findById(orderApp.getProductId());
-            Product product = null;
+            Product product;
             if(productOptional.isPresent()){
                 product = productOptional.get();
                 product.setQuantityInDepot(product.getQuantityInDepot() - orderApp.getQuantity());
