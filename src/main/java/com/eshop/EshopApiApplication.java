@@ -109,44 +109,93 @@ public class EshopApiApplication {
                     "apple", "mobile",
                     1000d, "latest iphone", LocalDate.now(), "medium",120L, 4d, 14D
             );
-            File f2 = new File("src/main/resources/templates/image/7.png");
-            FileInputStream fIn2 = new FileInputStream(f2);
-            byte[] bytes2 = new byte[(int) f2.length()];
-            fIn2.read(bytes2);
+
+
+
+            File f2side1 = new File("src/main/resources/templates/image/samsung-tv-side1.png");
+            FileInputStream fIn2side1 = new FileInputStream(f2side1);
+            byte[] bytes2side1 = new byte[(int) f2side1.length()];
+            fIn2side1.read(bytes2side1);
+
+            File f2side2 = new File("src/main/resources/templates/image/samsung-tv-side2.png");
+            FileInputStream fIn2side2 = new FileInputStream(f2side2);
+            byte[] bytes2side2 = new byte[(int) f2side2.length()];
+            fIn2side2.read(bytes2side2);
+
+            File f2side3 = new File("src/main/resources/templates/image/samsung-tv-side3.png");
+            FileInputStream fIn2side3 = new FileInputStream(f2side3);
+            byte[] bytes2side3 = new byte[(int) f2side3.length()];
+            fIn2side3.read(bytes2side3);
+
             ProductSidesImages primg2 = new ProductSidesImages();
-            primg2.setSide1(bytes2);
+            primg2.setSide1(bytes2side1);
+            primg2.setSide2(bytes2side2);
+            primg2.setSide3(bytes2side3);
             primg2.setProductId(2);
             productImageRepository.save(primg2);
+
             Product p2 = new Product(
-                    2L, "apple TV", "#171717",
-                    "apple", "TV", 500d, "family tv",
+                    2L, "Samsung TV", "#171717",
+                    "Samsung", "TV", 500d, "family tv",
                     LocalDate.now(), "medium",168L, 3d, 10D
             );
-            File f3 = new File("src/main/resources/templates/image/3.png");
-            FileInputStream fIn3 = new FileInputStream(f3);
-            byte[] bytes3 = new byte[(int) f3.length()];
-            fIn3.read(bytes3);
+
+
+            File f3side1 = new File("src/main/resources/templates/image/mac-pro-side1.png");
+            FileInputStream fIn3side1 = new FileInputStream(f3side1);
+            byte[] bytes3side1 = new byte[(int) f3side1.length()];
+            fIn3side1.read(bytes3side1);
+
+            File f3side2 = new File("src/main/resources/templates/image/mac-pro-side2.png");
+            FileInputStream fIn3side2 = new FileInputStream(f3side2);
+            byte[] bytes3side2 = new byte[(int) f3side2.length()];
+            fIn3side2.read(bytes3side2);
+
+            File f3side3 = new File("src/main/resources/templates/image/mac-pro-side3.png");
+            FileInputStream fIn3side3 = new FileInputStream(f3side3);
+            byte[] bytes3side3 = new byte[(int) f3side3.length()];
+            fIn3side3.read(bytes3side3);
             ProductSidesImages primg3 = new ProductSidesImages();
-            primg3.setSide1(bytes3);
+            primg3.setSide1(bytes3side1);
+            primg3.setSide2(bytes3side2);
+            primg3.setSide3(bytes3side3);
             primg3.setProductId(3);
             productImageRepository.save(primg3);
+
+
             Product p3 = new Product(
                     3L, "macbook pro", "#c0c1c4",
                     "apple", "pc", 960d, "laptop pc",
                     LocalDate.now(), "medium",650L, 5d, 10D
             );
-            File f4 = new File("src/main/resources/templates/image/4.png");
-            FileInputStream fIn4 = new FileInputStream(f4);
-            byte[] bytes4 = new byte[(int) f4.length()];
-            fIn4.read(bytes4);
+
+
+
+            File f4side1 = new File("src/main/resources/templates/image/iPhone-14-pro-side1.png");
+            FileInputStream fIn4side1 = new FileInputStream(f4side1);
+            byte[] bytes4side1 = new byte[(int) f4side1.length()];
+            fIn4side1.read(bytes4side1);
+
+            File f4side2 = new File("src/main/resources/templates/image/iPhone-14-pro-side2.png");
+            FileInputStream fIn4side2 = new FileInputStream(f4side2);
+            byte[] bytes4side2 = new byte[(int) f4side2.length()];
+            fIn4side2.read(bytes4side2);
+
+            File f4side3 = new File("src/main/resources/templates/image/iPhone-14-pro-side3.png");
+            FileInputStream fIn4side3 = new FileInputStream(f4side3);
+            byte[] bytes4side3 = new byte[(int) f4side3.length()];
+            fIn4side3.read(bytes4side3);
+
             ProductSidesImages primg4 = new ProductSidesImages();
-            primg4.setSide1(bytes4);
+            primg4.setSide1(bytes4side1);
+            primg4.setSide2(bytes4side2);
+            primg4.setSide3(bytes4side3);
             primg4.setProductId(4);
             productImageRepository.save(primg4);
             Product p4 = new Product(
-                    4L, "iphone 13", "#c81e30",
-                    "apple", "Mobile", 960d, "latest iphone",
-                    LocalDate.now(), "mini",1500L, 5d, 6D
+                    4L, "iphone 14 pro space dark", "#c81e30",
+                    "apple", "mobile", 1560d, "latest iphone",
+                    LocalDate.now(), "pro",1500L, 5d, 6D
             );
             File f5 = new File("src/main/resources/templates/image/5.png");
             FileInputStream fIn5 = new FileInputStream(f5);
@@ -272,12 +321,27 @@ public class EshopApiApplication {
                     LocalDate.now(), "large",1600L, 4d, 5D
             );
 
-            File f11 = new File("src/main/resources/templates/image/headphone.png");
-            FileInputStream fIn11 = new FileInputStream(f11);
-            byte[] bytes11 = new byte[(int) f11.length()];
-            fIn11.read(bytes11);
+
+
+            File f11side1 = new File("src/main/resources/templates/image/headphone-side1.png");
+            FileInputStream fIn11side1 = new FileInputStream(f11side1);
+            byte[] bytes11side1 = new byte[(int) f11side1.length()];
+            fIn11side1.read(bytes11side1);
+
+            File f11side2 = new File("src/main/resources/templates/image/headphone-side2.png");
+            FileInputStream fIn11side2 = new FileInputStream(f11side2);
+            byte[] bytes11side2 = new byte[(int) f11side2.length()];
+            fIn11side2.read(bytes11side2);
+
+            File f11side3 = new File("src/main/resources/templates/image/headphone-side3.png");
+            FileInputStream fIn11side3 = new FileInputStream(f11side3);
+            byte[] bytes11side3 = new byte[(int) f11side3.length()];
+            fIn11side3.read(bytes11side3);
+
             ProductSidesImages primg11 = new ProductSidesImages();
-            primg11.setSide1(bytes11);
+            primg11.setSide1(bytes11side1);
+            primg11.setSide2(bytes11side2);
+            primg11.setSide3(bytes11side3);
             primg11.setProductId(11);
             productImageRepository.save(primg11);
             Product p11 = new Product(
@@ -299,14 +363,30 @@ public class EshopApiApplication {
                     "jax", "tools", 500d, "latest jax headphone",
                     LocalDate.now(), "large",1180L, 4d, 8D
             );
-            File f13 = new File("src/main/resources/templates/image/airpods-3.png");
-            FileInputStream fIn13 = new FileInputStream(f13);
-            byte[] bytes13 = new byte[(int) f13.length()];
-            fIn13.read(bytes13);
-            ProductSidesImages primg13= new ProductSidesImages();
-            primg13.setSide1(bytes13);
+
+
+            File f13side1 = new File("src/main/resources/templates/image/airpods-side1.png");
+            FileInputStream fIn13side1 = new FileInputStream(f13side1);
+            byte[] bytes13side1 = new byte[(int) f13side1.length()];
+            fIn13side1.read(bytes13side1);
+
+            File f13side2 = new File("src/main/resources/templates/image/airpods-side2.png");
+            FileInputStream fIn13side2 = new FileInputStream(f13side2);
+            byte[] bytes13side2 = new byte[(int) f13side2.length()];
+            fIn13side2.read(bytes13side2);
+
+            File f13side3 = new File("src/main/resources/templates/image/airpods-side3.png");
+            FileInputStream fIn13side3 = new FileInputStream(f13side3);
+            byte[] bytes13side3 = new byte[(int) f13side3.length()];
+            fIn13side3.read(bytes13side3);
+
+            ProductSidesImages primg13 = new ProductSidesImages();
+            primg13.setSide1(bytes13side1);
+            primg13.setSide2(bytes13side2);
+            primg13.setSide3(bytes13side3);
             primg13.setProductId(13);
             productImageRepository.save(primg13);
+
             Product p13 = new Product(
                     13L, "airpods", "#ebecf0",
                     "apple", "tools", 500d, "latest airpod",
@@ -314,19 +394,36 @@ public class EshopApiApplication {
             );
 
 
-            File f14 = new File("src/main/resources/templates/image/r9.png");
-            FileInputStream fIn14 = new FileInputStream(f14);
-            byte[] bytes14 = new byte[(int) f14.length()];
-            fIn14.read(bytes14);
+            File f14side1 = new File("src/main/resources/templates/image/iphone-13-pro-side1.png");
+            FileInputStream fIn14side1 = new FileInputStream(f14side1);
+            byte[] bytes14side1 = new byte[(int) f14side1.length()];
+            fIn14side1.read(bytes14side1);
+
+            File f14side2 = new File("src/main/resources/templates/image/iphone-13-pro-side2.png");
+            FileInputStream fIn14side2 = new FileInputStream(f14side2);
+            byte[] bytes14side2 = new byte[(int) f14side2.length()];
+            fIn14side2.read(bytes14side2);
+
+            File f14side3 = new File("src/main/resources/templates/image/iphone-13-pro-side3.png");
+            FileInputStream fIn14side3 = new FileInputStream(f14side3);
+            byte[] bytes14side3 = new byte[(int) f14side3.length()];
+            fIn14side3.read(bytes14side3);
+
             ProductSidesImages primg14 = new ProductSidesImages();
-            primg14.setSide1(bytes14);
+            primg14.setSide1(bytes14side1);
+            primg14.setSide2(bytes14side2);
+            primg14.setSide3(bytes14side3);
             primg14.setProductId(14);
             productImageRepository.save(primg14);
+
             Product p14 = new Product(
-                    14L, "r9", "#05c7c9",
-                    "Xiaomi", "mobile", 500d, "latest Xiaomi headphone",
-                    LocalDate.now(), "large",1400L, 5d, 15D
+                    14L, "iphone 13 pro max silver", "#05c7c9",
+                    "apple", "mobile", 500d, "iphone 13 pro max silver 128gb",
+                    LocalDate.now(), "pro max",1400L, 5d, 15D
             );
+
+
+
             File f15 = new File("src/main/resources/templates/image/H10_ID.png");
             FileInputStream fIn15 = new FileInputStream(f15);
             byte[] bytes15 = new byte[(int) f15.length()];
@@ -382,14 +479,30 @@ public class EshopApiApplication {
                     "Asus", "pc", 500d, "latest Asus ",
                     LocalDate.now(), "large",70L, 4d, 8D
             );
-            File f19 = new File("src/main/resources/templates/image/laptop-acer-1.png");
-            FileInputStream fIn19 = new FileInputStream(f19);
-            byte[] bytes19 = new byte[(int) f19.length()];
-            fIn19.read(bytes19);
+
+
+            File f19side1 = new File("src/main/resources/templates/image/lenovo-laptop-side1.png");
+            FileInputStream fIn19side1 = new FileInputStream(f19side1);
+            byte[] bytes19side1 = new byte[(int) f19side1.length()];
+            fIn19side1.read(bytes19side1);
+
+            File f19side2 = new File("src/main/resources/templates/image/lenovo-laptop-side2.png");
+            FileInputStream fIn19side2 = new FileInputStream(f19side2);
+            byte[] bytes19side2 = new byte[(int) f19side2.length()];
+            fIn19side2.read(bytes19side2);
+
+            File f19side3 = new File("src/main/resources/templates/image/lenovo-laptop-side3.png");
+            FileInputStream fIn19side3 = new FileInputStream(f19side3);
+            byte[] bytes19side3 = new byte[(int) f19side3.length()];
+            fIn19side3.read(bytes19side3);
+
             ProductSidesImages primg19 = new ProductSidesImages();
-            primg19.setSide1(bytes19);
+            primg19.setSide1(bytes19side1);
+            primg19.setSide2(bytes19side2);
+            primg19.setSide3(bytes19side3);
             primg19.setProductId(19);
             productImageRepository.save(primg19);
+
             Product p19 = new Product(
                     19L, "acer studio Book", "#aeafb3",
                     "acer", "pc", 500d, "latest acer ",
