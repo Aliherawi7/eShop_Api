@@ -1,6 +1,8 @@
 package com.eshop.service;
 
 import com.eshop.model.Product;
+import com.eshop.repository.CommentRepository;
+import com.eshop.repository.ProductImageRepository;
 import com.eshop.repository.ProductRepository;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -19,14 +21,18 @@ import static org.mockito.Mockito.verify;
 class ProductServiceTest {
     @Mock
     private ProductRepository productRepository;
+    @Mock
+    private ProductImageRepository productImageRepository;
+    @Mock
+    private CommentRepository commentRepository;
     private ProductService underTest;
     private Product product;
 
 
     @BeforeEach
     void setUp() {
-        underTest = new ProductService(productRepository);
-        product = new Product(1l, "L2400", "green", null,
+        underTest = new ProductService(productRepository, productImageRepository, commentRepository );
+        product = new Product(1l, "L2400", "green",
                 "dell", "laptop", 599.99,
                 "description", LocalDate.now(), "small",120l, 5d, 10D);
     }

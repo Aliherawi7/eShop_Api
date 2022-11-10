@@ -21,7 +21,7 @@ class ProductRepositoryTest {
     @BeforeEach
     void setUp() {
         underTest.deleteAll();
-        product = new Product(1L, "L2700", "black", null, "Dell", "computer",
+        product = new Product(1L, "L2700", "black", "Dell", "computer",
                 999.99, "the latest dell product", LocalDate.now(), "medium",10L, 4d, 10D);
     }
 
