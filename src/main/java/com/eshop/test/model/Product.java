@@ -34,19 +34,20 @@ public class Product {
     public Product(Long id, String name, String color,
                    String brandName, String category, double price,
                    String description, LocalDate productionDate, String size, long quantityInDepot, double rate, double discount) {
-        this.id = id;
-        this.name = name;
-        this.color = color;
-        this.brandName = brandName;
-        this.category = category;
-        this.price = price;
-        this.description = description;
-        this.productionDate = productionDate;
-        this.size = size;
-        this.quantityInDepot = quantityInDepot;
-        this.rate = rate;
-        this.discount = discount;
-        this.addedDate = this.updateInDepot = LocalDate.now();
+        setId(id);;
+        setName(name);
+        setColor(color);
+        setBrandName(brandName);
+        setCategory(category);
+        setPrice(price);
+        setDescription(description);
+        setProductionDate(productionDate);
+        setSize(size);
+        setQuantityInDepot(quantityInDepot);
+        setRate(rate);
+        setDiscount(discount);
+        setAddedDate(LocalDate.now());
+        setUpdateInDepot(LocalDate.now());
     }
 
     public Long getId() {
@@ -62,7 +63,7 @@ public class Product {
     }
 
     public void setName(String name) {
-        this.name = name;
+        this.name = name.toLowerCase().trim();
     }
 
     public String getColor() {
@@ -78,7 +79,7 @@ public class Product {
     }
 
     public void setBrandName(String brandName) {
-        this.brandName = brandName;
+        this.brandName = brandName.toLowerCase().trim();
     }
 
     public String getCategory() {
@@ -86,7 +87,7 @@ public class Product {
     }
 
     public void setCategory(String category) {
-        this.category = category;
+        this.category = category.toLowerCase().trim();
     }
 
     public double getPrice() {
@@ -102,7 +103,7 @@ public class Product {
     }
 
     public void setDescription(String description) {
-        this.description = description;
+        this.description = description.toLowerCase().trim();
     }
 
     public LocalDate getProductionDate() {
@@ -114,7 +115,7 @@ public class Product {
     }
 
     public String getSize() {
-        return size;
+        return size.toLowerCase().trim();
     }
 
     public void setSize(String size) {

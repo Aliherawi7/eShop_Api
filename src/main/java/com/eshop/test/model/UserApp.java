@@ -97,9 +97,9 @@ public class UserApp {
         this.lastName = lastName.trim().toLowerCase();
     }
 
-//    public Integer getAge() {
-//        return Period.between(dob, LocalDate.now()).getYears();
-//    }
+    public Integer getAge() {
+        return Period.between(dob, LocalDate.now()).getYears();
+    }
 
     public LocalDate getDob() {
         return dob;
@@ -186,7 +186,7 @@ public class UserApp {
     }
 
     public void setUserName(String userName) {
-        this.userName = userName;
+        this.userName = userName.trim().toLowerCase();
     }
 
     public void setImage(byte[] image) {
@@ -198,6 +198,6 @@ public class UserApp {
     }
 
     public void setLocation(String location) {
-        this.location = location;
+        this.location = location.trim().toLowerCase();
     }
 }

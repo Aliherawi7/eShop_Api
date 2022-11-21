@@ -452,16 +452,31 @@ public class EshopApiApplication {
                     LocalDate.now(), "large",120L, 5d, 5D
             );
 
-            File f17 = new File("src/main/resources/templates/image/c9.png");
-            FileInputStream fIn17 = new FileInputStream(f17);
-            byte[] bytes17 = new byte[(int) f17.length()];
-            fIn17.read(bytes17);
+            File f17side1 = new File("src/main/resources/templates/image/ipad-pro-side1.png");
+            FileInputStream fIn17side1 = new FileInputStream(f17side1);
+            byte[] bytes17side1 = new byte[(int) f17side1.length()];
+            fIn17side1.read(bytes17side1);
+
+            File f17side2 = new File("src/main/resources/templates/image/ipad-pro-side2.png");
+            FileInputStream fIn17side2 = new FileInputStream(f17side2);
+            byte[] bytes17side2 = new byte[(int) f17side2.length()];
+            fIn17side2.read(bytes17side2);
+
+            File f17side3 = new File("src/main/resources/templates/image/ipad-pro-side3.png");
+            FileInputStream fIn17side3 = new FileInputStream(f17side3);
+            byte[] bytes17side3 = new byte[(int) f17side3.length()];
+            fIn17side3.read(bytes17side3);
+
             ProductSidesImages primg17 = new ProductSidesImages();
-            primg17.setSide1(bytes17);
+            primg17.setSide1(bytes17side1);
+            primg17.setSide2(bytes17side2);
+            primg17.setSide3(bytes17side3);
             primg17.setProductId(17);
+            productImageRepository.save(primg14);
+
             productImageRepository.save(primg17);
             Product p17 = new Product(
-                    17L, "Laptop c9", "#edeeec",
+                    17L, "ipad pro 14 ", "#edeeec",
                     "HP", "pc", 500d, "latest HP ",
                     LocalDate.now(), "large",100L, 4d, 10D
             );

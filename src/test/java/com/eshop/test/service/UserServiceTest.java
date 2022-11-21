@@ -81,10 +81,10 @@ class UserServiceTest {
         underTest.addUser(userSingup);
 
         //then
-        ArgumentCaptor<UserApp> userAppArgumentCaptor =
-                ArgumentCaptor.forClass(UserApp.class);
-        verify(userAppRepository).save(userAppArgumentCaptor.capture());
-        UserApp capturedUserApp = userAppArgumentCaptor.getValue();
+        ArgumentCaptor<UserSignupDTO> userAppArgumentCaptor =
+                ArgumentCaptor.forClass(UserSignupDTO.class);
+        verify(underTest).addUser(userAppArgumentCaptor.capture());
+        UserSignupDTO capturedUserApp = userAppArgumentCaptor.getValue();
         assertEquals(capturedUserApp.getEmail(), user.getEmail());
 
     }

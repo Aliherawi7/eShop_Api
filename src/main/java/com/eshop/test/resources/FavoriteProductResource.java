@@ -1,12 +1,13 @@
 package com.eshop.resources;
 
+import com.eshop.dto.ProductDTO;
 import com.eshop.model.FavoriteProduct;
-import com.eshop.model.Product;
 import com.eshop.security.TestUserWithJWT;
 import com.eshop.service.FavoriteProductService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+
 import javax.servlet.http.HttpServletRequest;
 import java.util.Collection;
 
@@ -22,8 +23,9 @@ public class FavoriteProductResource {
     @GetMapping
     public ResponseEntity<?> getAllFavoriteProducts(HttpServletRequest request){
         String email = TestUserWithJWT.getUserEmailByJWT(request);
+        System.out.println("email in get fav products : "+email );
         if(email != null){
-            Collection<Product> products = favoriteProductService.getFavoriteProducts(email);
+            Collection<ProductDTO> products = favoriteProductService.getFavoriteProducts(email);
             if(products.size() > 0){
                 return new ResponseEntity<>(products, HttpStatus.OK);
             }else {
@@ -37,8 +39,13 @@ public class FavoriteProductResource {
     public ResponseEntity<?> addFavoriteProduct(HttpServletRequest request, @RequestBody FavoriteProduct favoriteProduct){
         String email = TestUserWithJWT.getUserEmailByJWT(request);
         favoriteProduct.setUserEmail(email);
-        favoriteProductService.addFavoriteProduct(favoriteProduct);
-        return ResponseEntity.ok().body("product successfully added");
+        boolean isSave = favoriteProductService.addFavoriteProduct(favoriteProduct);
+        if(isSave){
+            return ResponseEntity.ok().body("product successfully added");
+        }else {
+            return ResponseEntity.badRequest().body("product with this id not found");
+        }
+
     }
 
     @DeleteMapping("/{productId}")

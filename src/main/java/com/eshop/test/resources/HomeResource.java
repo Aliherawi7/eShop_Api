@@ -18,19 +18,15 @@ import java.util.Map;
 public class HomeResource {
 
     @Autowired
-    private IPFinderService ipFinderService;
-    @Autowired
     private ProductService productService;
 
     @GetMapping("/")
-    public ResponseEntity<String> index(HttpServletRequest request) {
-        String clientIP = ipFinderService.getClientIP(request);
-        ObjectMapper response = new ObjectMapper();
+    public ResponseEntity<?> index(HttpServletRequest request) {
+        String clientIP = IPFinderService.getClientIP(request);
         Map<String, String> responseValues = new HashMap<>();
         responseValues.put("IP Address", clientIP);
         responseValues.put("welcomeMessage", "Welcome to eshop store");
-
-        return new ResponseEntity(responseValues, HttpStatus.OK);
+        return new ResponseEntity<>(responseValues, HttpStatus.OK);
     }
 
 }
