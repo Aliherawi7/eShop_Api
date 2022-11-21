@@ -1,4 +1,4 @@
-package com.eshop.test.model;
+package com.eshop.model;
 
 import javax.persistence.*;
 import java.time.LocalDate;

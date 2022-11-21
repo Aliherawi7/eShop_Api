@@ -1,4 +1,4 @@
-package com.eshop.test;
+package com.eshop;
 
 import org.junit.jupiter.api.Test;
 

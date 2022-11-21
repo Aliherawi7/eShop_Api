@@ -1,9 +1,9 @@
-package com.eshop.test.resources;
+package com.eshop.resources;
 
-import com.eshop.test.dto.ProductDTO;
-import com.eshop.test.repository.ProductImageRepository;
-import com.eshop.test.repository.ProductRepository;
-import com.eshop.test.service.ProductService;
+import com.eshop.dto.ProductDTO;
+import com.eshop.repository.ProductImageRepository;
+import com.eshop.repository.ProductRepository;
+import com.eshop.service.ProductService;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;

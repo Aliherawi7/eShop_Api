@@ -1,7 +1,7 @@
-package com.eshop.test.filter;
+package com.eshop.filter;
 
-import com.eshop.test.model.UserApp;
-import com.eshop.test.service.UserService;
+import com.eshop.model.UserApp;
+import com.eshop.service.UserService;
 import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;

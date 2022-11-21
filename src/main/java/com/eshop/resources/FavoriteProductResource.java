@@ -1,9 +1,9 @@
-package com.eshop.test.resources;
+package com.eshop.resources;
 
-import com.eshop.test.dto.ProductDTO;
-import com.eshop.test.model.FavoriteProduct;
-import com.eshop.test.security.TestUserWithJWT;
-import com.eshop.test.service.FavoriteProductService;
+import com.eshop.dto.ProductDTO;
+import com.eshop.model.FavoriteProduct;
+import com.eshop.security.TestUserWithJWT;
+import com.eshop.service.FavoriteProductService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;

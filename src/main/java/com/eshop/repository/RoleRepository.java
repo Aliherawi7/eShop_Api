@@ -1,6 +1,6 @@
-package com.eshop.test.repository;
+package com.eshop.repository;
 
-import com.eshop.test.model.Role;
+import com.eshop.model.Role;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 public interface RoleRepository extends JpaRepository<Role, Integer> {

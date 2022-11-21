@@ -1,12 +1,12 @@
-package com.eshop.test.filter;
+package com.eshop.filter;
 
 import com.auth0.jwt.JWT;
 import com.auth0.jwt.algorithms.Algorithm;
-import com.eshop.test.dto.LoginInformationDTO;
-import com.eshop.test.dto.UserInformationDTO;
-import com.eshop.test.model.UserApp;
-import com.eshop.test.repository.OrderRepository;
-import com.eshop.test.service.UserService;
+import com.eshop.dto.LoginInformationDTO;
+import com.eshop.dto.UserInformationDTO;
+import com.eshop.model.UserApp;
+import com.eshop.repository.OrderRepository;
+import com.eshop.service.UserService;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.http.MediaType;
 import org.springframework.security.authentication.AuthenticationManager;

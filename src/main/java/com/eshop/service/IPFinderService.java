@@ -1,4 +1,4 @@
-package com.eshop.test.service;
+package com.eshop.service;
 
 import com.maxmind.geoip2.WebServiceClient;
 import com.maxmind.geoip2.exception.GeoIp2Exception;

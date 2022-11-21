@@ -1,4 +1,4 @@
-package com.eshop.test.dto;
+package com.eshop.dto;
 
 import javax.persistence.Column;
 import java.time.LocalDate;

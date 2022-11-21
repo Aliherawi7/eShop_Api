@@ -1,6 +1,6 @@
-package com.eshop.test.repository;
+package com.eshop.repository;
 
-import com.eshop.test.model.AgreeDisagree;
+import com.eshop.model.AgreeDisagree;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 import java.util.Collection;

@@ -1,6 +1,6 @@
-package com.eshop.test.repository;
+package com.eshop.repository;
 
-import com.eshop.test.model.Product;
+import com.eshop.model.Product;
 
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;

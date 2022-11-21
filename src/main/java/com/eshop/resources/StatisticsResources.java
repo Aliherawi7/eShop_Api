@@ -1,8 +1,8 @@
-package com.eshop.test.resources;
+package com.eshop.resources;
 
-import com.eshop.test.dto.MonthlyDataDTO;
-import com.eshop.test.dto.SummeryDTO;
-import com.eshop.test.service.StatisticsService;
+import com.eshop.dto.MonthlyDataDTO;
+import com.eshop.dto.SummeryDTO;
+import com.eshop.service.StatisticsService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;

@@ -1,4 +1,4 @@
-package com.eshop.test.dto;
+package com.eshop.dto;
 
 public class LoginInformationDTO {
     private String access_token;

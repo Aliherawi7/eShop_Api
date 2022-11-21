@@ -1,9 +1,9 @@
-package com.eshop.test.service;
+package com.eshop.service;
 
-import com.eshop.test.model.OrderApp;
-import com.eshop.test.model.Product;
-import com.eshop.test.repository.OrderRepository;
-import com.eshop.test.repository.ProductRepository;
+import com.eshop.model.OrderApp;
+import com.eshop.model.Product;
+import com.eshop.repository.OrderRepository;
+import com.eshop.repository.ProductRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;

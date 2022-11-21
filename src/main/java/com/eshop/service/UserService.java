@@ -1,16 +1,16 @@
-package com.eshop.test.service;
+package com.eshop.service;
 
 import com.auth0.jwt.JWT;
 import com.auth0.jwt.algorithms.Algorithm;
-import com.eshop.test.dto.SignupInformationDTO;
-import com.eshop.test.dto.UserInformationDTO;
-import com.eshop.test.dto.UserSignupDTO;
-import com.eshop.test.model.OrderApp;
-import com.eshop.test.model.Role;
-import com.eshop.test.model.UserApp;
-import com.eshop.test.repository.OrderRepository;
-import com.eshop.test.repository.RoleRepository;
-import com.eshop.test.repository.UserAppRepository;
+import com.eshop.dto.SignupInformationDTO;
+import com.eshop.dto.UserInformationDTO;
+import com.eshop.dto.UserSignupDTO;
+import com.eshop.model.OrderApp;
+import com.eshop.model.Role;
+import com.eshop.model.UserApp;
+import com.eshop.repository.OrderRepository;
+import com.eshop.repository.RoleRepository;
+import com.eshop.repository.UserAppRepository;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;

@@ -1,4 +1,4 @@
-package com.eshop.test.security;
+package com.eshop.security;
 
 import com.auth0.jwt.JWT;
 import com.auth0.jwt.JWTVerifier;

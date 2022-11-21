@@ -1,15 +1,16 @@
-package com.eshop.test;
+package com.eshop;
 
-import com.eshop.test.model.ProductSidesImages;
-import com.eshop.test.dto.UserSignupDTO;
-import com.eshop.test.repository.CommentAgreeDisagreeRepository;
-import com.eshop.test.repository.CommentRepository;
-import com.eshop.test.repository.ProductImageRepository;
-import com.eshop.test.repository.RoleRepository;
-import com.eshop.test.service.BrandService;
-import com.eshop.test.service.OrderService;
-import com.eshop.test.service.ProductService;
-import com.eshop.test.service.UserService;
+import com.eshop.dto.UserSignupDTO;
+import com.eshop.model.*;
+import com.eshop.repository.CommentAgreeDisagreeRepository;
+import com.eshop.repository.CommentRepository;
+import com.eshop.repository.ProductImageRepository;
+import com.eshop.repository.RoleRepository;
+import com.eshop.service.BrandService;
+import com.eshop.service.OrderService;
+import com.eshop.service.ProductService;
+import com.eshop.service.UserService;
+import com.eshop.model.ProductSidesImages;
 import com.eshop.test.model.*;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;

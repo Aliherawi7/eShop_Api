@@ -1,9 +1,9 @@
-package com.eshop.test.service;
-import com.eshop.test.dto.UserSignupDTO;
-import com.eshop.test.model.Role;
-import com.eshop.test.model.UserApp;
-import com.eshop.test.repository.RoleRepository;
-import com.eshop.test.repository.UserAppRepository;
+package com.eshop.service;
+import com.eshop.model.Role;
+import com.eshop.model.UserApp;
+import com.eshop.repository.RoleRepository;
+import com.eshop.repository.UserAppRepository;
+import com.eshop.dto.UserSignupDTO;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;

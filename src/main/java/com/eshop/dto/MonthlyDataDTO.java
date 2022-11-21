@@ -1,4 +1,4 @@
-package com.eshop.test.dto;
+package com.eshop.dto;
 
 import java.util.ArrayList;
 

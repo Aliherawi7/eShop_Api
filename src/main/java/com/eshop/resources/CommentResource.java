@@ -1,8 +1,8 @@
-package com.eshop.test.resources;
+package com.eshop.resources;
 
-import com.eshop.test.dto.CommentDTO;
-import com.eshop.test.dto.SaveCommentDTO;
-import com.eshop.test.service.CommentService;
+import com.eshop.dto.CommentDTO;
+import com.eshop.dto.SaveCommentDTO;
+import com.eshop.service.CommentService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import javax.servlet.http.HttpServletRequest;

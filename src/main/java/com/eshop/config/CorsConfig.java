@@ -1,4 +1,4 @@
-package com.eshop.test.config;
+package com.eshop.config;
 
 import org.springframework.web.filter.CorsFilter;
 import org.springframework.beans.factory.annotation.Value;

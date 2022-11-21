@@ -1,11 +1,11 @@
-package com.eshop.test.resources;
+package com.eshop.resources;
 
-import com.eshop.test.dto.AddRoleToUserDTO;
-import com.eshop.test.dto.EmailAndPasswordDTO;
-import com.eshop.test.dto.UserSignupDTO;
-import com.eshop.test.model.UserApp;
-import com.eshop.test.service.IPFinderService;
-import com.eshop.test.service.UserService;
+import com.eshop.model.UserApp;
+import com.eshop.dto.AddRoleToUserDTO;
+import com.eshop.dto.EmailAndPasswordDTO;
+import com.eshop.dto.UserSignupDTO;
+import com.eshop.service.IPFinderService;
+import com.eshop.service.UserService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;

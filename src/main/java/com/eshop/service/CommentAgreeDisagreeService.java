@@ -1,8 +1,8 @@
-package com.eshop.test.service;
+package com.eshop.service;
 
 
-import com.eshop.test.model.AgreeDisagree;
-import com.eshop.test.repository.CommentAgreeDisagreeRepository;
+import com.eshop.model.AgreeDisagree;
+import com.eshop.repository.CommentAgreeDisagreeRepository;
 import org.springframework.stereotype.Service;
 
 import java.util.HashMap;

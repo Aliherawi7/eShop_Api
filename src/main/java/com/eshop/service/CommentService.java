@@ -1,11 +1,11 @@
-package com.eshop.test.service;
+package com.eshop.service;
 
-import com.eshop.test.dto.CommentDTO;
-import com.eshop.test.dto.SaveCommentDTO;
-import com.eshop.test.model.Comment;
-import com.eshop.test.model.UserApp;
-import com.eshop.test.repository.CommentRepository;
-import com.eshop.test.security.TestUserWithJWT;
+import com.eshop.dto.CommentDTO;
+import com.eshop.dto.SaveCommentDTO;
+import com.eshop.model.Comment;
+import com.eshop.model.UserApp;
+import com.eshop.repository.CommentRepository;
+import com.eshop.security.TestUserWithJWT;
 import org.springframework.stereotype.Service;
 
 import javax.servlet.http.HttpServletRequest;

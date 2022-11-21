@@ -1,12 +1,12 @@
-package com.eshop.test.service;
+package com.eshop.service;
 
-import com.eshop.test.dto.ProductDTO;
-import com.eshop.test.model.FavoriteProduct;
-import com.eshop.test.model.Product;
-import com.eshop.test.model.ProductSidesImages;
-import com.eshop.test.repository.FavoriteProductRepository;
-import com.eshop.test.repository.ProductImageRepository;
-import com.eshop.test.repository.ProductRepository;
+import com.eshop.dto.ProductDTO;
+import com.eshop.model.FavoriteProduct;
+import com.eshop.model.Product;
+import com.eshop.model.ProductSidesImages;
+import com.eshop.repository.FavoriteProductRepository;
+import com.eshop.repository.ProductImageRepository;
+import com.eshop.repository.ProductRepository;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;

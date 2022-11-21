@@ -1,7 +1,7 @@
-package com.eshop.test.resources;
+package com.eshop.resources;
 
-import com.eshop.test.model.OrderApp;
-import com.eshop.test.service.OrderService;
+import com.eshop.model.OrderApp;
+import com.eshop.service.OrderService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;

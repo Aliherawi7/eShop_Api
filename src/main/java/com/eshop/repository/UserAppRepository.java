@@ -1,6 +1,6 @@
-package com.eshop.test.repository;
+package com.eshop.repository;
 
-import com.eshop.test.model.UserApp;
+import com.eshop.model.UserApp;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 import java.util.Collection;

@@ -1,6 +1,6 @@
-package com.eshop.test.repository;
+package com.eshop.repository;
 
-import com.eshop.test.model.ProductSidesImages;
+import com.eshop.model.ProductSidesImages;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 public interface ProductImageRepository extends JpaRepository<ProductSidesImages, Long> {

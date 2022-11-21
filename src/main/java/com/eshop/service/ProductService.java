@@ -1,11 +1,11 @@
-package com.eshop.test.service;
+package com.eshop.service;
 
-import com.eshop.test.dto.ProductDTO;
-import com.eshop.test.model.ProductSidesImages;
-import com.eshop.test.repository.CommentRepository;
-import com.eshop.test.repository.ProductImageRepository;
-import com.eshop.test.repository.ProductRepository;
-import com.eshop.test.model.Product;
+import com.eshop.dto.ProductDTO;
+import com.eshop.model.Product;
+import com.eshop.model.ProductSidesImages;
+import com.eshop.repository.CommentRepository;
+import com.eshop.repository.ProductImageRepository;
+import com.eshop.repository.ProductRepository;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;

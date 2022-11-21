@@ -1,9 +1,9 @@
-package com.eshop.test.security;
+package com.eshop.security;
 
-import com.eshop.test.filter.CustomAuthenticationFilter;
-import com.eshop.test.filter.CustomAuthorizationFilter;
-import com.eshop.test.repository.OrderRepository;
-import com.eshop.test.service.UserService;
+import com.eshop.repository.OrderRepository;
+import com.eshop.filter.CustomAuthenticationFilter;
+import com.eshop.filter.CustomAuthorizationFilter;
+import com.eshop.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.http.HttpMethod;

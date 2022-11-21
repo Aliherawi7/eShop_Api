@@ -1,7 +1,7 @@
-package com.eshop.test.resources;
+package com.eshop.resources;
 
-import com.eshop.test.model.Brand;
-import com.eshop.test.service.BrandService;
+import com.eshop.model.Brand;
+import com.eshop.service.BrandService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;

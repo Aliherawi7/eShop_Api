@@ -1,4 +1,4 @@
-package com.eshop.test.filter;
+package com.eshop.filter;
 
 import com.auth0.jwt.JWT;
 import com.auth0.jwt.JWTVerifier;

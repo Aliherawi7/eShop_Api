@@ -1,7 +1,7 @@
-package com.eshop.test.service;
+package com.eshop.service;
 
-import com.eshop.test.model.Brand;
-import com.eshop.test.repository.BrandRepository;
+import com.eshop.model.Brand;
+import com.eshop.repository.BrandRepository;
 import org.springframework.stereotype.Service;
 
 import java.util.Collection;

@@ -1,6 +1,6 @@
-package com.eshop.test.repository;
+package com.eshop.repository;
 
-import com.eshop.test.model.OrderApp;
+import com.eshop.model.OrderApp;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 import java.time.LocalDate;

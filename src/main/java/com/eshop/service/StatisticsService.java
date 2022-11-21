@@ -1,14 +1,14 @@
-package com.eshop.test.service;
+package com.eshop.service;
 
-import com.eshop.test.dto.MonthlyDataDTO;
-import com.eshop.test.dto.SummeryDTO;
-import com.eshop.test.model.OrderApp;
-import com.eshop.test.model.Product;
-import com.eshop.test.model.UserApp;
-import com.eshop.test.repository.BrandRepository;
-import com.eshop.test.repository.OrderRepository;
-import com.eshop.test.repository.ProductRepository;
-import com.eshop.test.repository.UserAppRepository;
+import com.eshop.dto.SummeryDTO;
+import com.eshop.model.OrderApp;
+import com.eshop.model.Product;
+import com.eshop.model.UserApp;
+import com.eshop.repository.BrandRepository;
+import com.eshop.repository.OrderRepository;
+import com.eshop.repository.ProductRepository;
+import com.eshop.repository.UserAppRepository;
+import com.eshop.dto.MonthlyDataDTO;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;

@@ -1,9 +1,9 @@
-package com.eshop.test.service;
+package com.eshop.service;
 
-import com.eshop.test.model.Product;
-import com.eshop.test.repository.CommentRepository;
-import com.eshop.test.repository.ProductImageRepository;
-import com.eshop.test.repository.ProductRepository;
+import com.eshop.model.Product;
+import com.eshop.repository.CommentRepository;
+import com.eshop.repository.ProductImageRepository;
+import com.eshop.repository.ProductRepository;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
