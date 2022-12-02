@@ -11,7 +11,6 @@ import com.eshop.service.OrderService;
 import com.eshop.service.ProductService;
 import com.eshop.service.UserService;
 import com.eshop.model.ProductSidesImages;
-import com.eshop.test.model.*;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
