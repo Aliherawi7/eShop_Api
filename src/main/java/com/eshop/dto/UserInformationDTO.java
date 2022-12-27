@@ -1,5 +1,6 @@
 package com.eshop.dto;
 
+import java.time.LocalDate;
 import java.util.List;
 
 public class UserInformationDTO {
@@ -10,6 +11,7 @@ public class UserInformationDTO {
     private String email;
     private List<String> roles;
     private String location;
+    private LocalDate dob;
     private int totalOrders;
     private double totalSpending;
     private boolean isActive;
@@ -110,5 +112,11 @@ public class UserInformationDTO {
         this.isActive = isActive;
     }
 
+    public LocalDate getDob() {
+        return dob;
+    }
 
+    public void setDob(LocalDate dob) {
+        this.dob = dob;
+    }
 }
