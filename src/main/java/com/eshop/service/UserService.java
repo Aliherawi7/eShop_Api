@@ -5,6 +5,7 @@ import com.auth0.jwt.algorithms.Algorithm;
 import com.eshop.dto.SignupInformationDTO;
 import com.eshop.dto.UserInformationDTO;
 import com.eshop.dto.UserSignupDTO;
+import com.eshop.exception.UserCredentialExeption;
 import com.eshop.model.OrderApp;
 import com.eshop.model.Role;
 import com.eshop.model.UserApp;
@@ -21,7 +22,10 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
 
+import java.io.IOException;
+import java.time.LocalDate;
 import java.util.*;
 import java.util.stream.Collectors;
 
@@ -101,6 +105,45 @@ public class UserService implements UserDetailsService {
 
             return new ResponseEntity<>(new SignupInformationDTO(accessToken, userInfo), HttpStatus.CREATED);
         }
+    }
+
+    // update user information
+    public UserInformationDTO updateUser(String  email, MultipartFile file, Map<String, String> params) throws Exception {
+
+        // check if there a user with the request jwt email
+        UserApp userInDB = userRepository.findByEmail(email);
+        // if there is not such user in the db then throw UserCredentialExpetion
+        if(userInDB == null){
+            throw new UserCredentialExeption("User not found");
+        }
+        // if there is such user in db then update it with request params
+        LocalDate dob = params.get("dob") != null ? LocalDate.parse(params.get("dob")): LocalDate.now();
+        userInDB.setDob(dob);
+        userInDB.setName(params.get("name"));
+        userInDB.setLastName(params.get("lastName"));
+        userInDB.setLocation(params.get("location"));
+        if(!email.equals(params.get("email"))){
+            boolean isExistByEmail = userRepository.existsByEmail(params.get("email"));
+            if(isExistByEmail){
+                throw new UserCredentialExeption("Email has already taken");
+            }
+        }
+
+        try {
+            userInDB.setImage(file.getBytes());
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        userInDB.setEmail(params.get("email"));
+        userRepository.save(userInDB);
+        UserInformationDTO userDto = new UserInformationDTO();
+        userDto.setEmail(userInDB.getEmail());
+        userDto.setName(userInDB.getName());
+        userDto.setLastName(userDto.getName());
+        userDto.setImage(userInDB.getImage());
+        userDto.setLocation(userDto.getLocation());
+        userDto.setDob(userDto.getDob());
+        return userDto;
     }
 
     // find user by email
