@@ -1,9 +1,12 @@
 package com.eshop.resources;
 
+import com.eshop.dto.UserInformationDTO;
+import com.eshop.exception.UserCredentialExeption;
 import com.eshop.model.UserApp;
 import com.eshop.dto.AddRoleToUserDTO;
 import com.eshop.dto.EmailAndPasswordDTO;
 import com.eshop.dto.UserSignupDTO;
+import com.eshop.security.TestUserWithJWT;
 import com.eshop.service.IPFinderService;
 import com.eshop.service.UserService;
 import org.springframework.http.HttpStatus;
@@ -58,18 +61,41 @@ public class UserResource {
         return userService.addUser(userInfo);
     }
 
-    @GetMapping("/user/{email}")
-    public ResponseEntity<?> getUser(@PathVariable String email) {
-        email = email.trim().toLowerCase();
-        UserApp user = userService.getUser(email);
+    @GetMapping("/user")
+    public ResponseEntity<?> getUser(HttpServletRequest request) {
+        String jwtEmail = TestUserWithJWT.getUserEmailByJWT(request);
+        System.out.println(jwtEmail);
+        UserApp user = userService.getUser(jwtEmail);
+        UserInformationDTO userDTO = new UserInformationDTO();
+        userDTO.setName(user.getName());
+        userDTO.setLastName(user.getLastName());
+        userDTO.setEmail(user.getEmail());
+        userDTO.setDob(user.getDob());
+        userDTO.setLocation(user.getLocation());
+        userDTO.setImage(user.getImage());
         if (user != null) {
-            return new ResponseEntity<>(user, HttpStatus.OK);
+            return new ResponseEntity<>(userDTO, HttpStatus.OK);
+        } else {
+            return new ResponseEntity<>("User with email: " + jwtEmail + " not found!", HttpStatus.NOT_FOUND);
+        }
+    }
+
+    @PutMapping
+    public ResponseEntity<?> updateUser(
+            @RequestParam("image") MultipartFile file, @RequestParam Map<String, String> params, HttpServletRequest request
+    ) throws Exception {
+        String email = TestUserWithJWT.getUserEmailByJWT(request);
+        UserInformationDTO user = userService.updateUser(email,file, params);
+        if (user != null) {
+            return new ResponseEntity<>(user, HttpStatus.CREATED);
         } else {
             return new ResponseEntity<>("User with email: " + email + " not found!", HttpStatus.NOT_FOUND);
         }
     }
 
-    @PostMapping("/delete")
+
+
+    @DeleteMapping("/delete")
     public ResponseEntity<?> deleteUser(@RequestBody EmailAndPasswordDTO emailAndPassword) {
         return userService.deleteUser(emailAndPassword.getEmail(), emailAndPassword.getPassword());
     }
