@@ -67,7 +67,7 @@ public class CommentResource {
     public ResponseEntity<?> addComment(@RequestBody SaveCommentDTO saveCommentDTO, HttpServletRequest request) {
         return ResponseEntity.ok().body(commentService.addComment(saveCommentDTO, request));
     }
-    @PutMapping
+    @PutMapping("/{id}")
     public ResponseEntity<?> updateComment(@RequestBody SaveCommentDTO saveCommentDTO, HttpServletRequest request) {
         return ResponseEntity.ok().body(commentService.updateComment(saveCommentDTO, request));
     }
