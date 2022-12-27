@@ -59,11 +59,9 @@ public class ProductResource {
     }
 
     // save the product in database
-    @PostMapping(value = "/save")
+    @PostMapping
     public ResponseEntity<?> addProduct(@RequestParam("image") ArrayList<MultipartFile>  files, @RequestParam Map<String, String> params) throws IOException {
-
         return new ResponseEntity<>(productService.addProduct(files, params), HttpStatus.CREATED);
-
     }
 
     //update th existed product
@@ -95,7 +93,7 @@ public class ProductResource {
     }
 
     //remove product by id
-    @DeleteMapping("/delete/{id}")
+    @DeleteMapping("/{id}")
     public ResponseEntity<?> deleteProductById(@PathVariable Long id) {
         return productService.deleteProductById(id);
     }
@@ -111,7 +109,7 @@ public class ProductResource {
      *============   query methods   ============*
      *===========================================*/
     // find product by name
-    @GetMapping(value = "/find", params = {"all"})
+    @GetMapping(value = "/find", params = {"name"})
     public ResponseEntity<?> searchProducts(@RequestParam String all) {
         Collection<ProductDTO> products = productService.getAllProducts();
         String finalAll = all.toLowerCase();
@@ -125,16 +123,16 @@ public class ProductResource {
         }
     }
 
-    // find product by name
-    @GetMapping(value = "/find", params = {"name"})
-    public ResponseEntity<?> getProduct(@RequestParam String name) {
-        Product product = productService.getProductByName(name);
-        if (product != null) {
-            return new ResponseEntity<>(product, HttpStatus.OK);
-        } else {
-            return new ResponseEntity<>("not product found by name : " + name, HttpStatus.NOT_FOUND);
-        }
-    }
+//    // find product by name
+//    @GetMapping(value = "/find", params = {"name"})
+//    public ResponseEntity<?> getProduct(@RequestParam String name) {
+//        Product product = productService.getProductByName(name);
+//        if (product != null) {
+//            return new ResponseEntity<>(product, HttpStatus.OK);
+//        } else {
+//            return new ResponseEntity<>("not product found by name : " + name, HttpStatus.NOT_FOUND);
+//        }
+//    }
 
     // find by brand name
     @GetMapping(value = "/find", params = {"brand"})
