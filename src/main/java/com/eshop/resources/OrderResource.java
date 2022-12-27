@@ -32,17 +32,12 @@ public class OrderResource {
         return orderService.getOrder(orderId);
     }
 
-    @PostMapping("/save")
-    public ResponseEntity<?> addOrder(@RequestBody OrderApp order) {
-        return orderService.addOrder(order);
-    }
-
-    @PostMapping("/saveAll")
+    @PostMapping
     public ResponseEntity<?> addOrders(@RequestBody Collection<OrderApp> orders, HttpServletRequest request) {
         return orderService.addOrders(orders, request);
     }
 
-    @DeleteMapping("/delete/{id}")
+    @DeleteMapping("/{id}")
     public ResponseEntity<?> deleteOrder(@PathVariable Long id) {
         return orderService.deleteOrder(id);
     }
@@ -73,10 +68,10 @@ public class OrderResource {
     }
 
     // find all delivered or not delivered orders in a specific date
-    @GetMapping(value = "/find", params = {"orderDate", "delivered"})
+    @GetMapping(value = "/find", params = {"orderDate", "isDelivered"})
     public ResponseEntity<?> findAllByOrderDateAndDelivered(@RequestParam Map<String, String> params) {
         LocalDate date = LocalDate.parse(params.get("orderDate"));
-        boolean delivered = Boolean.parseBoolean(params.get("delivered"));
+        boolean delivered = Boolean.parseBoolean(params.get("isDelivered"));
         return orderService.findAllByOrderDateAndDelivered(date, delivered);
     }
 
