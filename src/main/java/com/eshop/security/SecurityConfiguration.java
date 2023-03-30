@@ -22,6 +22,7 @@ import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 
 
 import java.util.Arrays;
+import java.util.Collections;
 
 
 @EnableWebSecurity
@@ -31,6 +32,7 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
     private final UserService userService;
     private final BCryptPasswordEncoder bCryptPasswordEncoder;
     private final OrderRepository orderRepository;
+
     @Autowired
     public SecurityConfiguration(UserDetailsService userDetailsService, BCryptPasswordEncoder bCryptPasswordEncoder, UserService userService, OrderRepository orderRepository) {
         this.userDetailsService = userDetailsService;
@@ -85,9 +87,9 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
         corsConfig.addAllowedMethod("POST");
         corsConfig.addAllowedMethod("PUT");
         corsConfig.addAllowedMethod("DELETE");
-        corsConfig.setAllowedOrigins(Arrays.asList("http://localhost:3000"));
+        corsConfig.setAllowedOrigins(Collections.singletonList("http://localhost:3000"));
         corsConfig.setAllowedHeaders(Arrays.asList("Authorization", "Requestor-Type"));
-        corsConfig.setExposedHeaders(Arrays.asList("X-Get-Header"));
+        corsConfig.setExposedHeaders(Collections.singletonList("X-Get-Header"));
         UrlBasedCorsConfigurationSource source  = new UrlBasedCorsConfigurationSource();
         source.registerCorsConfiguration("/**",new CorsConfiguration().applyPermitDefaultValues());
         return source;
