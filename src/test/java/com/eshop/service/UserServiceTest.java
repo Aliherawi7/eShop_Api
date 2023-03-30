@@ -1,6 +1,7 @@
 package com.eshop.service;
 import com.eshop.model.Role;
 import com.eshop.model.UserApp;
+import com.eshop.repository.OrderRepository;
 import com.eshop.repository.RoleRepository;
 import com.eshop.repository.UserAppRepository;
 import com.eshop.dto.UserSignupDTO;
@@ -30,6 +31,8 @@ class UserServiceTest {
     private RoleRepository roleRepository;
     @Mock
     private BCryptPasswordEncoder bCryptPasswordEncoder;
+    @Mock
+    OrderRepository orderRepository;
     private UserService underTest;
     private UserSignupDTO userSingup;
     private UserApp user;
@@ -37,7 +40,11 @@ class UserServiceTest {
     @BeforeEach
     void setUp() {
         userAppRepository.deleteAll();
-        underTest = new UserService(userAppRepository, roleRepository, bCryptPasswordEncoder);
+        underTest = new UserService(
+                userAppRepository,
+                roleRepository,
+                bCryptPasswordEncoder,
+                orderRepository);
         userSingup = new UserSignupDTO();
         userSingup.setName("ali");
         userSingup.setLastName("herawi");
