@@ -1,14 +1,14 @@
 package com.eshop.resources;
 
-import com.eshop.dto.UserInformationDTO;
-import com.eshop.exception.UserCredentialExeption;
-import com.eshop.model.UserApp;
 import com.eshop.dto.AddRoleToUserDTO;
 import com.eshop.dto.EmailAndPasswordDTO;
+import com.eshop.dto.UserInformationDTO;
 import com.eshop.dto.UserSignupDTO;
+import com.eshop.model.UserApp;
 import com.eshop.security.TestUserWithJWT;
 import com.eshop.service.IPFinderService;
 import com.eshop.service.UserService;
+import com.mysql.cj.x.protobuf.MysqlxDatatypes;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -37,7 +37,7 @@ public class UserResource {
     }
 
     @PostMapping("/signup")
-    public ResponseEntity<?> addUser(@RequestParam("image") MultipartFile file, @RequestParam Map<String, String> params, HttpServletRequest request) throws IOException {
+    public ResponseEntity<?> addUser(@RequestParam("image") MultipartFile file, @RequestParam Map<MysqlxDatatypes.Scalar.String, String> params, HttpServletRequest request) throws IOException {
         UserSignupDTO userInfo = new UserSignupDTO();
         userInfo.setName(params.get("name"));
         userInfo.setLastName(params.get("lastName"));
