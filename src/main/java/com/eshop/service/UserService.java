@@ -46,11 +46,15 @@ public class UserService implements UserDetailsService {
     private final BCryptPasswordEncoder bCryptPasswordEncoder;
     @Autowired
     private OrderRepository orderRepository;
-    @Autowired
-    public UserService(UserAppRepository userRepository, RoleRepository roleRepository, BCryptPasswordEncoder bCryptPasswordEncoder) {
+
+    public UserService(UserAppRepository userRepository,
+                       RoleRepository roleRepository,
+                       BCryptPasswordEncoder bCryptPasswordEncoder,
+                       OrderRepository orderRepository) {
         this.userRepository = userRepository;
         this.roleRepository = roleRepository;
         this.bCryptPasswordEncoder = bCryptPasswordEncoder;
+        this.orderRepository = orderRepository;
     }
 
 
@@ -63,9 +67,7 @@ public class UserService implements UserDetailsService {
             throw new UsernameNotFoundException("User not found!");
         }
         Collection<SimpleGrantedAuthority> authorities = new ArrayList<>();
-        user.getRoles().forEach(role -> {
-            authorities.add(new SimpleGrantedAuthority(role.getName()));
-        });
+        user.getRoles().forEach(role -> authorities.add(new SimpleGrantedAuthority(role.getName())));
         return new org.springframework.security.core.userdetails.User(user.getEmail(), user.getPassword(), authorities);
     }
 
