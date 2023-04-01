@@ -7,8 +7,8 @@ import java.util.ArrayList;
 public class ProductDTO {
     private Long productId;
     private String name;
-    private String[] colors;
-    private ArrayList<byte[]> images;
+    private String color;
+    private ArrayList<String> images;
     private String brandName;
     private String category;
     private double price;
@@ -24,13 +24,13 @@ public class ProductDTO {
     public ProductDTO() {
     }
 
-    public ProductDTO(Long productId, String name, String[] colors,
-                      ArrayList<byte[]> images, String brandName, String category,
+    public ProductDTO(Long productId, String name, String color,
+                      ArrayList<String> images, String brandName, String category,
                       double price, ArrayList<String> details, LocalDate productionDate,
                       String size, long quantityInDepot, double rate, double discount, int reviews) {
         this.productId = productId;
         this.name = name;
-        this.colors = colors;
+        this.color = color;
         this.images = images;
         this.brandName = brandName;
         this.category = category;
@@ -60,19 +60,19 @@ public class ProductDTO {
         this.name = name;
     }
 
-    public String[] getColors() {
-        return colors;
+    public String getColor() {
+        return color;
     }
 
-    public void setColors(String[] colors) {
-        this.colors = colors;
+    public void setColor(String color) {
+        this.color = color;
     }
 
-    public ArrayList<byte[]> getImages() {
+    public ArrayList<String> getImages() {
         return images;
     }
 
-    public void setImages(ArrayList<byte[]> images) {
+    public void setImages(ArrayList<String> images) {
         this.images = images;
     }
 
