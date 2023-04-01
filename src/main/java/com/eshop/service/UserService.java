@@ -2,6 +2,7 @@ package com.eshop.service;
 
 import com.auth0.jwt.JWT;
 import com.auth0.jwt.algorithms.Algorithm;
+import com.eshop.constants.APIEndpoints;
 import com.eshop.dto.SignupInformationDTO;
 import com.eshop.dto.UserInformationDTO;
 import com.eshop.dto.UserSignupDTO;
@@ -44,17 +45,19 @@ public class UserService implements UserDetailsService {
     private final UserAppRepository userRepository;
     private final RoleRepository roleRepository;
     private final BCryptPasswordEncoder bCryptPasswordEncoder;
-    @Autowired
-    private OrderRepository orderRepository;
+    private final OrderRepository orderRepository;
+    private final FileStorageService fileStorageService;
 
     public UserService(UserAppRepository userRepository,
                        RoleRepository roleRepository,
                        BCryptPasswordEncoder bCryptPasswordEncoder,
-                       OrderRepository orderRepository) {
+                       OrderRepository orderRepository,
+                       FileStorageService fileStorageService) {
         this.userRepository = userRepository;
         this.roleRepository = roleRepository;
         this.bCryptPasswordEncoder = bCryptPasswordEncoder;
         this.orderRepository = orderRepository;
+        this.fileStorageService = fileStorageService;
     }
 
 
@@ -88,10 +91,10 @@ public class UserService implements UserDetailsService {
             userApp.setName(user.getName());
             userApp.setLastName(user.getLastName());
             userApp.setPassword(bCryptPasswordEncoder.encode(user.getPassword()));
-            userApp.setImgUrl(user.getImage());
             userApp.setLocation(user.getLocation());
             userApp.addRole(roleRepository.findByName("USER"));
-            userRepository.save(userApp);
+            userApp = userRepository.save(userApp);
+            fileStorageService.storeUserProfileImageByteArray(user.getImage(), userApp.getId());
 
 
             UserInformationDTO userInfo = new UserInformationDTO(userApp.getId(), userApp.getName(),userApp.getLastName(),
@@ -130,11 +133,8 @@ public class UserService implements UserDetailsService {
                 throw new UserCredentialExeption("Email has already taken");
             }
         }
-
-        try {
-            userInDB.setImage(file.getBytes());
-        } catch (IOException e) {
-            e.printStackTrace();
+        if(!file.isEmpty()){
+            fileStorageService.storeUserProfileImage(file, userInDB.getId());
         }
         userInDB.setEmail(params.get("email"));
         userRepository.save(userInDB);
