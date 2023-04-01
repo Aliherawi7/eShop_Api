@@ -29,7 +29,7 @@ public class UserApp {
     @Column(nullable = false)
     private String email;
     @Lob
-    private byte[] image;
+    private String image;
     @ManyToMany(fetch = FetchType.EAGER)
     private Collection<Role> roles = new ArrayList<>();
     private boolean enabled;
@@ -50,7 +50,7 @@ public class UserApp {
     public UserApp(Long id,
                    String name, String lastName,
                    LocalDate dob, String password,
-                   String email, byte[] image, String location) {
+                   String email, String image, String location) {
         this.id = id;
         this.name = name;
         this.lastName = lastName;
@@ -133,11 +133,11 @@ public class UserApp {
         this.email = email.trim().toLowerCase();
     }
 
-    public byte[] getImage() {
+    public String getImage() {
         return image;
     }
 
-    public void setImgUrl(byte[] image) {
+    public void setImgUrl(String image) {
         this.image = image;
     }
 
@@ -189,7 +189,7 @@ public class UserApp {
         this.userName = userName.trim().toLowerCase();
     }
 
-    public void setImage(byte[] image) {
+    public void setImage(String image) {
         this.image = image;
     }
 
