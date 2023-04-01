@@ -8,12 +8,15 @@ public class FileStorageLocation {
 
     private String userProfileUploadDir;
     private String productUploadDir;
+    private String brandUploadDir;
 
     public FileStorageLocation(
             @Value("${file.user.profile.upload.dir}") String userProfileUploadDir,
-            @Value("${file.product.upload.dir}") String productUploadDir) {
+            @Value("${file.product.upload.dir}") String productUploadDir,
+            @Value("${file.brand.upload.dir}") String brandUploadDir) {
         this.userProfileUploadDir = userProfileUploadDir;
         this.productUploadDir = productUploadDir;
+        this.brandUploadDir = brandUploadDir;
     }
 
     public String getUserProfileUploadDir() {
@@ -30,5 +33,13 @@ public class FileStorageLocation {
 
     public void setProductUploadDir(String productUploadDir) {
         this.productUploadDir = productUploadDir;
+    }
+
+    public String getBrandUploadDir() {
+        return brandUploadDir;
+    }
+
+    public void setBrandUploadDir(String brandUploadDir) {
+        this.brandUploadDir = brandUploadDir;
     }
 }
