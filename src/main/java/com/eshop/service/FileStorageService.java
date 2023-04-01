@@ -1,14 +1,14 @@
 package com.eshop.service;
 
+import com.eshop.exception.FileNotFoundException;
 import com.eshop.properties.FileStorageLocation;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.File;
 import java.io.FileInputStream;
-import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -22,6 +22,7 @@ public class FileStorageService {
 
     private final Path userProfileImageLocation;
     private final Path productImageLocation;
+    private final Path brandImageLocation;
 
     public FileStorageService(FileStorageLocation fileStorageLocation) {
         this.userProfileImageLocation = Paths
@@ -29,6 +30,9 @@ public class FileStorageService {
                 .toAbsolutePath()
                 .normalize();
         this.productImageLocation = Paths.get(fileStorageLocation.getProductUploadDir())
+                .toAbsolutePath()
+                .normalize();
+        this.brandImageLocation = Paths.get(fileStorageLocation.getBrandUploadDir())
                 .toAbsolutePath()
                 .normalize();
         try{
@@ -42,8 +46,22 @@ public class FileStorageService {
     /*
     * store the user profile image
     * */
-    public void storeUserProfileImage(MultipartFile file, String userName) throws IOException {
-        storeTheFile(file, userName, userProfileImageLocation);
+    public void storeUserProfileImage(MultipartFile file, long userId){
+        try {
+            storeTheFile(file, userId+"", userProfileImageLocation);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+    /*
+     * store the user profile image
+     * */
+    public void storeUserProfileImageByteArray(byte[] file, long userId){
+        try {
+            storeTheByteArray(file, userId+"", userProfileImageLocation);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
     /*
@@ -57,24 +75,35 @@ public class FileStorageService {
     /*
      * store the file in the user-profile-image directory
      * */
-    public void storeTheFile(MultipartFile multipartFile, String fileName, Path path) throws IOException {
+    public void storeTheFile(MultipartFile  multipartFile, String fileName, Path path) throws IOException {
         if(multipartFile == null || fileName == null) return;
-        // Normalize file name
+
         String originalFileName = StringUtils.getFilename(multipartFile.getOriginalFilename());
+
         // Check if the file's name contains valid  characters or not
-        assert originalFileName != null;
-        if (originalFileName.contains("..")) {
-            throw new RuntimeException("Sorry! File name which contains invalid path sequence " + fileName);
+        if (fileName.contains("..")) {
+            throw new RuntimeException("Sorry! File name which contains invalid path sequence " + originalFileName);
         }
-        String extension = multipartFile.getOriginalFilename().split("\\.")[1];
-        Path targetLocation = userProfileImageLocation.resolve(fileName+"."+extension);
-        Files.copy(multipartFile.getInputStream(), targetLocation, StandardCopyOption.REPLACE_EXISTING);
+        assert originalFileName != null;
+        String extension = originalFileName.split("\\.")[1];
+        path.resolve(fileName+"."+extension);
+        Files.copy(multipartFile.getInputStream(), path, StandardCopyOption.REPLACE_EXISTING);
+    }
+    public void storeTheByteArray(byte[]  multipartFile, String fileName, Path path) throws IOException {
+        if(multipartFile == null || fileName == null) return;
+        File file = new File(path.resolve(fileName+".png").toUri());
+        FileOutputStream fileOutputStream = new FileOutputStream(file);
+        fileOutputStream.write(multipartFile);
+        fileOutputStream.close();
+//
+//        Path targetLocation = userProfileImageLocation.resolve(fileName+".png");
+//        Files.copy(fileInputStream, targetLocation, StandardCopyOption.REPLACE_EXISTING);
     }
 
     /*
     * get the image by file name and file location
     * */
-    public byte[] getFile(String fileName, Path path) throws FileNotFoundException {
+    public byte[] getFile(String fileName, Path path){
         File image = Stream
                 .of(Objects.requireNonNull(new File(path.toUri()).listFiles()))
                 .filter(item -> item.getName().split("\\.")[0].equalsIgnoreCase(fileName))
@@ -97,16 +126,25 @@ public class FileStorageService {
     * get the product images
     * */
 
-    public byte[] getProductImage(String productName) throws FileNotFoundException {
+    public byte[] getProductImage(String productName){
         return getFile(productName, productImageLocation);
     }
 
     /*
     * get the user profile image
     * */
-    public byte[] getUserImage(String username) throws FileNotFoundException {
+    public byte[] getUserImage(String username){
         return getFile(username, userProfileImageLocation);
     }
+
+    /*
+    * get the brand image
+    * */
+    public byte[] getBrandImage(String brandName){
+        return getFile(brandName, brandImageLocation);
+    }
+
+
 
 
 }
