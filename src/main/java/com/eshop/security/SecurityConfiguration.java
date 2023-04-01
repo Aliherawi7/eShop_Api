@@ -60,7 +60,7 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
         http.authorizeHttpRequests().antMatchers(HttpMethod.GET,"/api/products",
                 "/api/products/*",
                 "/api/brands",
-                "/api/comments/products/*").permitAll();
+                "/api/comments/products/*", "/api/v1/files/**").permitAll();
         http.authorizeHttpRequests().antMatchers(HttpMethod.POST, "/api/products/save")
                 .hasAuthority("ADMIN");
         http.authorizeHttpRequests().antMatchers(HttpMethod.DELETE, "/api/products/delete")
