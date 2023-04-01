@@ -1,8 +1,6 @@
 package com.eshop.resources;
 
 import com.eshop.model.Product;
-import com.eshop.model.ProductSidesImages;
-import com.eshop.repository.ProductImageRepository;
 import com.eshop.dto.ProductDTO;
 import com.eshop.service.ProductService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -28,12 +26,10 @@ import java.util.stream.Collectors;
 public class ProductResource {
 
     private final ProductService productService;
-    private final ProductImageRepository productImageRepository;
 
     @Autowired
-    public ProductResource(ProductService productService, ProductImageRepository productImageRepository) {
+    public ProductResource(ProductService productService) {
         this.productService = productService;
-        this.productImageRepository = productImageRepository;
     }
 
     //get all the product from database
@@ -79,16 +75,6 @@ public class ProductResource {
         product.setQuantityInDepot(Long.parseLong(params.get("quantityInDepot")));
         product.setSize(params.get("size"));
         product.setDiscount(Double.parseDouble(params.get("discount")));
-        try {
-            ProductSidesImages productSidesImages = new ProductSidesImages();
-            productSidesImages.setProductId(product.getId());
-            productSidesImages.setSide1(files.get(0).getBytes());
-            productSidesImages.setSide2(files.get(1).getBytes());
-            productSidesImages.setSide3(files.get(2).getBytes());
-            productImageRepository.save(productSidesImages);
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
         return productService.updateProduct(product);
     }
 
@@ -123,16 +109,16 @@ public class ProductResource {
         }
     }
 
-//    // find product by name
-//    @GetMapping(value = "/find", params = {"name"})
-//    public ResponseEntity<?> getProduct(@RequestParam String name) {
-//        Product product = productService.getProductByName(name);
-//        if (product != null) {
-//            return new ResponseEntity<>(product, HttpStatus.OK);
-//        } else {
-//            return new ResponseEntity<>("not product found by name : " + name, HttpStatus.NOT_FOUND);
-//        }
-//    }
+    // find product by name
+/*    @GetMapping(value = "/find", params = {"name"})
+    public ResponseEntity<?> getProduct(@RequestParam String name) {
+        Product product = productService.getProductByName(name);
+        if (product != null) {
+            return new ResponseEntity<>(product, HttpStatus.OK);
+        } else {
+            return new ResponseEntity<>("not product found by name : " + name, HttpStatus.NOT_FOUND);
+        }
+    }*/
 
     // find by brand name
     @GetMapping(value = "/find", params = {"brand"})
