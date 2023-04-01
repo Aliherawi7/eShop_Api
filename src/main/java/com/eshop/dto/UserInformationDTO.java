@@ -7,7 +7,7 @@ public class UserInformationDTO {
     private Long id;
     private String name;
     private String lastName;
-    private byte[] image;
+    private String image;
     private String email;
     private List<String> roles;
     private String location;
@@ -19,7 +19,7 @@ public class UserInformationDTO {
     public UserInformationDTO() {
     }
 
-    public UserInformationDTO(Long id, String name, String lastName, byte[] image, String email, List<String> roles, String location, int totalOrders, double totalSpending, boolean isActive) {
+    public UserInformationDTO(Long id, String name, String lastName, String image, String email, List<String> roles, String location, int totalOrders, double totalSpending, boolean isActive) {
         this.id = id;
         this.name = name;
         this.lastName = lastName;
@@ -56,11 +56,11 @@ public class UserInformationDTO {
         this.lastName = lastName;
     }
 
-    public byte[] getImage() {
+    public String getImage() {
         return image;
     }
 
-    public void setImage(byte[] image) {
+    public void setImage(String image) {
         this.image = image;
     }
 
