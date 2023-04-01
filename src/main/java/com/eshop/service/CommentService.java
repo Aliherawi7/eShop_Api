@@ -1,5 +1,6 @@
 package com.eshop.service;
 
+import com.eshop.constants.APIEndpoints;
 import com.eshop.dto.CommentDTO;
 import com.eshop.dto.SaveCommentDTO;
 import com.eshop.model.Comment;
@@ -19,25 +20,25 @@ public class CommentService {
     private final CommentRepository commentRepository;
     private final UserService userService;
     private final CommentAgreeDisagreeService commentAgreeDisagreeService;
+    private final CommentDTOMapper commentDTOMapper;
 
-    public CommentService(CommentRepository commentRepository, UserService userService, CommentAgreeDisagreeService commentAgreeDisagreeService) {
+    public CommentService(CommentRepository commentRepository,
+                          UserService userService,
+                          CommentAgreeDisagreeService commentAgreeDisagreeService,
+                          CommentDTOMapper commentDTOMapper) {
         this.commentRepository = commentRepository;
         this.userService = userService;
         this.commentAgreeDisagreeService = commentAgreeDisagreeService;
+        this.commentDTOMapper = commentDTOMapper;
     }
 
     public Collection<CommentDTO> getAllComments() {
         return commentRepository.findAll()
                 .stream()
                 .map(item -> {
-                    CommentDTO commentDTO = new CommentDTO();
+                    CommentDTO commentDTO = commentDTOMapper.apply(item);
                     UserApp user = userService.getUser(item.getUserId());
-                    commentDTO.setCommentId(item.getId());
                     commentDTO.setUserName(user.getName() + " " + user.getLastName());
-                    commentDTO.setMessage(item.getMessage());
-                    commentDTO.setRate(item.getRate());
-                    commentDTO.setUserImage(user.getImage());
-                    commentDTO.setCommentDate(item.getCommentDate());
                     commentDTO.setLikes(commentAgreeDisagreeService.getAllLikesOfTheComment(item.getId()));
                     commentDTO.setDisLikes(commentAgreeDisagreeService.getAllLikesOfTheComment(item.getId()));
                     return commentDTO;
@@ -46,19 +47,14 @@ public class CommentService {
     }
 
     public CommentDTO getComment(long commentId) {
-        CommentDTO commentDTO = new CommentDTO();
+
         Comment comment = commentRepository.findById(commentId).orElse(null);
-        if (comment != null) {
-            UserApp user = userService.getUser(comment.getUserId());
-            commentDTO.setCommentId(comment.getId());
-            commentDTO.setUserName(user.getName() + " " + user.getLastName());
-            commentDTO.setMessage(comment.getMessage());
-            commentDTO.setRate(comment.getRate());
-            commentDTO.setUserImage(user.getImage());
-            commentDTO.setCommentDate(comment.getCommentDate());
-            commentDTO.setLikes(commentAgreeDisagreeService.getAllLikesOfTheComment(commentId));
-            commentDTO.setDisLikes(commentAgreeDisagreeService.getAllDislikesOfTheComment(commentId));
-        }
+        assert comment != null;
+        CommentDTO commentDTO = commentDTOMapper.apply(comment);
+        UserApp user = userService.getUser(comment.getUserId());
+        commentDTO.setUserName(user.getName() + " " + user.getLastName());
+        commentDTO.setLikes(commentAgreeDisagreeService.getAllLikesOfTheComment(commentId));
+        commentDTO.setDisLikes(commentAgreeDisagreeService.getAllDislikesOfTheComment(commentId));
         return commentDTO;
     }
 
@@ -71,21 +67,16 @@ public class CommentService {
         comment.setProductId(saveCommentDTO.getProductId());
         comment.setRate(saveCommentDTO.getRate());
         // save the comment and get the comment id back
-        long commentId = commentRepository.save(comment).getId();
-
-        return new CommentDTO(
-                commentId,
-                userService.getUser(userId).getName()+" "+userService.getUser(userId).getLastName(),
-                saveCommentDTO.getMessage(),
-                saveCommentDTO.getRate(),
-                LocalDateTime.now(),
-                userService.getUser(userId).getImage(),
-                commentAgreeDisagreeService.getAllLikesOfTheComment(saveCommentDTO.getId()),
-                commentAgreeDisagreeService.getAllDislikesOfTheComment(saveCommentDTO.getId())
-        );
+        commentRepository.save(comment);
+        CommentDTO commentDTO = commentDTOMapper.apply(comment);
+        commentDTO.setUserName(userService.getUser(userId).getName() + " " + userService.getUser(userId).getLastName());
+        commentDTO.setUserImage(userService.getUser(userId).getImage());
+        commentDTO.setLikes(0);
+        commentDTO.setDisLikes(0);
+        return commentDTO;
     }
 
-    public CommentDTO updateComment(SaveCommentDTO saveCommentDTO ,HttpServletRequest request) {
+    public CommentDTO updateComment(SaveCommentDTO saveCommentDTO, HttpServletRequest request) {
         if (commentRepository.findById(saveCommentDTO.getId()).isPresent()) {
             Comment comment = new Comment();
             UserApp user = userService.getUser(TestUserWithJWT.getUserEmailByJWT(request));
@@ -106,7 +97,7 @@ public class CommentService {
                     commentAgreeDisagreeService.getAllLikesOfTheComment(saveCommentDTO.getId()),
                     commentAgreeDisagreeService.getAllDislikesOfTheComment(saveCommentDTO.getId())
             );
-        }else{
+        } else {
             return null;
         }
     }
@@ -115,14 +106,10 @@ public class CommentService {
         return commentRepository.findAllByProductId(id)
                 .stream()
                 .map(item -> {
-                    CommentDTO commentDTO = new CommentDTO();
+                    CommentDTO commentDTO = commentDTOMapper.apply(item);
                     UserApp user = userService.getUser(item.getUserId());
                     commentDTO.setUserName(user.getName() + " " + user.getLastName());
-                    commentDTO.setMessage(item.getMessage());
-                    commentDTO.setCommentId(item.getId());
-                    commentDTO.setRate(item.getRate());
-                    commentDTO.setUserImage(user.getImage());
-                    commentDTO.setCommentDate(item.getCommentDate());
+                    commentDTO.setUserImage(APIEndpoints.USER_PICTURE.getValue()+user.getId());
                     commentDTO.setLikes(commentAgreeDisagreeService.getAllLikesOfTheComment(item.getId()));
                     commentDTO.setDisLikes(commentAgreeDisagreeService.getAllDislikesOfTheComment(item.getId()));
                     return commentDTO;
@@ -134,14 +121,10 @@ public class CommentService {
         return commentRepository.findAllByUserId(userId)
                 .stream()
                 .map(item -> {
-                    CommentDTO commentDTO = new CommentDTO();
+                    CommentDTO commentDTO = commentDTOMapper.apply(item);
                     UserApp user = userService.getUser(item.getUserId());
                     commentDTO.setUserName(user.getName() + " " + user.getLastName());
-                    commentDTO.setMessage(item.getMessage());
-                    commentDTO.setCommentId(item.getId());
-                    commentDTO.setRate(item.getRate());
-                    commentDTO.setUserImage(user.getImage());
-                    commentDTO.setCommentDate(item.getCommentDate());
+                    commentDTO.setUserImage(APIEndpoints.USER_PICTURE.getValue()+user.getId());
                     commentDTO.setLikes(commentAgreeDisagreeService.getAllLikesOfTheComment(item.getId()));
                     commentDTO.setDisLikes(commentAgreeDisagreeService.getAllDislikesOfTheComment(item.getId()));
                     return commentDTO;
@@ -149,38 +132,33 @@ public class CommentService {
                 .collect(Collectors.toList());
     }
 
-    public CommentDTO likeComment(long commentId, HttpServletRequest request){
+    public CommentDTO likeComment(long commentId, HttpServletRequest request) {
         long userId = userService.getUser(TestUserWithJWT.getUserEmailByJWT(request)).getId();
         Map<String, Integer> likesAndDislikes = commentAgreeDisagreeService.addLikeToComment(commentId, userId);
-        CommentDTO commentDTO = new CommentDTO();
+
         Comment comment = commentRepository.findById(commentId).orElse(null);
+        CommentDTO commentDTO = null;
         if (comment != null) {
+            commentDTO = commentDTOMapper.apply(comment);
             UserApp user = userService.getUser(comment.getUserId());
             commentDTO.setUserName(user.getName() + " " + user.getLastName());
-            commentDTO.setMessage(comment.getMessage());
-            commentDTO.setCommentId(commentId);
-            commentDTO.setRate(comment.getRate());
-            commentDTO.setUserImage(user.getImage());
-            commentDTO.setCommentDate(comment.getCommentDate());
+            commentDTO.setUserImage(APIEndpoints.USER_PICTURE.getValue()+user.getId());
             commentDTO.setLikes(likesAndDislikes.get("likes"));
             commentDTO.setDisLikes(likesAndDislikes.get("dislikes"));
         }
         return commentDTO;
     }
 
-    public CommentDTO dislikeComment(long commentId, HttpServletRequest request){
+    public CommentDTO dislikeComment(long commentId, HttpServletRequest request) {
         long userId = userService.getUser(TestUserWithJWT.getUserEmailByJWT(request)).getId();
         Map<String, Integer> likesAndDislikes = commentAgreeDisagreeService.addDislikeToComment(commentId, userId);
-        CommentDTO commentDTO = new CommentDTO();
+        CommentDTO commentDTO = null;
         Comment comment = commentRepository.findById(commentId).orElse(null);
         if (comment != null) {
+            commentDTO = commentDTOMapper.apply(comment);
             UserApp user = userService.getUser(comment.getUserId());
             commentDTO.setUserName(user.getName() + " " + user.getLastName());
-            commentDTO.setCommentId(commentId);
-            commentDTO.setMessage(comment.getMessage());
-            commentDTO.setRate(comment.getRate());
-            commentDTO.setUserImage(user.getImage());
-            commentDTO.setCommentDate(comment.getCommentDate());
+            commentDTO.setUserImage(APIEndpoints.USER_PICTURE.getValue()+user.getId());
             commentDTO.setLikes(likesAndDislikes.get("likes"));
             commentDTO.setDisLikes(likesAndDislikes.get("dislikes"));
         }
