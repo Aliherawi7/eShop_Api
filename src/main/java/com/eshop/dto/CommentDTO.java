@@ -8,7 +8,7 @@ public class CommentDTO {
     private String message;
     private int rate;
     private LocalDateTime commentDate;
-    private byte[] userImage;
+    private String userImage;
     private long likes;
     private long disLikes;
 
@@ -16,7 +16,7 @@ public class CommentDTO {
     }
 
     public CommentDTO(long commentId, String userName, String message,
-                      int rate, LocalDateTime commentDate, byte[] userImage, long likes, long dislikes) {
+                      int rate, LocalDateTime commentDate, String userImage, long likes, long dislikes) {
         this.commentId = commentId;
         this.userName = userName;
         this.message = message;
@@ -67,11 +67,11 @@ public class CommentDTO {
         this.commentDate = commentDate;
     }
 
-    public byte[] getUserImage() {
+    public String getUserImage() {
         return userImage;
     }
 
-    public void setUserImage(byte[] userImage) {
+    public void setUserImage(String userImage) {
         this.userImage = userImage;
     }
 
