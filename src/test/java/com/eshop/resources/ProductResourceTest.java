@@ -1,7 +1,6 @@
 package com.eshop.resources;
 
 import com.eshop.dto.ProductDTO;
-import com.eshop.repository.ProductImageRepository;
 import com.eshop.repository.ProductRepository;
 import com.eshop.service.ProductService;
 import org.junit.jupiter.api.BeforeEach;
@@ -26,19 +25,17 @@ class ProductResourceTest {
     @Mock
     private ProductRepository productRepository;
     private ProductResource underTest;
-    @Mock
-    private ProductImageRepository productImageRepository;
     private ProductDTO product;
 
     @BeforeEach
     void setUp() {
-        underTest = new ProductResource(productService, productImageRepository);
+        underTest = new ProductResource(productService);
         product = new ProductDTO();
         product.setName("L2400");
         product.setDiscount(10D);
         product.setProductId(1L);
         product.setBrandName("apple");
-        product.setColors(new String[]{"red"});
+        product.setColor("red");
         product.setDetails((ArrayList<String>)Arrays.asList("details".split("\n")));
         product.setSize("small");
         product.setPrice(232);

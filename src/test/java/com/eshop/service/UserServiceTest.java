@@ -33,6 +33,9 @@ class UserServiceTest {
     private BCryptPasswordEncoder bCryptPasswordEncoder;
     @Mock
     OrderRepository orderRepository;
+    @Mock
+    FileStorageService fileStorageService;
+
     private UserService underTest;
     private UserSignupDTO userSingup;
     private UserApp user;
@@ -44,7 +47,8 @@ class UserServiceTest {
                 userAppRepository,
                 roleRepository,
                 bCryptPasswordEncoder,
-                orderRepository);
+                orderRepository,
+                fileStorageService);
         userSingup = new UserSignupDTO();
         userSingup.setName("ali");
         userSingup.setLastName("herawi");
@@ -58,7 +62,7 @@ class UserServiceTest {
         user.setEmail("aliherawi7@gmail.com");
         user.setPassword("1234");
         user.setLocation("af");
-        user.setImgUrl(new byte[20]);
+        user.setImgUrl("");
     }
 
     @Test

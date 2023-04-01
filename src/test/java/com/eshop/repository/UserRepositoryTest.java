@@ -22,7 +22,7 @@ class UserRepositoryTest {
     void setUp() {
         underTest.deleteAll();
         user = new UserApp(1L, "ali", "herawi", LocalDate.of(1999, 3, 29),
-                "1234", "aliherawi7@gmail.com", new byte[20], "Afghanistan");
+                "1234", "aliherawi7@gmail.com", null, "Afghanistan");
 
     }
 
