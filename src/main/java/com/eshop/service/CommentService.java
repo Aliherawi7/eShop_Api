@@ -66,10 +66,9 @@ public class CommentService {
         comment.setProductId(saveCommentDTO.getProductId());
         comment.setRate(saveCommentDTO.getRate());
         // save the comment and get the comment id back
-        commentRepository.save(comment);
+        comment = commentRepository.save(comment);
         CommentDTO commentDTO = commentDTOMapper.apply(comment);
         commentDTO.setUserName(userService.getUser(userId).getName() + " " + userService.getUser(userId).getLastName());
-        commentDTO.setUserImage(userService.getUser(userId).getImage());
         commentDTO.setLikes(0);
         commentDTO.setDisLikes(0);
         return commentDTO;
