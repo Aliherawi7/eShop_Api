@@ -1,7 +1,11 @@
 # eShop Api
+eShop is an E-Commerce app used to solve the troubles and painful torments 
+of shopping in Afghanistan. The idea behind this app is to make shopping 
+easier and faster where people can easily find, buy and receive their 
+essential items.
 
-eShop API based on Java Spring, Spring Boot, 
-Hibernate ORM with H2 in memory database, spring security, JWT .
+eshop-API was created and developed with Spring boot v2.7.1, Java v8, 
+spring security v5.7.2, H2 in memory database v2.1.214 and Oauth v4.0.0 
 
 ### Security
 
@@ -88,5 +92,13 @@ api/comments  -> user must be logged in
 /api/statistics  -> require admin role
     GET /models - List of models summary (products, users, orders, brands, categories) 
     GET /summaryByMonth? model={model-name} - summary of the model at last 12 months
+
+/api/v1/files 
+    GET /user-image/{id} - get the specific user profile image
+    GET /product-image/{id}/{side} - get the product image by id and side
+    GET /brand-image/{id} - get the brand image by id 
+
+
+
 
 ```
