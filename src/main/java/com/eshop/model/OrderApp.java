@@ -1,12 +1,15 @@
 package com.eshop.model;
 
 
-import javax.persistence.*;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 
 @Entity
-public class OrderApp implements Comparable{
+public class OrderApp implements Comparable {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
@@ -51,13 +54,13 @@ public class OrderApp implements Comparable{
     }
 
     @Override
-    public int compareTo(Object o){
+    public int compareTo(Object o) {
         OrderApp orderApp = (OrderApp) o;
-        if(this.orderDate.getYear() > ((OrderApp) o).getOrderDate().getYear()){
+        if (this.orderDate.getYear() > ((OrderApp) o).getOrderDate().getYear()) {
             return this.orderDate.getMonth().compareTo(orderApp.getOrderDate().getMonth());
-        }else if(this.orderDate.getYear() < ((OrderApp) o).getOrderDate().getYear()){
+        } else if (this.orderDate.getYear() < ((OrderApp) o).getOrderDate().getYear()) {
             return -1;
-        }else{
+        } else {
             return 0;
         }
     }

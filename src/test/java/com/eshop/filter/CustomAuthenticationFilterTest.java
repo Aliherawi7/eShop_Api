@@ -22,13 +22,18 @@ import java.util.Arrays;
 import java.util.Collection;
 import java.util.Date;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
 
 @ExtendWith(MockitoExtension.class)
 class CustomAuthenticationFilterTest {
+    @Mock
+    FilterChain chain;
+    @Mock
+    ServletOutputStream servletOutputStream;
     private CustomAuthenticationFilter underTest;
     @Mock
     private AuthenticationManager authenticationManager;
@@ -40,10 +45,6 @@ class CustomAuthenticationFilterTest {
     private HttpServletResponse res;
     @Mock
     private Authentication authentication;
-    @Mock
-    FilterChain chain;
-    @Mock
-    ServletOutputStream servletOutputStream;
 
 //
 //    @BeforeEach

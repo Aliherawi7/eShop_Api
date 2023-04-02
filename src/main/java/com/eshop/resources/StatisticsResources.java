@@ -17,34 +17,34 @@ public class StatisticsResources {
     private final StatisticsService statisticsService;
 
 
-    public StatisticsResources(StatisticsService statisticsService){
+    public StatisticsResources(StatisticsService statisticsService) {
         this.statisticsService = statisticsService;
     }
 
     @GetMapping("/models")
-    public ResponseEntity<SummeryDTO> getSummery(){
+    public ResponseEntity<SummeryDTO> getSummery() {
         return ResponseEntity.ok().body(statisticsService.getModelSummery());
     }
 
     @GetMapping(value = "/summaryByMonth", params = {"model"})
-    public ResponseEntity<?> getSummaryByMonth(@RequestParam String model){
+    public ResponseEntity<?> getSummaryByMonth(@RequestParam String model) {
         model = model.trim().toLowerCase();
         MonthlyDataDTO monthlyDataDTO = null;
 
-        switch (model){
-            case "orders":{
+        switch (model) {
+            case "orders": {
                 monthlyDataDTO = statisticsService.totalOrdersMonthly();
                 break;
             }
-            case "users":{
+            case "users": {
                 monthlyDataDTO = statisticsService.totalJoinedUserMonthly();
                 break;
             }
-            case "products":{
+            case "products": {
                 monthlyDataDTO = statisticsService.totalAddedProductsMonthly();
                 break;
             }
-            default:{
+            default: {
                 return new ResponseEntity<>("not content!", HttpStatus.NO_CONTENT);
             }
         }

@@ -1,7 +1,7 @@
 package com.eshop.resources;
 
-import com.eshop.model.Product;
 import com.eshop.dto.ProductDTO;
+import com.eshop.model.Product;
 import com.eshop.service.ProductService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -10,7 +10,6 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
-import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Map;
@@ -47,22 +46,22 @@ public class ProductResource {
     @GetMapping("/{id}")
     public ResponseEntity<?> getProductById(@PathVariable Long id) {
         ProductDTO productDTO = productService.getProductById(id);
-        if(productDTO != null){
+        if (productDTO != null) {
             return ResponseEntity.ok().body(productDTO);
-        }else{
+        } else {
             return ResponseEntity.noContent().build();
         }
     }
 
     // save the product in database
     @PostMapping
-    public ResponseEntity<?> addProduct(@RequestParam("image") ArrayList<MultipartFile>  files, @RequestParam Map<String, String> params) throws IOException {
+    public ResponseEntity<?> addProduct(@RequestParam("image") ArrayList<MultipartFile> files, @RequestParam Map<String, String> params) throws IOException {
         return new ResponseEntity<>(productService.addProduct(files, params), HttpStatus.CREATED);
     }
 
     //update th existed product
     @PutMapping("/{id}")
-    public ResponseEntity<String> updateProduct(@PathVariable("id") Long id, @RequestParam("image") ArrayList<MultipartFile>  files, @RequestParam Map<String, String> params) {
+    public ResponseEntity<String> updateProduct(@PathVariable("id") Long id, @RequestParam("image") ArrayList<MultipartFile> files, @RequestParam Map<String, String> params) {
         Product product = new Product();
         product.setId(id);
         product.setName(params.get("name"));

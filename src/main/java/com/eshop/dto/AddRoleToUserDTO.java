@@ -4,7 +4,8 @@ public class AddRoleToUserDTO {
     private String userEmail;
     private String RoleName;
 
-    public AddRoleToUserDTO(){}
+    public AddRoleToUserDTO() {
+    }
 
     public String getUserEmail() {
         return userEmail;

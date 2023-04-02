@@ -21,7 +21,7 @@
     "price": 1000,
     "description": "latest iphone",
     "size": "medium",
-    "quantityInDepot":120 ,
+    "quantityInDepot": 120,
     "rate": 4,
     "discount": 8
   },
@@ -34,7 +34,7 @@
     "price": 960,
     "description": "laptop pc",
     "size": "medium",
-    "quantityInDepot":650 ,
+    "quantityInDepot": 650,
     "rate": 4,
     "discount": 10
   },
@@ -83,7 +83,7 @@
     "color": "#eaeaea",
     "brandName": "Samsung",
     "category": "TV",
-    "price":300 ,
+    "price": 300,
     "description": "latest",
     "size": "large",
     "quantityInDepot": 23,
@@ -155,6 +155,4 @@
     "rate": 4,
     "discount": 8
   }
-
-
 ]

@@ -42,10 +42,11 @@ public class IPFinderService {
         }
         return ipAddress;
     }
-    public static String getCountryName(String ipAddress){
+
+    public static String getCountryName(String ipAddress) {
         String countryName = "";
-        try(WebServiceClient client =
-                    new WebServiceClient.Builder(42,"license_key").build()){
+        try (WebServiceClient client =
+                     new WebServiceClient.Builder(42, "license_key").build()) {
             InetAddress ip = InetAddress.getByName(ipAddress);
             CountryResponse countryRes = client.country(ip);
             Country country = countryRes.getCountry();

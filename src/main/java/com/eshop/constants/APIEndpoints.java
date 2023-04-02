@@ -6,7 +6,8 @@ public enum APIEndpoints {
     BRAND_IMAGES("api/v1/files/brand-image/");
 
     final String value;
-    APIEndpoints(String value){
+
+    APIEndpoints(String value) {
         this.value = value;
     }
 

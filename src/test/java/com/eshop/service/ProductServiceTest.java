@@ -10,9 +10,7 @@ import org.mockito.ArgumentCaptor;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
-import java.time.LocalDate;
-
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.Mockito.verify;
 
 
@@ -25,7 +23,7 @@ class ProductServiceTest {
     @Mock
     private ProductDTOMapper productDTOMapper;
     @Mock
-    private  FileStorageService fileStorageService;
+    private FileStorageService fileStorageService;
 
     private ProductService underTest;
     private Product product;
@@ -33,10 +31,10 @@ class ProductServiceTest {
 
     @BeforeEach
     void setUp() {
-        underTest = new ProductService(productRepository, commentRepository, productDTOMapper , fileStorageService);
+        underTest = new ProductService(productRepository, commentRepository, productDTOMapper, fileStorageService);
         product = new Product(1l, "L2400", "green",
                 "dell", "laptop", 599.99,
-                "description", "small",120l, 5d, 10D);
+                "description", "small", 120l, 5d, 10D);
     }
 
 

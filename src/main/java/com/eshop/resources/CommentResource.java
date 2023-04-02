@@ -5,6 +5,7 @@ import com.eshop.dto.SaveCommentDTO;
 import com.eshop.service.CommentService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+
 import javax.servlet.http.HttpServletRequest;
 import java.util.Collection;
 import java.util.HashMap;
@@ -47,10 +48,11 @@ public class CommentResource {
             return ResponseEntity.noContent().build();
         }
     }
+
     @GetMapping("/products/{id}/size")
     public ResponseEntity<?> getAllCommentSizeByProductId(@PathVariable(value = "id") long productId) {
         Collection<CommentDTO> comments = commentService.getAllCommentsByProductId(productId);
-          return ResponseEntity.ok().body(new HashMap<>().put("size", comments.size()));
+        return ResponseEntity.ok().body(new HashMap<>().put("size", comments.size()));
     }
 
     @GetMapping("users/{id}")
@@ -67,18 +69,19 @@ public class CommentResource {
     public ResponseEntity<?> addComment(@RequestBody SaveCommentDTO saveCommentDTO, HttpServletRequest request) {
         return ResponseEntity.ok().body(commentService.addComment(saveCommentDTO, request));
     }
+
     @PutMapping("/{id}")
     public ResponseEntity<?> updateComment(@RequestBody SaveCommentDTO saveCommentDTO, HttpServletRequest request) {
         return ResponseEntity.ok().body(commentService.updateComment(saveCommentDTO, request));
     }
 
     @PostMapping("/{commentId}/like")
-    public ResponseEntity<?> commentLike(@PathVariable long commentId, HttpServletRequest request){
+    public ResponseEntity<?> commentLike(@PathVariable long commentId, HttpServletRequest request) {
         return ResponseEntity.ok().body(commentService.likeComment(commentId, request));
     }
 
     @PostMapping("/{commentId}/dislike")
-    public ResponseEntity<?> commentDislike(@PathVariable long commentId, HttpServletRequest request){
+    public ResponseEntity<?> commentDislike(@PathVariable long commentId, HttpServletRequest request) {
         return ResponseEntity.ok().body(commentService.dislikeComment(commentId, request));
     }
 

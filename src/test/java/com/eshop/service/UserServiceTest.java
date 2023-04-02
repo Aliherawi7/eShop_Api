@@ -1,10 +1,11 @@
 package com.eshop.service;
+
+import com.eshop.dto.UserSignupDTO;
 import com.eshop.model.Role;
 import com.eshop.model.UserApp;
 import com.eshop.repository.OrderRepository;
 import com.eshop.repository.RoleRepository;
 import com.eshop.repository.UserAppRepository;
-import com.eshop.dto.UserSignupDTO;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -26,16 +27,15 @@ import static org.mockito.Mockito.when;
 class UserServiceTest {
 
     @Mock
+    OrderRepository orderRepository;
+    @Mock
+    FileStorageService fileStorageService;
+    @Mock
     private UserAppRepository userAppRepository;
     @Mock
     private RoleRepository roleRepository;
     @Mock
     private BCryptPasswordEncoder bCryptPasswordEncoder;
-    @Mock
-    OrderRepository orderRepository;
-    @Mock
-    FileStorageService fileStorageService;
-
     private UserService underTest;
     private UserSignupDTO userSingup;
     private UserApp user;

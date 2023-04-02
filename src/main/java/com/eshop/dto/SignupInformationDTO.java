@@ -4,12 +4,14 @@ public class SignupInformationDTO {
     private String accessToken;
     private UserInformationDTO userInformationDTO;
 
-    public SignupInformationDTO() { }
+    public SignupInformationDTO() {
+    }
 
     public SignupInformationDTO(String accessToken, UserInformationDTO userInformationDTO) {
         this.accessToken = accessToken;
         this.userInformationDTO = userInformationDTO;
     }
+
     public String getAccessToken() {
         return accessToken;
     }

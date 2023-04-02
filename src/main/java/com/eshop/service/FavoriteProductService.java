@@ -12,9 +12,9 @@ import java.util.Collection;
 
 @Service
 public class FavoriteProductService {
-     private final FavoriteProductRepository favoriteProductRepository;
-     private final ProductRepository productRepository;
-     private final ProductDTOMapper productDTOMapper;
+    private final FavoriteProductRepository favoriteProductRepository;
+    private final ProductRepository productRepository;
+    private final ProductDTOMapper productDTOMapper;
 
     public FavoriteProductService(FavoriteProductRepository favoriteProductRepository,
                                   ProductRepository productRepository,
@@ -24,26 +24,26 @@ public class FavoriteProductService {
         this.productDTOMapper = productDTOMapper;
     }
 
-    public Collection<ProductDTO> getFavoriteProducts(String email){
-       Collection<FavoriteProduct> favoriteProducts = favoriteProductRepository.findAllByUserEmail(email);
-       Collection<ProductDTO> products = new ArrayList<>();
+    public Collection<ProductDTO> getFavoriteProducts(String email) {
+        Collection<FavoriteProduct> favoriteProducts = favoriteProductRepository.findAllByUserEmail(email);
+        Collection<ProductDTO> products = new ArrayList<>();
 
-       // dou to Null pointer exception
-       if(favoriteProducts.size() > 0){
-           favoriteProducts.forEach(favoriteProduct -> {
-              Product product = productRepository.findById(favoriteProduct.getProductId()).get();
-              ProductDTO productDTO = productDTOMapper.apply(product);
-              products.add(productDTO);
-           });
-       }
+        // dou to Null pointer exception
+        if (favoriteProducts.size() > 0) {
+            favoriteProducts.forEach(favoriteProduct -> {
+                Product product = productRepository.findById(favoriteProduct.getProductId()).get();
+                ProductDTO productDTO = productDTOMapper.apply(product);
+                products.add(productDTO);
+            });
+        }
         return products;
     }
 
-    public boolean addFavoriteProduct(FavoriteProduct favoriteProduct){
-        if(favoriteProduct.getProductId() !=null){
+    public boolean addFavoriteProduct(FavoriteProduct favoriteProduct) {
+        if (favoriteProduct.getProductId() != null) {
             FavoriteProduct product = favoriteProductRepository
                     .findByProductIdAndUserEmail(favoriteProduct.getProductId(), favoriteProduct.getUserEmail());
-            if(product == null){
+            if (product == null) {
                 favoriteProductRepository.save(favoriteProduct);
                 return true;
             }
@@ -51,7 +51,7 @@ public class FavoriteProductService {
         return false;
     }
 
-    public void deleteFavoriteProduct(Long productId, String userEmail){
+    public void deleteFavoriteProduct(Long productId, String userEmail) {
         System.out.println(productId);
         favoriteProductRepository.delete(favoriteProductRepository.findByProductIdAndUserEmail(productId, userEmail));
 

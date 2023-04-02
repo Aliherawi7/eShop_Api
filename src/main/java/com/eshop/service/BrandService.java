@@ -19,35 +19,37 @@ public class BrandService {
     @Autowired
     HttpServletRequest httpServletRequest;
 
-    public BrandService(BrandRepository brandRepository){
+    public BrandService(BrandRepository brandRepository) {
         this.brandRepository = brandRepository;
     }
 
 
-    public Collection<Brand> getAllBrands(){
+    public Collection<Brand> getAllBrands() {
         String baseURI = BaseURI.getBaseURI(httpServletRequest);
         return brandRepository
                 .findAll()
                 .stream()
-                .peek(item -> item.setLogo(baseURI + "/" +APIEndpoints.BRAND_IMAGES.getValue() + item.getId()))
+                .peek(item -> item.setLogo(baseURI + "/" + APIEndpoints.BRAND_IMAGES.getValue() + item.getId()))
                 .collect(Collectors.toList());
     }
 
-    public Brand getBrand(int id){
+    public Brand getBrand(int id) {
         Optional<Brand> optionalBrand = brandRepository.findById(id);
         return optionalBrand.orElse(null);
     }
 
-    public Brand getBrandByName(String name){
+    public Brand getBrandByName(String name) {
         String baseURI = BaseURI.getBaseURI(httpServletRequest);
         Optional<Brand> optionalBrand = brandRepository.findByName(name);
         optionalBrand.ifPresent(brand -> brand.setLogo(baseURI + "/" + APIEndpoints.BRAND_IMAGES.getValue() + brand.getId()));
         return optionalBrand.orElse(null);
     }
-    public void addBrand(Brand brand){
+
+    public void addBrand(Brand brand) {
         brandRepository.save(brand);
     }
-    public void updateBrand(Brand brand){
+
+    public void updateBrand(Brand brand) {
         brandRepository.save(brand);
     }
 }

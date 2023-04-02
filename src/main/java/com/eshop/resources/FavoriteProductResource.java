@@ -16,40 +16,41 @@ import java.util.Collection;
 public class FavoriteProductResource {
     private final FavoriteProductService favoriteProductService;
 
-    public FavoriteProductResource(FavoriteProductService favoriteProductService){
+    public FavoriteProductResource(FavoriteProductService favoriteProductService) {
         this.favoriteProductService = favoriteProductService;
     }
 
     @GetMapping
-    public ResponseEntity<?> getAllFavoriteProducts(HttpServletRequest request){
+    public ResponseEntity<?> getAllFavoriteProducts(HttpServletRequest request) {
         String email = TestUserWithJWT.getUserEmailByJWT(request);
-        System.out.println("email in get fav products : "+email );
-        if(email != null){
+        System.out.println("email in get fav products : " + email);
+        if (email != null) {
             Collection<ProductDTO> products = favoriteProductService.getFavoriteProducts(email);
-            if(products.size() > 0){
+            if (products.size() > 0) {
                 return new ResponseEntity<>(products, HttpStatus.OK);
-            }else {
+            } else {
                 return new ResponseEntity<>(products, HttpStatus.NO_CONTENT);
             }
-        }else {
+        } else {
             return new ResponseEntity<>("Forbidden", HttpStatus.FORBIDDEN);
         }
     }
+
     @PostMapping
-    public ResponseEntity<?> addFavoriteProduct(HttpServletRequest request, @RequestBody FavoriteProduct favoriteProduct){
+    public ResponseEntity<?> addFavoriteProduct(HttpServletRequest request, @RequestBody FavoriteProduct favoriteProduct) {
         String email = TestUserWithJWT.getUserEmailByJWT(request);
         favoriteProduct.setUserEmail(email);
         boolean isSave = favoriteProductService.addFavoriteProduct(favoriteProduct);
-        if(isSave){
+        if (isSave) {
             return ResponseEntity.ok().body("product successfully added");
-        }else {
+        } else {
             return ResponseEntity.badRequest().body("product with this id not found");
         }
 
     }
 
     @DeleteMapping("/{productId}")
-    public ResponseEntity<?> deleteFavoriteProduct(@PathVariable Long productId, HttpServletRequest request){
+    public ResponseEntity<?> deleteFavoriteProduct(@PathVariable Long productId, HttpServletRequest request) {
         String email = TestUserWithJWT.getUserEmailByJWT(request);
         System.out.println(productId);
         System.out.println(email);

@@ -24,7 +24,6 @@ import javax.servlet.FilterChain;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import javax.xml.ws.Endpoint;
 import java.io.IOException;
 import java.util.Date;
 import java.util.HashMap;
@@ -49,7 +48,7 @@ public class CustomAuthenticationFilter extends UsernamePasswordAuthenticationFi
 
     @Override
     public Authentication attemptAuthentication(HttpServletRequest request, HttpServletResponse response) throws AuthenticationException {
-        System.err.println("auth type:"+request.toString());
+        System.err.println("auth type:" + request.toString());
         String email = request.getParameter("email");
         System.out.println(email + "before if");
         String password = request.getParameter("password");
@@ -57,7 +56,7 @@ public class CustomAuthenticationFilter extends UsernamePasswordAuthenticationFi
 
         if (email != null) {
             email = email.trim().toLowerCase();
-            System.out.println(email +"in if");
+            System.out.println(email + "in if");
             user = userService.getUser(email);
 
         }
@@ -129,12 +128,12 @@ public class CustomAuthenticationFilter extends UsernamePasswordAuthenticationFi
                 .withIssuer(request.getRequestURL().toString())
                 .sign(algorithm);
         // user location and ip
-       // String ipAddress = IPFinderService.getClientIP(request);
-        String countryName =  "Unknown";// IPFinderService.getCountryName(ipAddress);
+        // String ipAddress = IPFinderService.getClientIP(request);
+        String countryName = "Unknown";// IPFinderService.getCountryName(ipAddress);
         // user common information
         double totalSpending = 0;
         int totalOrder = 0;
-        if(orderRepository.findAllByUserId(checkUserActivation.getId()) != null){
+        if (orderRepository.findAllByUserId(checkUserActivation.getId()) != null) {
             totalOrder = orderRepository.findAllByUserId(checkUserActivation.getId()).size();
 //            totalSpending = orderRepository.findAllByUserId(
 //                    checkUserActivation.getId())
@@ -145,7 +144,7 @@ public class CustomAuthenticationFilter extends UsernamePasswordAuthenticationFi
                 checkUserActivation.getId(),
                 checkUserActivation.getName(),
                 checkUserActivation.getLastName(),
-                baseURI + "/" +APIEndpoints.USER_PICTURE.getValue()+checkUserActivation.getId(),
+                baseURI + "/" + APIEndpoints.USER_PICTURE.getValue() + checkUserActivation.getId(),
                 checkUserActivation.getEmail(),
                 user.getAuthorities()
                         .stream()
@@ -173,7 +172,7 @@ public class CustomAuthenticationFilter extends UsernamePasswordAuthenticationFi
             if (userService.isAccountLocked(user)) {
                 responseMassage.put("limit_attempt", "Your account is lock now try after expire date");
                 responseMassage.put("lock_expireDate", user.getLockTime().toString());
-                responseMassage.put("error_message", failed.getMessage()+", Your account is lock now ");
+                responseMassage.put("error_message", failed.getMessage() + ", Your account is lock now ");
                 responseMassage.put("remained_attempts", (UserService.MAX_FAILED_ATTEMPTS - user.getFailedAttempt()) + " attempts chance");
                 responseMassage.put("failed_attempts", user.getFailedAttempt() + " failed attempts");
                 response.setContentType(MediaType.APPLICATION_JSON_VALUE);
@@ -181,7 +180,7 @@ public class CustomAuthenticationFilter extends UsernamePasswordAuthenticationFi
                 return;
             }
             //check if user is not locked increase failed attempts
-            else{
+            else {
                 userService.increaseFailedAttempts(user);
                 user = userService.getUser(user.getEmail());
             }
@@ -202,11 +201,11 @@ public class CustomAuthenticationFilter extends UsernamePasswordAuthenticationFi
             response.setContentType(MediaType.APPLICATION_JSON_VALUE);
             response.setHeader("error_message", "password is wrong");
             responseMassage.put("error_message", "password is wrong");
-            responseMassage.put("remained_attempts",(UserService.MAX_FAILED_ATTEMPTS - user.getFailedAttempt()) + " attempts chance");
+            responseMassage.put("remained_attempts", (UserService.MAX_FAILED_ATTEMPTS - user.getFailedAttempt()) + " attempts chance");
             responseMassage.put("failed_attempts", user.getFailedAttempt() + " failed attempts");
             new ObjectMapper().writeValue(response.getOutputStream(), responseMassage);
 
-        }else{
+        } else {
             System.out.println("email not found");
             response.setHeader("error_message", "email not found");
             response.setContentType(MediaType.APPLICATION_JSON_VALUE);

@@ -1,7 +1,6 @@
 package com.eshop.dto;
 
 import javax.persistence.Column;
-import java.time.LocalDate;
 import java.util.ArrayList;
 
 public class ProductDTO {

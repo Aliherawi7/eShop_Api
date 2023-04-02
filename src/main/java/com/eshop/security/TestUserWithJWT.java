@@ -8,6 +8,7 @@ import org.springframework.security.authentication.UsernamePasswordAuthenticatio
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
+
 import javax.servlet.http.HttpServletRequest;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -16,7 +17,7 @@ import java.util.Collection;
 @Service
 public class TestUserWithJWT {
 
-    public static boolean testJWTOfUser(HttpServletRequest request, String userEmail){
+    public static boolean testJWTOfUser(HttpServletRequest request, String userEmail) {
         String authorizationHeader = request.getHeader("Authorization");
         if (authorizationHeader != null) {
             try {
@@ -33,17 +34,17 @@ public class TestUserWithJWT {
                         new UsernamePasswordAuthenticationToken(email, null, authorities);
                 SecurityContextHolder.getContext().setAuthentication(authenticationToken);
                 return userEmail.trim().equalsIgnoreCase(email);
-            }catch (Exception e){
+            } catch (Exception e) {
                 e.printStackTrace();
                 return false;
             }
 
-        }else {
+        } else {
             return false;
         }
     }
 
-    public static String getUserEmailByJWT(HttpServletRequest request){
+    public static String getUserEmailByJWT(HttpServletRequest request) {
         String authorizationHeader = request.getHeader("Authorization");
         if (authorizationHeader != null) {
             try {
@@ -54,7 +55,7 @@ public class TestUserWithJWT {
             } catch (Exception e) {
                 return null;
             }
-        }else{
+        } else {
             return null;
         }
     }

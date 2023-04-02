@@ -7,7 +7,9 @@ import java.util.Collection;
 
 public interface UserAppRepository extends JpaRepository<UserApp, Long> {
     boolean existsByEmail(String email);
+
     UserApp findByEmail(String email);
+
     Collection<UserApp> findByName(String name);
 
 }

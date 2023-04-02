@@ -10,6 +10,7 @@ public class UserSignupDTO {
     private String password;
     private byte[] image;
     private String location;
+
     public UserSignupDTO() {
     }
 

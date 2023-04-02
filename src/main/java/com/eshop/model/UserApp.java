@@ -137,6 +137,10 @@ public class UserApp {
         return image;
     }
 
+    public void setImage(String image) {
+        this.image = image;
+    }
+
     public void setImgUrl(String image) {
         this.image = image;
     }
@@ -187,10 +191,6 @@ public class UserApp {
 
     public void setUserName(String userName) {
         this.userName = userName.trim().toLowerCase();
-    }
-
-    public void setImage(String image) {
-        this.image = image;
     }
 
     public String getLocation() {

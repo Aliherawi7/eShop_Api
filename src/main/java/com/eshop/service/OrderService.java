@@ -47,32 +47,33 @@ public class OrderService {
             return ResponseEntity.ok(orders);
         } else {
             MultiValueMap<String, String> m = new HttpHeaders();
-            m.add("statusText","No content");
+            m.add("statusText", "No content");
             return new ResponseEntity<>(orders, m, HttpStatus.NO_CONTENT);
         }
     }
-    public Collection<OrderApp> getAllOrders(){
+
+    public Collection<OrderApp> getAllOrders() {
         return orderRepository.findAll();
     }
 
     // save order
     public ResponseEntity<?> addOrder(OrderApp order) {
         // get user remoteAddress
-        Optional<Product>  optionalProduct = productRepository.findById(order.getProductId());
+        Optional<Product> optionalProduct = productRepository.findById(order.getProductId());
         Product product;
-        if(optionalProduct.isPresent()){
+        if (optionalProduct.isPresent()) {
             product = optionalProduct.get();
 
             // if there are enough products in depot to sell
-            if(product.getQuantityInDepot() >= order.getQuantity()){
+            if (product.getQuantityInDepot() >= order.getQuantity()) {
                 // Subtracts the number of orders from the number products in depot
                 product.setQuantityInDepot(product.getQuantityInDepot() - order.getQuantity());
                 // calculate the total of price automatically
                 order.setAmount(order.getQuantity() * product.getPrice());
                 productRepository.save(product);
 
-            // if there are not enough products in depot to sell
-            }else{
+                // if there are not enough products in depot to sell
+            } else {
                 return new ResponseEntity<>("sorry there is not enough " + product.getName() + " in depot", HttpStatus.OK);
             }
         }
@@ -85,7 +86,7 @@ public class OrderService {
         orders.forEach(orderApp -> {
             Optional<Product> productOptional = productRepository.findById(orderApp.getProductId());
             Product product;
-            if(productOptional.isPresent()){
+            if (productOptional.isPresent()) {
                 product = productOptional.get();
                 product.setQuantityInDepot(product.getQuantityInDepot() - orderApp.getQuantity());
                 productRepository.save(product);

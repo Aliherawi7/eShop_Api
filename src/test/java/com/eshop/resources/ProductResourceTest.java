@@ -11,10 +11,9 @@ import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 
-import java.time.LocalDate;
 import java.util.*;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
@@ -36,7 +35,7 @@ class ProductResourceTest {
         product.setProductId(1L);
         product.setBrandName("apple");
         product.setColor("red");
-        product.setDetails((ArrayList<String>)Arrays.asList("details".split("\n")));
+        product.setDetails((ArrayList<String>) Arrays.asList("details".split("\n")));
         product.setSize("small");
         product.setPrice(232);
         product.setCategory("computer");

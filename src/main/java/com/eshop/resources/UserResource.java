@@ -44,13 +44,13 @@ public class UserResource {
         userInfo.setEmail(params.get("email"));
         userInfo.setPassword(params.get("password"));
         //check if there no file then set the default avatar to the user
-        if(file.isEmpty()){
+        if (file.isEmpty()) {
             File avatar = new File("src/main/resources/templates/image/ali.jpg");
-            byte[] avatarBytes = new byte[(int)avatar.length()];
+            byte[] avatarBytes = new byte[(int) avatar.length()];
             FileInputStream fileInputStream = new FileInputStream(avatar);
             fileInputStream.read(avatarBytes);
             userInfo.setImage(avatarBytes);
-        }else{
+        } else {
             userInfo.setImage(file.getBytes());
         }
 
@@ -85,7 +85,7 @@ public class UserResource {
             @RequestParam("image") MultipartFile file, @RequestParam Map<String, String> params, HttpServletRequest request
     ) throws Exception {
         String email = TestUserWithJWT.getUserEmailByJWT(request);
-        UserInformationDTO user = userService.updateUser(email,file, params);
+        UserInformationDTO user = userService.updateUser(email, file, params);
         if (user != null) {
             return new ResponseEntity<>(user, HttpStatus.CREATED);
         } else {
@@ -94,18 +94,16 @@ public class UserResource {
     }
 
 
-
     @DeleteMapping("/delete")
     public ResponseEntity<?> deleteUser(@RequestBody EmailAndPasswordDTO emailAndPassword) {
         return userService.deleteUser(emailAndPassword.getEmail(), emailAndPassword.getPassword());
     }
 
-   @PostMapping("/addRoleToUser")
-   public ResponseEntity<?> addRoleToUser(AddRoleToUserDTO emailAndPassword){
+    @PostMapping("/addRoleToUser")
+    public ResponseEntity<?> addRoleToUser(AddRoleToUserDTO emailAndPassword) {
         return userService
                 .addRoleToUser(emailAndPassword.getUserEmail(), emailAndPassword.getRoleName());
-   }
-
+    }
 
 
 }

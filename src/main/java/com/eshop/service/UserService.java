@@ -2,7 +2,6 @@ package com.eshop.service;
 
 import com.auth0.jwt.JWT;
 import com.auth0.jwt.algorithms.Algorithm;
-import com.eshop.constants.APIEndpoints;
 import com.eshop.dto.SignupInformationDTO;
 import com.eshop.dto.UserInformationDTO;
 import com.eshop.dto.UserSignupDTO;
@@ -13,8 +12,6 @@ import com.eshop.model.UserApp;
 import com.eshop.repository.OrderRepository;
 import com.eshop.repository.RoleRepository;
 import com.eshop.repository.UserAppRepository;
-
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
@@ -25,7 +22,6 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
-import java.io.IOException;
 import java.time.LocalDate;
 import java.util.*;
 import java.util.stream.Collectors;
@@ -59,7 +55,6 @@ public class UserService implements UserDetailsService {
         this.orderRepository = orderRepository;
         this.fileStorageService = fileStorageService;
     }
-
 
 
     // implementing UserDetailService interface for authenticating user
@@ -97,14 +92,14 @@ public class UserService implements UserDetailsService {
             fileStorageService.storeUserProfileImageByteArray(user.getImage(), userApp.getId());
 
 
-            UserInformationDTO userInfo = new UserInformationDTO(userApp.getId(), userApp.getName(),userApp.getLastName(),
+            UserInformationDTO userInfo = new UserInformationDTO(userApp.getId(), userApp.getName(), userApp.getLastName(),
                     userApp.getImage(), userApp.getEmail(),
                     userApp.getRoles().stream().map(Role::getName).collect(Collectors.toList()),
-                    userApp.getLocation() ,0, 0, userApp.isEnabled());
+                    userApp.getLocation(), 0, 0, userApp.isEnabled());
             Algorithm algorithm = Algorithm.HMAC256("herawi".getBytes());
             String accessToken = JWT.create()
                     .withSubject(userApp.getEmail())
-                    .withExpiresAt(new Date(System.currentTimeMillis() + (1000*60*60*24*10)))
+                    .withExpiresAt(new Date(System.currentTimeMillis() + (1000 * 60 * 60 * 24 * 10)))
                     .withClaim("roles", userApp.getRoles().stream().map(Role::getName).collect(Collectors.toList()))
                     .sign(algorithm);
 
@@ -113,27 +108,27 @@ public class UserService implements UserDetailsService {
     }
 
     // update user information
-    public UserInformationDTO updateUser(String  email, MultipartFile file, Map<String, String> params) throws Exception {
+    public UserInformationDTO updateUser(String email, MultipartFile file, Map<String, String> params) throws Exception {
 
         // check if there a user with the request jwt email
         UserApp userInDB = userRepository.findByEmail(email);
         // if there is not such user in the db then throw UserCredentialExpetion
-        if(userInDB == null){
+        if (userInDB == null) {
             throw new UserCredentialExeption("User not found");
         }
         // if there is such user in db then update it with request params
-        LocalDate dob = params.get("dob") != null ? LocalDate.parse(params.get("dob")): LocalDate.now();
+        LocalDate dob = params.get("dob") != null ? LocalDate.parse(params.get("dob")) : LocalDate.now();
         userInDB.setDob(dob);
         userInDB.setName(params.get("name"));
         userInDB.setLastName(params.get("lastName"));
         userInDB.setLocation(params.get("location"));
-        if(!email.equals(params.get("email"))){
+        if (!email.equals(params.get("email"))) {
             boolean isExistByEmail = userRepository.existsByEmail(params.get("email"));
-            if(isExistByEmail){
+            if (isExistByEmail) {
                 throw new UserCredentialExeption("Email has already taken");
             }
         }
-        if(!file.isEmpty()){
+        if (!file.isEmpty()) {
             fileStorageService.storeUserProfileImage(file, userInDB.getId());
         }
         userInDB.setEmail(params.get("email"));
@@ -184,9 +179,9 @@ public class UserService implements UserDetailsService {
         // user common information
         Collection<UserInformationDTO> usersInfo = users.stream()
                 .map(userApp -> {
-                    int totalOrder =0;
+                    int totalOrder = 0;
                     double totalSpending = 0;
-                    if(orderRepository.findAllByUserId(userApp.getId()) != null){
+                    if (orderRepository.findAllByUserId(userApp.getId()) != null) {
                         totalOrder = orderRepository.findAllByUserId(userApp.getId()).size();
                         totalSpending = orderRepository.findAllByUserId(userApp.getId()).stream().mapToDouble(OrderApp::getAmount).sum();
                     }

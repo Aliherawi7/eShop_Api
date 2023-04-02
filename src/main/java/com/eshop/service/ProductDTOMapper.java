@@ -17,9 +17,9 @@ public class ProductDTOMapper implements Function<Product, ProductDTO> {
     public ProductDTO apply(Product product) {
         ArrayList<String> images = new ArrayList<>();
 
-        images.add(APIEndpoints.PRODUCT_IMAGES.getValue()+product.getId()+"/side-1");
-        images.add(APIEndpoints.PRODUCT_IMAGES.getValue()+product.getId()+"/side-2");
-        images.add(APIEndpoints.PRODUCT_IMAGES.getValue()+product.getId()+"/side-3");
+        images.add(APIEndpoints.PRODUCT_IMAGES.getValue() + product.getId() + "/side-1");
+        images.add(APIEndpoints.PRODUCT_IMAGES.getValue() + product.getId() + "/side-2");
+        images.add(APIEndpoints.PRODUCT_IMAGES.getValue() + product.getId() + "/side-3");
         String[] str = product.getDescription().split("\n");
         ArrayList<String> descriptions = (ArrayList<String>) Stream.of(str).collect(Collectors.toList());
         return new ProductDTO(

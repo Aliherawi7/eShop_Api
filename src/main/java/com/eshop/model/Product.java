@@ -33,7 +33,8 @@ public class Product {
     public Product(Long id, String name, String color,
                    String brandName, String category, double price,
                    String description, String size, long quantityInDepot, double rate, double discount) {
-        setId(id);;
+        setId(id);
+        ;
         setName(name);
         setColor(color);
         setBrandName(brandName);

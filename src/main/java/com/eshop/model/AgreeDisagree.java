@@ -1,7 +1,5 @@
 package com.eshop.model;
 
-import org.springframework.stereotype.Service;
-
 import javax.persistence.*;
 import java.time.LocalDateTime;
 
@@ -9,7 +7,7 @@ import java.time.LocalDateTime;
 public class AgreeDisagree {
 
     @Id
-    @SequenceGenerator(sequenceName = "agree_disagree_sequence", name ="agree_disagree_sequence", allocationSize = 1)
+    @SequenceGenerator(sequenceName = "agree_disagree_sequence", name = "agree_disagree_sequence", allocationSize = 1)
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "agree_disagree_sequence")
     private Long id;
     private boolean agree;

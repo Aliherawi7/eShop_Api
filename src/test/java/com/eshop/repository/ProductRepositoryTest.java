@@ -1,29 +1,26 @@
 package com.eshop.repository;
 
 import com.eshop.model.Product;
-
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 
-import java.time.LocalDate;
-
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 @DataJpaTest
 class ProductRepositoryTest {
 
+    Product product;
     @Autowired
     private ProductRepository underTest;
-    Product product;
 
     @BeforeEach
     void setUp() {
         underTest.deleteAll();
         product = new Product(1L, "L2700", "black", "Dell", "computer",
-                999.99, "the latest dell product", "medium",10L, 4d, 10D);
+                999.99, "the latest dell product", "medium", 10L, 4d, 10D);
     }
 
     @Test

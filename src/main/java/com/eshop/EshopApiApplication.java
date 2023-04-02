@@ -42,20 +42,20 @@ public class EshopApiApplication {
                           BrandService brandService,
                           CommentRepository commentRepository,
                           CommentAgreeDisagreeRepository commentAgreeDisagreeRepository
-                          ) {
+    ) {
         return args -> {
 
             UserSignupDTO user1 = new UserSignupDTO("Ali", "herawi",
                     "aliherawi7@gmail.com", LocalDate.of(1999, 3, 25),
-                    "12345",null , "Afghanistan");
+                    "12345", null, "Afghanistan");
 
             UserSignupDTO user2 = new UserSignupDTO("Alexa", "Jhonson",
                     "Alexajhonson@gmail.com", LocalDate.of(2000, 3, 25),
-                    "12345",null , "USA");
+                    "12345", null, "USA");
 
             UserSignupDTO user3 = new UserSignupDTO("Amanda", "Jepson",
                     "Amandajepson@gmail.com", LocalDate.of(2000, 3, 25),
-                    "12345",null , "UK");
+                    "12345", null, "UK");
 
             Role role_user = new Role(1, "USER");
             Role role_admin = new Role(2, "ADMIN");
@@ -77,7 +77,7 @@ public class EshopApiApplication {
                     System.out.println(item.getName());
                     productService.addProduct(item);
                 });
-            }catch (Exception e) {
+            } catch (Exception e) {
                 e.printStackTrace();
             }
 
@@ -103,19 +103,18 @@ public class EshopApiApplication {
             orderService.addOrder(order6);
             // static brand
 
-            Brand b2 = new Brand(2, "dell",null);
-            Brand b3 = new Brand(3, "hp",null);
-            Brand b5 = new Brand(5, "microsoft",null);
-            Brand b6 = new Brand(6, "samsung",null);
-            Brand b4 = new Brand(4, "huawei",null);
-            Brand b1 = new Brand(1, "apple",null);
+            Brand b2 = new Brand(2, "dell", null);
+            Brand b3 = new Brand(3, "hp", null);
+            Brand b5 = new Brand(5, "microsoft", null);
+            Brand b6 = new Brand(6, "samsung", null);
+            Brand b4 = new Brand(4, "huawei", null);
+            Brand b1 = new Brand(1, "apple", null);
             brandService.addBrand(b1);
             brandService.addBrand(b2);
             brandService.addBrand(b3);
             brandService.addBrand(b4);
             brandService.addBrand(b5);
             brandService.addBrand(b6);
-
 
 
             // static comments
@@ -130,7 +129,7 @@ public class EshopApiApplication {
 //            });
 
             AgreeDisagree like1 =
-                    new AgreeDisagree(null, true, false, LocalDateTime.now(),2L, 2L);
+                    new AgreeDisagree(null, true, false, LocalDateTime.now(), 2L, 2L);
             commentAgreeDisagreeRepository.save(like1);
 
         };

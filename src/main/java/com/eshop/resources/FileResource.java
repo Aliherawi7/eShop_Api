@@ -27,7 +27,7 @@ public class FileResource {
 
     @GetMapping("product-image/{productId}/{side}")
     public ResponseEntity<byte[]> getProductImageSide(@PathVariable String productId, @PathVariable String side) {
-        productId = productId +"-"+ side;
+        productId = productId + "-" + side;
         byte[] image = fileStorageService.getProductImage(productId);
         return ResponseEntity.ok().contentType(MediaType.IMAGE_PNG).body(image);
     }
