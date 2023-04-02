@@ -42,7 +42,7 @@ class ProductResourceTest {
         product.setCategory("computer");
         product.setRate(4d);
         product.setQuantityInDepot(120);
-        product.setProductionDate(LocalDate.now());
+
 
     }
 

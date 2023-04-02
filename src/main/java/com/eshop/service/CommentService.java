@@ -1,6 +1,5 @@
 package com.eshop.service;
 
-import com.eshop.constants.APIEndpoints;
 import com.eshop.dto.CommentDTO;
 import com.eshop.dto.SaveCommentDTO;
 import com.eshop.model.Comment;
@@ -109,7 +108,6 @@ public class CommentService {
                     CommentDTO commentDTO = commentDTOMapper.apply(item);
                     UserApp user = userService.getUser(item.getUserId());
                     commentDTO.setUserName(user.getName() + " " + user.getLastName());
-                    commentDTO.setUserImage(APIEndpoints.USER_PICTURE.getValue()+user.getId());
                     commentDTO.setLikes(commentAgreeDisagreeService.getAllLikesOfTheComment(item.getId()));
                     commentDTO.setDisLikes(commentAgreeDisagreeService.getAllDislikesOfTheComment(item.getId()));
                     return commentDTO;
@@ -124,7 +122,6 @@ public class CommentService {
                     CommentDTO commentDTO = commentDTOMapper.apply(item);
                     UserApp user = userService.getUser(item.getUserId());
                     commentDTO.setUserName(user.getName() + " " + user.getLastName());
-                    commentDTO.setUserImage(APIEndpoints.USER_PICTURE.getValue()+user.getId());
                     commentDTO.setLikes(commentAgreeDisagreeService.getAllLikesOfTheComment(item.getId()));
                     commentDTO.setDisLikes(commentAgreeDisagreeService.getAllDislikesOfTheComment(item.getId()));
                     return commentDTO;
@@ -142,7 +139,6 @@ public class CommentService {
             commentDTO = commentDTOMapper.apply(comment);
             UserApp user = userService.getUser(comment.getUserId());
             commentDTO.setUserName(user.getName() + " " + user.getLastName());
-            commentDTO.setUserImage(APIEndpoints.USER_PICTURE.getValue()+user.getId());
             commentDTO.setLikes(likesAndDislikes.get("likes"));
             commentDTO.setDisLikes(likesAndDislikes.get("dislikes"));
         }
@@ -158,7 +154,6 @@ public class CommentService {
             commentDTO = commentDTOMapper.apply(comment);
             UserApp user = userService.getUser(comment.getUserId());
             commentDTO.setUserName(user.getName() + " " + user.getLastName());
-            commentDTO.setUserImage(APIEndpoints.USER_PICTURE.getValue()+user.getId());
             commentDTO.setLikes(likesAndDislikes.get("likes"));
             commentDTO.setDisLikes(likesAndDislikes.get("dislikes"));
         }

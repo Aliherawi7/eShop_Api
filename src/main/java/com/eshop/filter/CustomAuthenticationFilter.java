@@ -2,11 +2,13 @@ package com.eshop.filter;
 
 import com.auth0.jwt.JWT;
 import com.auth0.jwt.algorithms.Algorithm;
+import com.eshop.constants.APIEndpoints;
 import com.eshop.dto.LoginInformationDTO;
 import com.eshop.dto.UserInformationDTO;
 import com.eshop.model.UserApp;
 import com.eshop.repository.OrderRepository;
 import com.eshop.service.UserService;
+import com.eshop.utils.BaseURI;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.http.MediaType;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -22,6 +24,7 @@ import javax.servlet.FilterChain;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.xml.ws.Endpoint;
 import java.io.IOException;
 import java.util.Date;
 import java.util.HashMap;
@@ -36,7 +39,9 @@ public class CustomAuthenticationFilter extends UsernamePasswordAuthenticationFi
     private final UserService userService;
     private final OrderRepository orderRepository;
 
-    public CustomAuthenticationFilter(AuthenticationManager authenticationManager, UserService userService, OrderRepository orderRepository) {
+    public CustomAuthenticationFilter(AuthenticationManager authenticationManager,
+                                      UserService userService,
+                                      OrderRepository orderRepository) {
         this.authenticationManager = authenticationManager;
         this.userService = userService;
         this.orderRepository = orderRepository;
@@ -92,6 +97,7 @@ public class CustomAuthenticationFilter extends UsernamePasswordAuthenticationFi
     protected void successfulAuthentication(HttpServletRequest request, HttpServletResponse response, FilterChain chain, Authentication authResult) throws IOException, ServletException, IOException {
         // we need the principal or authenticated user to create JWT token with its information
         User user = (User) authResult.getPrincipal();
+
         /*
          * if user was locked, dou to limit attempt failed.
          * we have to unlock the user and reset the failedAttempt
@@ -134,11 +140,17 @@ public class CustomAuthenticationFilter extends UsernamePasswordAuthenticationFi
 //                    checkUserActivation.getId())
 //                    .stream().mapToDouble(OrderApp::getAmount).sum();
         }
-
+        String baseURI = BaseURI.getBaseURI(request);
         UserInformationDTO userInformationDTO = new UserInformationDTO(
-                checkUserActivation.getId(), checkUserActivation.getName(), checkUserActivation.getLastName(),
-                checkUserActivation.getImage(), checkUserActivation.getEmail(),
-                user.getAuthorities().stream().map(GrantedAuthority::getAuthority).collect(Collectors.toList()),
+                checkUserActivation.getId(),
+                checkUserActivation.getName(),
+                checkUserActivation.getLastName(),
+                baseURI + "/" +APIEndpoints.USER_PICTURE.getValue()+checkUserActivation.getId(),
+                checkUserActivation.getEmail(),
+                user.getAuthorities()
+                        .stream()
+                        .map(GrantedAuthority::getAuthority)
+                        .collect(Collectors.toList()),
                 countryName, totalOrder, totalSpending, checkUserActivation.isEnabled()
         );
         response.setContentType(MediaType.APPLICATION_JSON_VALUE);

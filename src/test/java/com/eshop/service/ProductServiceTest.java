@@ -36,7 +36,7 @@ class ProductServiceTest {
         underTest = new ProductService(productRepository, commentRepository, productDTOMapper , fileStorageService);
         product = new Product(1l, "L2400", "green",
                 "dell", "laptop", 599.99,
-                "description", LocalDate.now(), "small",120l, 5d, 10D);
+                "description", "small",120l, 5d, 10D);
     }
 
 

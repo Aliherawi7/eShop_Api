@@ -54,7 +54,7 @@ public class BrandResource {
     @PostMapping
     public ResponseEntity<?> addBrand(@RequestParam("image") MultipartFile file, @RequestParam Map<String, String> params) throws IOException {
         Brand brand = new Brand();
-        brand.setLogo(file.getBytes());
+        brand.setLogo(brand.getId()+"");
         brand.setName(params.get("name"));
         brandService.addBrand(brand);
         return new ResponseEntity<>(brand, HttpStatus.CREATED);
@@ -67,7 +67,7 @@ public class BrandResource {
             return new ResponseEntity<>("brand not found with id "+ id, HttpStatus.NO_CONTENT);
         }
         brand.setName(params.get("name"));
-        brand.setLogo(file.getBytes());
+        brand.setLogo(id+"");
         brandService.updateBrand(brand);
         return new ResponseEntity<>(brand, HttpStatus.CREATED);
     }

@@ -23,7 +23,7 @@ class ProductRepositoryTest {
     void setUp() {
         underTest.deleteAll();
         product = new Product(1L, "L2700", "black", "Dell", "computer",
-                999.99, "the latest dell product", LocalDate.now(), "medium",10L, 4d, 10D);
+                999.99, "the latest dell product", "medium",10L, 4d, 10D);
     }
 
     @Test

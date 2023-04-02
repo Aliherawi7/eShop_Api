@@ -5,13 +5,14 @@ import com.eshop.exception.ProductNotFoundException;
 import com.eshop.model.Product;
 import com.eshop.repository.CommentRepository;
 import com.eshop.repository.ProductRepository;
+import com.eshop.utils.BaseURI;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
-
+import javax.servlet.http.HttpServletRequest;
 import java.io.IOException;
-import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Map;
@@ -24,6 +25,8 @@ public class ProductService {
     private final CommentRepository commentRepository;
     private final ProductDTOMapper productDTOMapper;
     private final FileStorageService fileStorageService;
+    @Autowired
+    HttpServletRequest httpServletRequest;
 
     public ProductService(ProductRepository productRepository,
                           CommentRepository commentRepository,
@@ -37,16 +40,19 @@ public class ProductService {
 
     //find product by id
     public ProductDTO getProductById(Long id) {
-
+        String baseURI = BaseURI.getBaseURI(httpServletRequest);
         Optional<Product> optionalProduct = productRepository.findById(id);
         if (optionalProduct.isPresent()) {
-            ProductDTO productDTO ;
+            ProductDTO productDTO;
             Product product = optionalProduct.get();
             productDTO = productDTOMapper.apply(product);
+            ArrayList<String> images = new ArrayList<>();
+            productDTO.getImages().forEach(item -> images.add(baseURI + "/" + item));
+            productDTO.setImages(images);
             productDTO.setReviews(commentRepository.findAllByProductId(product.getId()).size());
             return productDTO;
         }
-        throw new ProductNotFoundException("product not found with provided id: "+id);
+        throw new ProductNotFoundException("product not found with provided id: " + id);
     }
 
     //find product in the database by name
@@ -58,6 +64,7 @@ public class ProductService {
     public void addProduct(Product product) {
         new ResponseEntity<>(productRepository.save(product), HttpStatus.CREATED);
     }
+
     // save the product with images to the database
     public ProductDTO addProduct(ArrayList<MultipartFile> files, Map<String, String> params) {
         Product product = new Product();
@@ -65,16 +72,15 @@ public class ProductService {
         product.setCategory(params.get("category"));
         product.setBrandName(params.get("brandName"));
         product.setPrice(Double.parseDouble(params.get("price")));
-        product.setProductionDate(LocalDate.parse(params.get("productionDate")));
         product.setColor(params.get("color"));
         product.setDescription(params.get("description"));
         product.setQuantityInDepot(Long.parseLong(params.get("quantityInDepot")));
         product.setSize(params.get("size"));
         product.setDiscount(Double.parseDouble(params.get("discount")));
         try {
-            fileStorageService.storeProductImage(files.get(0), product.getId()+"side-1");
-            fileStorageService.storeProductImage(files.get(1), product.getId()+"side-2");
-            fileStorageService.storeProductImage(files.get(2), product.getId()+"side-3");
+            fileStorageService.storeProductImage(files.get(0), product.getId() + "side-1");
+            fileStorageService.storeProductImage(files.get(1), product.getId() + "side-2");
+            fileStorageService.storeProductImage(files.get(2), product.getId() + "side-3");
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -95,67 +101,61 @@ public class ProductService {
 
     //find all product in the database
     public Collection<ProductDTO> getAllProducts() {
-        return productRepository.findAll().stream().map(this::getProductDTO).collect(Collectors.toList());
+        return mapProducts(productRepository.findAll());
     }
 
     // find all product by brand name
     public Collection<ProductDTO> getAllByBrandName(String brandName) {
-        return productRepository.findAllByBrandName(brandName).stream().map(this::getProductDTO).collect(Collectors.toList());
+        return mapProducts(productRepository.findAllByBrandName(brandName));
     }
 
     // find all product by category
     public Collection<ProductDTO> getAllByCategory(String category) {
-        return productRepository
-                .findAllByCategory(category)
-                .stream().map(this::getProductDTO).collect(Collectors.toList());
+        return mapProducts(productRepository
+                .findAllByCategory(category));
     }
 
     // find product by category and brand name and price greater than or equal to the given price
     public Collection<ProductDTO> getAllByCategoryAndBrandNameAndPriceGreaterThanEqual(String category, String brandName, Double price) {
-        return productRepository.findAllByCategoryAndBrandNameAndPriceGreaterThan(category, brandName, price)
-                .stream().map(this::getProductDTO).collect(Collectors.toList());
+        return mapProducts(productRepository
+                .findAllByCategoryAndBrandNameAndPriceGreaterThan(category, brandName, price)
+        );
     }
 
     // find product by category and brand name and price less than or equal to the given price
     public Collection<ProductDTO> getAllByCategoryAndBrandNameAndPriceLessThanEqual(String category, String brandName, Double price) {
-        return productRepository.findAllByCategoryAndBrandNameAndPriceLessThan(category, brandName, price)
-                .stream().map(this::getProductDTO).collect(Collectors.toList());
+        return mapProducts(productRepository
+                .findAllByCategoryAndBrandNameAndPriceLessThan(category, brandName, price));
     }
 
     // find all product by category and price greater or equal to the given price
     public Collection<ProductDTO> getAllByPriceGreaterThanEqual(Double price) {
-        return productRepository.findAllByPriceGreaterThanEqual(price)
-                .stream().map(this::getProductDTO).collect(Collectors.toList());
+        return mapProducts(productRepository.findAllByPriceGreaterThanEqual(price));
     }
 
     //find all product by price less than or equal to the given price
     public Collection<ProductDTO> getAllByPriceLessThanEqual(Double price) {
-        return productRepository.findAllByPriceLessThanEqual(price)
-                .stream().map(this::getProductDTO).collect(Collectors.toList());
+        return mapProducts(productRepository.findAllByPriceLessThanEqual(price));
     }
 
     // find all product by category and price less than or equal to the given price
     public Collection<ProductDTO> getAllByCategoryAndPriceLessThanEqual(String category, Double price) {
-        return productRepository.findAllByCategoryAndPriceLessThanEqual(category, price)
-                .stream().map(this::getProductDTO).collect(Collectors.toList());
+        return mapProducts(productRepository.findAllByCategoryAndPriceLessThanEqual(category, price));
     }
 
     // find all product by category and price greater than or equal to the given price
     public Collection<ProductDTO> getAllByCategoryAndPriceGreaterThanEqual(String category, Double price) {
-        return productRepository.findAllByCategoryAndPriceGreaterThanEqual(category, price)
-                .stream().map(this::getProductDTO).collect(Collectors.toList());
+        return mapProducts(productRepository.findAllByCategoryAndPriceGreaterThanEqual(category, price));
     }
 
     // find all product by brand name and price less than or equal to the given price
     public Collection<ProductDTO> getAllByBrandNameAndPriceLessThanEqual(String brandName, Double price) {
-        return productRepository.findAllByBrandNameAndPriceLessThanEqual(brandName, price)
-                .stream().map(this::getProductDTO).collect(Collectors.toList());
+        return mapProducts(productRepository.findAllByBrandNameAndPriceLessThanEqual(brandName, price));
     }
 
     // find all product by brand name and price greater than or equal to the given price
     public Collection<ProductDTO> getAllByBrandNameAndPriceGreaterThanEqual(String brandName, Double price) {
-        return productRepository.findAllByBrandNameAndPriceGreaterThanEqual(brandName, price)
-                .stream().map(this::getProductDTO).collect(Collectors.toList());
+        return mapProducts(productRepository.findAllByBrandNameAndPriceGreaterThanEqual(brandName, price));
     }
 
     // danger area
@@ -176,12 +176,24 @@ public class ProductService {
         return new ResponseEntity<>("all data removed successfully!", HttpStatus.ACCEPTED);
     }
 
-    public ProductDTO getProductDTO(Product product){
+    public ProductDTO getProductDTO(Product product) {
         ProductDTO productDTO = productDTOMapper.apply(product);
         productDTO.setReviews(commentRepository.findAllByProductId(product.getId()).size());
         return productDTO;
     }
 
+    public Collection<ProductDTO> mapProducts(Collection<Product> list) {
+        String baseURI = BaseURI.getBaseURI(httpServletRequest);
+        return list.stream()
+                .map(this::getProductDTO)
+                .peek(item -> {
+                    ArrayList<String> images = new ArrayList<>();
+                    item.getImages()
+                            .forEach(img -> images.add(baseURI + "/" + img));
+                    item.setImages(images);
+                })
+                .collect(Collectors.toList());
+    }
 
 
 }

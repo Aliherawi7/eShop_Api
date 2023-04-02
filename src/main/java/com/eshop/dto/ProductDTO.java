@@ -14,7 +14,6 @@ public class ProductDTO {
     private double price;
     @Column(columnDefinition = "TEXT")
     private ArrayList<String> details;
-    private LocalDate productionDate;
     private String size;
     private long quantityInDepot;
     private double rate;
@@ -26,7 +25,7 @@ public class ProductDTO {
 
     public ProductDTO(Long productId, String name, String color,
                       ArrayList<String> images, String brandName, String category,
-                      double price, ArrayList<String> details, LocalDate productionDate,
+                      double price, ArrayList<String> details,
                       String size, long quantityInDepot, double rate, double discount, int reviews) {
         this.productId = productId;
         this.name = name;
@@ -36,7 +35,6 @@ public class ProductDTO {
         this.category = category;
         this.price = price;
         this.details = details;
-        this.productionDate = productionDate;
         this.size = size;
         this.quantityInDepot = quantityInDepot;
         this.rate = rate;
@@ -106,14 +104,6 @@ public class ProductDTO {
 
     public void setDetails(ArrayList<String> details) {
         this.details = details;
-    }
-
-    public LocalDate getProductionDate() {
-        return productionDate;
-    }
-
-    public void setProductionDate(LocalDate productionDate) {
-        this.productionDate = productionDate;
     }
 
     public String getSize() {

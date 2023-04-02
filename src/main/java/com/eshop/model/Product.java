@@ -16,7 +16,6 @@ public class Product {
     private double price;
     @Column(columnDefinition = "TEXT")
     private String description;
-    private LocalDate productionDate;
     private String size;
     private long quantityInDepot;
     private double rate;
@@ -33,7 +32,7 @@ public class Product {
 
     public Product(Long id, String name, String color,
                    String brandName, String category, double price,
-                   String description, LocalDate productionDate, String size, long quantityInDepot, double rate, double discount) {
+                   String description, String size, long quantityInDepot, double rate, double discount) {
         setId(id);;
         setName(name);
         setColor(color);
@@ -41,7 +40,6 @@ public class Product {
         setCategory(category);
         setPrice(price);
         setDescription(description);
-        setProductionDate(productionDate);
         setSize(size);
         setQuantityInDepot(quantityInDepot);
         setRate(rate);
@@ -104,14 +102,6 @@ public class Product {
 
     public void setDescription(String description) {
         this.description = description.toLowerCase().trim();
-    }
-
-    public LocalDate getProductionDate() {
-        return productionDate;
-    }
-
-    public void setProductionDate(LocalDate productionDate) {
-        this.productionDate = productionDate;
     }
 
     public String getSize() {

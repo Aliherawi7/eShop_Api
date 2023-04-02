@@ -1,8 +1,8 @@
 package com.eshop.security;
 
-import com.eshop.repository.OrderRepository;
 import com.eshop.filter.CustomAuthenticationFilter;
 import com.eshop.filter.CustomAuthorizationFilter;
+import com.eshop.repository.OrderRepository;
 import com.eshop.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
@@ -20,7 +20,6 @@ import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.CorsConfigurationSource;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 
-
 import java.util.Arrays;
 import java.util.Collections;
 
@@ -34,7 +33,10 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
     private final OrderRepository orderRepository;
 
     @Autowired
-    public SecurityConfiguration(UserDetailsService userDetailsService, BCryptPasswordEncoder bCryptPasswordEncoder, UserService userService, OrderRepository orderRepository) {
+    public SecurityConfiguration(UserDetailsService userDetailsService,
+                                 BCryptPasswordEncoder bCryptPasswordEncoder,
+                                 UserService userService,
+                                 OrderRepository orderRepository) {
         this.userDetailsService = userDetailsService;
         this.bCryptPasswordEncoder = bCryptPasswordEncoder;
         this.userService = userService;
@@ -49,7 +51,10 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
     @Override
     protected void configure(HttpSecurity http) throws Exception {
         CustomAuthenticationFilter authenticationFilter =
-                new CustomAuthenticationFilter(authenticationManagerBean(), userService, orderRepository);
+                new CustomAuthenticationFilter(
+                        authenticationManagerBean(),
+                        userService,
+                        orderRepository);
         authenticationFilter.setFilterProcessesUrl("/api/login");
         http.csrf().disable();
         http.cors();
@@ -60,6 +65,7 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
         http.authorizeHttpRequests().antMatchers(HttpMethod.GET,"/api/products",
                 "/api/products/*",
                 "/api/brands",
+                "/api/brands/*",
                 "/api/comments/products/*", "/api/v1/files/**").permitAll();
         http.authorizeHttpRequests().antMatchers(HttpMethod.POST, "/api/products/save")
                 .hasAuthority("ADMIN");

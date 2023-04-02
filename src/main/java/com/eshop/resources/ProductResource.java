@@ -69,7 +69,6 @@ public class ProductResource {
         product.setCategory(params.get("category"));
         product.setBrandName(params.get("brandName"));
         product.setPrice(Double.parseDouble(params.get("price")));
-        product.setProductionDate(LocalDate.parse(params.get("productionDate")));
         product.setColor(params.get("color"));
         product.setDescription(params.get("description"));
         product.setQuantityInDepot(Long.parseLong(params.get("quantityInDepot")));

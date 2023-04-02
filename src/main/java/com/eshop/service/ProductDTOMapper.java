@@ -6,7 +6,6 @@ import com.eshop.model.Product;
 import org.springframework.stereotype.Component;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.function.Function;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
@@ -17,6 +16,7 @@ public class ProductDTOMapper implements Function<Product, ProductDTO> {
     @Override
     public ProductDTO apply(Product product) {
         ArrayList<String> images = new ArrayList<>();
+
         images.add(APIEndpoints.PRODUCT_IMAGES.getValue()+product.getId()+"/side-1");
         images.add(APIEndpoints.PRODUCT_IMAGES.getValue()+product.getId()+"/side-2");
         images.add(APIEndpoints.PRODUCT_IMAGES.getValue()+product.getId()+"/side-3");
@@ -31,7 +31,6 @@ public class ProductDTOMapper implements Function<Product, ProductDTO> {
                 product.getCategory(),
                 product.getPrice(),
                 descriptions,
-                product.getProductionDate(),
                 product.getSize(),
                 product.getQuantityInDepot(),
                 product.getRate(),

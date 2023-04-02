@@ -7,18 +7,18 @@ import java.time.LocalDateTime;
 public class Brand {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @SequenceGenerator(sequenceName = "brand_sequence", name = "brand_sequence", allocationSize = 1)
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "brand_sequence")
     private Integer id;
     private String name;
-    @Lob
-    private byte[] logo;
+    private String logo;
     private LocalDateTime addDate;
 
     public Brand() {
         addDate = LocalDateTime.now();
     }
 
-    public Brand(Integer id, String name, byte[] logo) {
+    public Brand(Integer id, String name, String logo) {
         this.id = id;
         this.name = name;
         this.logo = logo;
@@ -41,11 +41,11 @@ public class Brand {
         this.name = name;
     }
 
-    public byte[] getLogo() {
+    public String getLogo() {
         return logo;
     }
 
-    public void setLogo(byte[] logo) {
+    public void setLogo(String logo) {
         this.logo = logo;
     }
 
