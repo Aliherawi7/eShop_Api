@@ -95,7 +95,7 @@ class ProductServiceTest {
     @Test
     void getAllProducts() {
         //when
-        underTest.getAllProducts();
+        underTest.getAllProducts(1, 10);
         //then
         verify(productRepository).findAll();
     }
