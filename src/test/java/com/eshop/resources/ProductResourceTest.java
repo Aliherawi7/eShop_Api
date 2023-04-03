@@ -47,12 +47,15 @@ class ProductResourceTest {
 
     @Test
     void getAllProducts() {
+        //given
+        int offset = 10;
+        int pageSize = 1;
         //when
-        when(productService.getAllProducts()).thenReturn(Arrays.asList(product));
-        underTest.getAllProducts();
+        when(productService.getAllProducts(offset, pageSize)).thenReturn(Arrays.asList(product));
+        underTest.getAllProducts(offset, pageSize);
         // then
-        verify(productService).getAllProducts();
-        assertEquals(underTest.getAllProducts(), new ResponseEntity<>(underTest.getAllProducts().getBody(), HttpStatus.OK));
+        verify(productService).getAllProducts(offset, pageSize);
+        assertEquals(underTest.getAllProducts(offset, pageSize), new ResponseEntity<>(underTest.getAllProducts(offset, pageSize).getBody(), HttpStatus.OK));
     }
 
 //    @Test
