@@ -23,8 +23,8 @@ public class CommentDTOMapper implements Function<Comment, CommentDTO> {
                 comment.getRate(),
                 comment.getCommentDate(),
                 BaseURI.getBaseURI(httpServletRequest)+"/"+APIEndpoints.USER_PICTURE.getValue() + comment.getUserId(),
-                0,
-                0
+                0L,
+                0L
         );
     }
 }

@@ -17,10 +17,10 @@ public class CommentAgreeDisagreeService {
     }
 
 
-    public Map<String, Integer> addLikeToComment(long commentId, long userId) {
+    public Map<String, Long> addLikeToComment(long commentId, long userId) {
         AgreeDisagree agreeDisagree =
                 commentAgreeDisagreeRepository.findByCommentIdAndUserId(commentId, userId);
-        Map<String, Integer> map = new HashMap<>();
+        Map<String, Long> map = new HashMap<>();
 
         // if the user has been agreed or disagreed before with this comment
         if (agreeDisagree != null) {
@@ -44,16 +44,15 @@ public class CommentAgreeDisagreeService {
             agreeDisagree.setDisagree(false);
             commentAgreeDisagreeRepository.save(agreeDisagree);
         }
-
-        map.put("likes", commentAgreeDisagreeRepository.findAllByCommentIdAndAgree(commentId, true).size());
-        map.put("dislikes", commentAgreeDisagreeRepository.findAllByCommentIdAndDisagree(commentId, true).size());
+        map.put("likes", commentAgreeDisagreeRepository.countAgreeDisagreeByCommentIdAndAgree(commentId, true));
+        map.put("dislikes", commentAgreeDisagreeRepository.countAgreeDisagreeByCommentIdAndDisagree(commentId, true));
         return map;
     }
 
-    public Map<String, Integer> addDislikeToComment(long commentId, long userId) {
+    public Map<String, Long> addDislikeToComment(long commentId, long userId) {
         AgreeDisagree agreeDisagree =
                 commentAgreeDisagreeRepository.findByCommentIdAndUserId(commentId, userId);
-        Map<String, Integer> map = new HashMap<>();
+        Map<String, Long> map = new HashMap<>();
 
         // if the user has been agreed or disagreed before with this comment
         if (agreeDisagree != null) {
@@ -74,21 +73,20 @@ public class CommentAgreeDisagreeService {
             agreeDisagree.setDisagree(true);
             agreeDisagree.setCommentId(commentId);
             agreeDisagree.setUserId(userId);
-            agreeDisagree.setAgree(false);
             commentAgreeDisagreeRepository.save(agreeDisagree);
         }
 
-        map.put("likes", commentAgreeDisagreeRepository.findAllByCommentIdAndAgree(commentId, true).size());
-        map.put("dislikes", commentAgreeDisagreeRepository.findAllByCommentIdAndDisagree(commentId, true).size());
+        map.put("likes", commentAgreeDisagreeRepository.countAgreeDisagreeByCommentIdAndAgree(commentId, true));
+        map.put("dislikes", commentAgreeDisagreeRepository.countAgreeDisagreeByCommentIdAndDisagree(commentId, true));
         return map;
     }
 
 
-    public int getAllLikesOfTheComment(long commentId) {
-        return commentAgreeDisagreeRepository.findAllByCommentIdAndAgree(commentId, true).size();
+    public long getAllLikesOfTheComment(long commentId) {
+        return commentAgreeDisagreeRepository.countAgreeDisagreeByCommentIdAndAgree(commentId, true);
     }
 
-    public int getAllDislikesOfTheComment(long commentId) {
-        return commentAgreeDisagreeRepository.findAllByCommentIdAndDisagree(commentId, true).size();
+    public long getAllDislikesOfTheComment(long commentId) {
+        return commentAgreeDisagreeRepository.countAgreeDisagreeByCommentIdAndDisagree(commentId, true);
     }
 }

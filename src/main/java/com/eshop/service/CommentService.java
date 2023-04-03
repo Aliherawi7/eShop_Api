@@ -74,8 +74,6 @@ public class CommentService {
         comment = commentRepository.save(comment);
         CommentDTO commentDTO = commentDTOMapper.apply(comment);
         commentDTO.setUserName(userService.getUser(userId).getName() + " " + userService.getUser(userId).getLastName());
-        commentDTO.setLikes(0);
-        commentDTO.setDisLikes(0);
         return commentDTO;
     }
 
@@ -132,8 +130,6 @@ public class CommentService {
 
     public CommentDTO likeComment(long commentId, HttpServletRequest request) {
         long userId = userService.getUser(TestUserWithJWT.getUserEmailByJWT(request)).getId();
-        Map<String, Integer> likesAndDislikes = commentAgreeDisagreeService.addLikeToComment(commentId, userId);
-
         Comment comment = commentRepository.findById(commentId).orElse(null);
         CommentDTO commentDTO = null;
         if (comment != null) {
@@ -143,6 +139,7 @@ public class CommentService {
             if(comment.getUserId() == userId){
                 throw new RuntimeException("Not allowed to like the comment: "+commentId+ " by user: "+userId);
             }
+            Map<String, Long> likesAndDislikes = commentAgreeDisagreeService.addLikeToComment(commentId, userId);
             commentDTO.setLikes(likesAndDislikes.get("likes"));
             commentDTO.setDisLikes(likesAndDislikes.get("dislikes"));
         }
@@ -151,7 +148,6 @@ public class CommentService {
 
     public CommentDTO dislikeComment(long commentId, HttpServletRequest request) {
         long userId = userService.getUser(TestUserWithJWT.getUserEmailByJWT(request)).getId();
-        Map<String, Integer> likesAndDislikes = commentAgreeDisagreeService.addDislikeToComment(commentId, userId);
         CommentDTO commentDTO = null;
         Comment comment = commentRepository.findById(commentId).orElse(null);
         if (comment != null) {
@@ -161,6 +157,7 @@ public class CommentService {
             if(comment.getUserId() == userId){
                 throw new RuntimeException("Not allowed to dislike the comment: "+commentId+ " by user: "+userId);
             }
+            Map<String, Long> likesAndDislikes = commentAgreeDisagreeService.addDislikeToComment(commentId, userId);
             commentDTO.setLikes(likesAndDislikes.get("likes"));
             commentDTO.setDisLikes(likesAndDislikes.get("dislikes"));
         }
