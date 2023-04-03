@@ -13,4 +13,6 @@ public interface CommentAgreeDisagreeRepository extends JpaRepository<AgreeDisag
     Collection<AgreeDisagree> findAllByCommentIdAndDisagree(long commentId, boolean disagree);
 
     AgreeDisagree findByCommentIdAndUserId(long commentId, long userId);
+    long countAgreeDisagreeByCommentIdAndDisagree(long commentId, boolean disagree);
+    long countAgreeDisagreeByCommentIdAndAgree(long commentId, boolean agree);
 }
