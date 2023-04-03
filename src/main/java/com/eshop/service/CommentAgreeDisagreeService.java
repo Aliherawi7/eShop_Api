@@ -20,8 +20,6 @@ public class CommentAgreeDisagreeService {
     public Map<String, Integer> addLikeToComment(long commentId, long userId) {
         AgreeDisagree agreeDisagree =
                 commentAgreeDisagreeRepository.findByCommentIdAndUserId(commentId, userId);
-        System.out.println("after query origin ui " + userId);
-
         Map<String, Integer> map = new HashMap<>();
 
         // if the user has been agreed or disagreed before with this comment

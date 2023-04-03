@@ -58,8 +58,13 @@ public class CommentService {
     }
 
     public CommentDTO addComment(SaveCommentDTO saveCommentDTO, HttpServletRequest request) {
-        Comment comment = new Comment();
         long userId = userService.getUser(TestUserWithJWT.getUserEmailByJWT(request)).getId();
+        if(commentRepository.existsCommentByUserIdAndProductId(userId, saveCommentDTO.getProductId())){
+            System.out.println("update the comment");
+            return updateComment(saveCommentDTO, request);
+        }
+        Comment comment = new Comment();
+
         comment.setUserId(userId);
         comment.setMessage(saveCommentDTO.getMessage());
         comment.setCommentDate(LocalDateTime.now());
@@ -75,14 +80,11 @@ public class CommentService {
     }
 
     public CommentDTO updateComment(SaveCommentDTO saveCommentDTO, HttpServletRequest request) {
-        if (commentRepository.findById(saveCommentDTO.getId()).isPresent()) {
-            Comment comment = new Comment();
-            UserApp user = userService.getUser(TestUserWithJWT.getUserEmailByJWT(request));
-            comment.setId(saveCommentDTO.getId());
-            comment.setUserId(user.getId());
+        UserApp user = userService.getUser(TestUserWithJWT.getUserEmailByJWT(request));
+        Comment comment = commentRepository.findCommentByUserIdAndProductId(user.getId(), saveCommentDTO.getProductId());
+        if (comment != null) {
             comment.setMessage(saveCommentDTO.getMessage());
             comment.setCommentDate(LocalDateTime.now());
-            comment.setProductId(saveCommentDTO.getProductId());
             comment.setRate(saveCommentDTO.getRate());
             commentRepository.save(comment);
             return new CommentDTO(
@@ -138,6 +140,9 @@ public class CommentService {
             commentDTO = commentDTOMapper.apply(comment);
             UserApp user = userService.getUser(comment.getUserId());
             commentDTO.setUserName(user.getName() + " " + user.getLastName());
+            if(comment.getUserId() == userId){
+                throw new RuntimeException("Not allowed to like the comment: "+commentId+ " by user: "+userId);
+            }
             commentDTO.setLikes(likesAndDislikes.get("likes"));
             commentDTO.setDisLikes(likesAndDislikes.get("dislikes"));
         }
@@ -153,6 +158,9 @@ public class CommentService {
             commentDTO = commentDTOMapper.apply(comment);
             UserApp user = userService.getUser(comment.getUserId());
             commentDTO.setUserName(user.getName() + " " + user.getLastName());
+            if(comment.getUserId() == userId){
+                throw new RuntimeException("Not allowed to dislike the comment: "+commentId+ " by user: "+userId);
+            }
             commentDTO.setLikes(likesAndDislikes.get("likes"));
             commentDTO.setDisLikes(likesAndDislikes.get("dislikes"));
         }
