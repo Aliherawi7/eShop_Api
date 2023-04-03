@@ -32,14 +32,10 @@ public class ProductResource {
     }
 
     //get all the product from database
-    @GetMapping
-    public ResponseEntity<?> getAllProducts() {
-        Collection<ProductDTO> products = productService.getAllProducts();
-        if (products.size() > 0) {
-            return ResponseEntity.ok().body(products);
-        } else {
-            return new ResponseEntity<>("No Product is available!", HttpStatus.NO_CONTENT);
-        }
+    @GetMapping("pagination/{offset}/{pageSize}")
+    public ResponseEntity<?> getAllProducts(@PathVariable int offset, @PathVariable int pageSize) {
+        Collection<ProductDTO> products = productService.getAllProducts(offset, pageSize);
+        return ResponseEntity.ok().body(products);
     }
 
     //find by id
@@ -55,7 +51,7 @@ public class ProductResource {
 
     // save the product in database
     @PostMapping
-    public ResponseEntity<?> addProduct(@RequestParam("image") ArrayList<MultipartFile> files, @RequestParam Map<String, String> params) throws IOException {
+    public ResponseEntity<?> addProduct(@RequestParam("image") ArrayList<MultipartFile> files, @RequestParam Map<String, String> params) {
         return new ResponseEntity<>(productService.addProduct(files, params), HttpStatus.CREATED);
     }
 
@@ -93,9 +89,9 @@ public class ProductResource {
      *============   query methods   ============*
      *===========================================*/
     // find product by name
-    @GetMapping(value = "/find", params = {"name"})
-    public ResponseEntity<?> searchProducts(@RequestParam String all) {
-        Collection<ProductDTO> products = productService.getAllProducts();
+    @GetMapping(value = "pagination/{offset}/{pageSize}/find", params = {"name"})
+    public ResponseEntity<?> searchProducts(@PathVariable int offset, @PathVariable int pageSize, @RequestParam String all) {
+        Collection<ProductDTO> products = productService.getAllProducts(offset, pageSize);
         String finalAll = all.toLowerCase();
         products = products.stream().filter(item -> item.getName().toLowerCase().contains(finalAll) || item.getCategory().toLowerCase().contains(finalAll))
                 .collect(Collectors.toList());
