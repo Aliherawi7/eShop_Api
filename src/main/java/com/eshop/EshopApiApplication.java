@@ -39,9 +39,8 @@ public class EshopApiApplication {
     @Bean
     CommandLineRunner run(ProductService productService, UserService userService,
                           RoleRepository roleRepository, OrderService orderService,
-                          BrandService brandService,
-                          CommentRepository commentRepository,
-                          CommentAgreeDisagreeRepository commentAgreeDisagreeRepository
+                          BrandService brandService
+
     ) {
         return args -> {
 
@@ -115,22 +114,6 @@ public class EshopApiApplication {
             brandService.addBrand(b4);
             brandService.addBrand(b5);
             brandService.addBrand(b6);
-
-
-            // static comments
-
-//            productService.getAllProducts().forEach(item ->{
-//                Comment c2 = new Comment(null, item.getProductId(), 2, LocalDateTime.now(),
-//                        "oh so expensive!", 5);
-//                Comment c3 = new Comment(null, item.getProductId(), 3, LocalDateTime.now(),
-//                        "is there any role for changing the arrived product?", 4);
-//                commentRepository.save(c2);
-//                commentRepository.save(c3);
-//            });
-
-            AgreeDisagree like1 =
-                    new AgreeDisagree(null, true, false, LocalDateTime.now(), 2L, 2L);
-            commentAgreeDisagreeRepository.save(like1);
 
         };
     }
