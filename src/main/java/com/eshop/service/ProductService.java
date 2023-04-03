@@ -7,6 +7,8 @@ import com.eshop.repository.CommentRepository;
 import com.eshop.repository.ProductRepository;
 import com.eshop.utils.BaseURI;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
@@ -101,8 +103,9 @@ public class ProductService {
     }
 
     //find all product in the database
-    public Collection<ProductDTO> getAllProducts() {
-        return mapProducts(productRepository.findAll());
+    public Collection<ProductDTO> getAllProducts(int offset, int pageSize) {
+        Page<Product> productPage = productRepository.findAll(PageRequest.of(offset, pageSize));
+        return mapProducts(productPage.get().collect(Collectors.toList()));
     }
 
     // find all product by brand name
