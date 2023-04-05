@@ -1,6 +1,7 @@
 package com.eshop.service;
 
 import com.eshop.dto.ProductDTO;
+import com.eshop.dto.ProductRegistrationRequest;
 import com.eshop.exception.ProductNotFoundException;
 import com.eshop.model.Product;
 import com.eshop.repository.CommentRepository;
@@ -12,13 +13,11 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
-import org.springframework.web.multipart.MultipartFile;
 
 import javax.servlet.http.HttpServletRequest;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.Map;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
@@ -69,25 +68,25 @@ public class ProductService {
     }
 
     // save the product with images to the database
-    public ProductDTO addProduct(ArrayList<MultipartFile> files, Map<String, String> params) {
+    public ProductDTO addProduct(ProductRegistrationRequest request) {
         Product product = new Product();
-        product.setName(params.get("name"));
-        product.setCategory(params.get("category"));
-        product.setBrandName(params.get("brandName"));
-        product.setPrice(Double.parseDouble(params.get("price")));
-        product.setColor(params.get("color"));
-        product.setDescription(params.get("description"));
-        product.setQuantityInDepot(Long.parseLong(params.get("quantityInDepot")));
-        product.setSize(params.get("size"));
-        product.setDiscount(Double.parseDouble(params.get("discount")));
+        product.setName(request.getName());
+        product.setCategory(request.getCategory());
+        product.setBrandName(request.getBrandName());
+        product.setPrice(request.getPrice());
+        product.setColor(request.getColor());
+        product.setDescription(request.getDescriptions());
+        product.setQuantityInDepot(request.getQuantityInDepot());
+        product.setSize(request.getSize());
+        product.setDiscount(request.getDiscount());
+        long productId = productRepository.save(product).getId();
         try {
-            fileStorageService.storeProductImage(files.get(0), product.getId() + "side-1");
-            fileStorageService.storeProductImage(files.get(1), product.getId() + "side-2");
-            fileStorageService.storeProductImage(files.get(2), product.getId() + "side-3");
+            fileStorageService.storeProductImage(request.getImageSide1(), product.getId() + "-side-1");
+            fileStorageService.storeProductImage(request.getImageSide2(), product.getId() + "-side-2");
+            fileStorageService.storeProductImage(request.getImageSide3(), product.getId() + "-side-3");
         } catch (IOException e) {
             e.printStackTrace();
         }
-        long productId = productRepository.save(product).getId();
         return getProductById(productId);
     }
 
