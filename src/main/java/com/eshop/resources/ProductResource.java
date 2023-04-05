@@ -1,6 +1,7 @@
 package com.eshop.resources;
 
 import com.eshop.dto.ProductDTO;
+import com.eshop.dto.ProductRegistrationRequest;
 import com.eshop.model.Product;
 import com.eshop.service.ProductService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -9,7 +10,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Map;
@@ -51,8 +51,8 @@ public class ProductResource {
 
     // save the product in database
     @PostMapping
-    public ResponseEntity<?> addProduct(@RequestParam("image") ArrayList<MultipartFile> files, @RequestParam Map<String, String> params) {
-        return new ResponseEntity<>(productService.addProduct(files, params), HttpStatus.CREATED);
+    public ResponseEntity<?> addProduct(@ModelAttribute ProductRegistrationRequest request) {
+        return new ResponseEntity<>(productService.addProduct(request), HttpStatus.CREATED);
     }
 
     //update th existed product
@@ -75,6 +75,8 @@ public class ProductResource {
     //remove product by id
     @DeleteMapping("/{id}")
     public ResponseEntity<?> deleteProductById(@PathVariable Long id) {
+        System.out.println(id);
+        System.out.println("product deleted");
         return productService.deleteProductById(id);
     }
 
