@@ -87,7 +87,7 @@ public class FileStorageService {
         }
         assert originalFileName != null;
         String extension = originalFileName.split("\\.")[1];
-        path.resolve(fileName + "." + extension);
+        path = path.resolve(fileName + "." + extension);
         Files.copy(multipartFile.getInputStream(), path, StandardCopyOption.REPLACE_EXISTING);
     }
 
