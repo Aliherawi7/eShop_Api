@@ -5,8 +5,11 @@ import com.eshop.model.FavoriteProduct;
 import com.eshop.model.Product;
 import com.eshop.repository.FavoriteProductRepository;
 import com.eshop.repository.ProductRepository;
+import com.eshop.utils.BaseURI;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import javax.servlet.http.HttpServletRequest;
 import java.util.ArrayList;
 import java.util.Collection;
 
@@ -15,6 +18,8 @@ public class FavoriteProductService {
     private final FavoriteProductRepository favoriteProductRepository;
     private final ProductRepository productRepository;
     private final ProductDTOMapper productDTOMapper;
+    @Autowired
+    HttpServletRequest httpServletRequest;
 
     public FavoriteProductService(FavoriteProductRepository favoriteProductRepository,
                                   ProductRepository productRepository,
@@ -27,12 +32,16 @@ public class FavoriteProductService {
     public Collection<ProductDTO> getFavoriteProducts(String email) {
         Collection<FavoriteProduct> favoriteProducts = favoriteProductRepository.findAllByUserEmail(email);
         Collection<ProductDTO> products = new ArrayList<>();
+        String baseURI = BaseURI.getBaseURI(httpServletRequest);
 
         // dou to Null pointer exception
         if (favoriteProducts.size() > 0) {
             favoriteProducts.forEach(favoriteProduct -> {
                 Product product = productRepository.findById(favoriteProduct.getProductId()).get();
                 ProductDTO productDTO = productDTOMapper.apply(product);
+                ArrayList<String> images = new ArrayList<>();
+                productDTO.getImages().forEach(item -> images.add(baseURI+ "/" + item));
+                productDTO.setImages(images);
                 products.add(productDTO);
             });
         }
