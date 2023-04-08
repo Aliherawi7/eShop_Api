@@ -91,14 +91,29 @@ public class ProductService {
     }
 
     // update the existed product
-    public ResponseEntity<String> updateProduct(Product product) {
-        boolean isExist = productRepository.existsById(product.getId());
-        if (isExist) {
-            productRepository.save(product);
-            return new ResponseEntity<>("Successfully updated! !", HttpStatus.CREATED);
-        } else {
-            return new ResponseEntity<>("not Found such product with id: " + product.getId(), HttpStatus.NO_CONTENT);
+    public boolean updateProduct(ProductRegistrationRequest request) {
+        Optional<Product> product = productRepository.findById(request.getProductId());
+        if (product.isPresent()) {
+            Product updatedProduct = product.get();
+            updatedProduct.setName(request.getName());
+            updatedProduct.setBrandName(request.getBrandName());
+            updatedProduct.setCategory(request.getCategory());
+            updatedProduct.setColor(request.getColor());
+            updatedProduct.setQuantityInDepot(request.getQuantityInDepot());
+            updatedProduct.setDescription(request.getDescriptions());
+            updatedProduct.setDiscount(request.getDiscount());
+            updatedProduct.setPrice(request.getPrice());
+            try {
+                fileStorageService.storeProductImage(request.getImageSide1(), request.getName()+"-side-1");
+                fileStorageService.storeProductImage(request.getImageSide2(), request.getName()+"-side-2");
+                fileStorageService.storeProductImage(request.getImageSide3(), request.getName()+"-side-3");
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+            productRepository.save(updatedProduct);
+            return true;
         }
+        return false;
     }
 
     //find all product in the database

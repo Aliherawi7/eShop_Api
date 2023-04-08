@@ -56,20 +56,13 @@ public class ProductResource {
     }
 
     //update th existed product
-    @PutMapping("/{id}")
-    public ResponseEntity<String> updateProduct(@PathVariable("id") Long id, @RequestParam("image") ArrayList<MultipartFile> files, @RequestParam Map<String, String> params) {
-        Product product = new Product();
-        product.setId(id);
-        product.setName(params.get("name"));
-        product.setCategory(params.get("category"));
-        product.setBrandName(params.get("brandName"));
-        product.setPrice(Double.parseDouble(params.get("price")));
-        product.setColor(params.get("color"));
-        product.setDescription(params.get("description"));
-        product.setQuantityInDepot(Long.parseLong(params.get("quantityInDepot")));
-        product.setSize(params.get("size"));
-        product.setDiscount(Double.parseDouble(params.get("discount")));
-        return productService.updateProduct(product);
+    @PutMapping()
+    public ResponseEntity<String> updateProduct(@ModelAttribute ProductRegistrationRequest request) {
+        boolean isUpdated = productService.updateProduct(request);
+        if(isUpdated){
+            return ResponseEntity.ok().body("product successfully updated");
+        }
+        return ResponseEntity.badRequest().body("product not found!");
     }
 
     //remove product by id
