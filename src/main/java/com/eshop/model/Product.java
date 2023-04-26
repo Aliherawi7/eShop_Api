@@ -22,6 +22,8 @@ public class Product {
     private double discount;
     private LocalDate addedDate;
     private LocalDate updateInDepot;
+    private String keywords;
+
 
     // default values
     public Product() {
@@ -152,5 +154,13 @@ public class Product {
 
     public void setUpdateInDepot(LocalDate updateInDepot) {
         this.updateInDepot = updateInDepot;
+    }
+
+    public String getKeywords() {
+        return keywords;
+    }
+
+    public void setKeywords(String keywords) {
+        this.keywords = keywords;
     }
 }
