@@ -10,7 +10,8 @@
     "size": "large",
     "quantityInDepot": 1180,
     "rate": 4,
-    "discount": 8
+    "discount": 8,
+    "keywords": "pc, tv, mobile, tools"
   },
   {
     "id": 2,
@@ -23,7 +24,8 @@
     "size": "medium",
     "quantityInDepot": 120,
     "rate": 4,
-    "discount": 8
+    "discount": 8,
+    "keywords": "tools, mobile"
   },
   {
     "id": 3,
@@ -36,7 +38,8 @@
     "size": "medium",
     "quantityInDepot": 650,
     "rate": 4,
-    "discount": 10
+    "discount": 10,
+    "keywords": "tools, pc, laptop, tv"
   },
   {
     "id": 4,
@@ -49,7 +52,8 @@
     "size": "small",
     "quantityInDepot": 320,
     "rate": 4,
-    "discount": 8
+    "discount": 8,
+    "keywords": "tools, pc, laptop, tv"
   },
   {
     "id": 5,
@@ -62,7 +66,8 @@
     "size": "pro",
     "quantityInDepot": 1500,
     "rate": 4,
-    "discount": 8
+    "discount": 8,
+    "keywords": "tools, mobile"
   },
   {
     "id": 6,
@@ -75,7 +80,8 @@
     "size": "large",
     "quantityInDepot": 100,
     "rate": 4,
-    "discount": 10
+    "discount": 10,
+    "keywords": "tools, mobile"
   },
   {
     "id": 7,
@@ -88,7 +94,8 @@
     "size": "large",
     "quantityInDepot": 23,
     "rate": 4,
-    "discount": 0
+    "discount": 0,
+    "keywords": "pc, laptop, tv"
   },
   {
     "id": 8,
@@ -101,7 +108,8 @@
     "size": "large",
     "quantityInDepot": 170,
     "rate": 3,
-    "discount": 5
+    "discount": 5,
+    "keywords": "tools, mobile"
   },
   {
     "id": 9,
@@ -114,7 +122,8 @@
     "size": "medium",
     "quantityInDepot": 730,
     "rate": 5,
-    "discount": 5
+    "discount": 5,
+    "keywords": "tools, mobile"
   },
   {
     "id": 10,
@@ -127,7 +136,8 @@
     "size": "medium",
     "quantityInDepot": 730,
     "rate": 5,
-    "discount": 10
+    "discount": 10,
+    "keywords": "tools, mobile"
   },
   {
     "id": 11,
@@ -140,7 +150,8 @@
     "size": "medium",
     "quantityInDepot": 730,
     "rate": 5,
-    "discount": 5
+    "discount": 5,
+    "keywords": "tools, mobile"
   },
   {
     "id": 12,
@@ -153,7 +164,8 @@
     "size": "pro",
     "quantityInDepot": 50,
     "rate": 4,
-    "discount": 8
+    "discount": 8,
+    "keywords": "tools, mobile"
   },
   {
     "id": 13,
@@ -166,7 +178,8 @@
     "size": "50cm x 50cm",
     "quantityInDepot": 50,
     "rate": 4,
-    "discount": 8
+    "discount": 8,
+    "keywords": "tools, mobile"
   },
   {
     "id": 14,
@@ -179,7 +192,8 @@
     "size": "10cm x 5cm",
     "quantityInDepot": 50,
     "rate": 4,
-    "discount": 8
+    "discount": 8,
+    "keywords": "tools, mobile"
   },
   {
     "id": 15,
@@ -192,7 +206,8 @@
     "size": "small",
     "quantityInDepot": 50,
     "rate": 4,
-    "discount": 8
+    "discount": 8,
+    "keywords": "tools, mobile"
   },
   {
     "id": 16,
@@ -205,7 +220,8 @@
     "size": "70cm x 30cm",
     "quantityInDepot": 50,
     "rate": 4,
-    "discount": 8
+    "discount": 8,
+    "keywords": "tools, pc, laptop, tv"
   },
   {
     "id": 17,
@@ -218,7 +234,8 @@
     "size": "4cm x 3cm",
     "quantityInDepot": 50,
     "rate": 4,
-    "discount": 8
+    "discount": 8,
+    "keywords": "tools, mobile"
   },
   {
     "id": 18,
@@ -231,7 +248,8 @@
     "size": "13in",
     "quantityInDepot": 50,
     "rate": 4,
-    "discount": 8
+    "discount": 8,
+    "keywords": "tools, pc, laptop, tv"
   },
   {
     "id": 19,
@@ -244,7 +262,8 @@
     "size": "75in",
     "quantityInDepot": 50,
     "rate": 4,
-    "discount": 8
+    "discount": 8,
+    "keywords": "tools, pc, laptop, tv"
   },
   {
     "id": 20,
@@ -257,7 +276,8 @@
     "size": "45in",
     "quantityInDepot": 50,
     "rate": 4,
-    "discount": 8
+    "discount": 8,
+    "keywords": "tools, pc, laptop, tv"
   },
   {
     "id": 21,
@@ -270,7 +290,8 @@
     "size": "56in",
     "quantityInDepot": 50,
     "rate": 4,
-    "discount": 8
+    "discount": 8,
+    "keywords": "tools, pc, laptop, tv"
   },
   {
     "id": 22,
@@ -283,7 +304,8 @@
     "size": "7.5in",
     "quantityInDepot": 50,
     "rate": 4,
-    "discount": 8
+    "discount": 8,
+    "keywords": "tools, mobile"
   },
   {
     "id": 23,
@@ -296,7 +318,8 @@
     "size": "80cm x 30cm",
     "quantityInDepot": 50,
     "rate": 4,
-    "discount": 8
+    "discount": 8,
+    "keywords": "tools, pc, laptop, tv"
   },
   {
     "id": 24,
@@ -309,6 +332,204 @@
     "size": "75in",
     "quantityInDepot": 50,
     "rate": 4,
-    "discount": 8
+    "discount": 8,
+    "keywords": "tools, pc, laptop, tv"
+  },
+  {
+    "id": 25,
+    "name": "Usb cable",
+    "color": "#fff",
+    "brandName": "hp",
+    "category": "tools",
+    "price": 0.5,
+    "description": "latest",
+    "size": "20in",
+    "quantityInDepot": 50,
+    "rate": 4,
+    "discount": 0,
+    "keywords": "tools, mobile"
+  },
+  {
+    "id": 26,
+    "name": "mouse",
+    "color": "#000",
+    "brandName": "DRAGON",
+    "category": "tools",
+    "price": 5,
+    "description": "latest",
+    "size": "Mid",
+    "quantityInDepot": 50,
+    "rate": 4,
+    "discount": 2,
+    "keywords": "tools, pc, laptop"
+  },
+  {
+    "id": 27,
+    "name": "keyboard",
+    "color": "#000",
+    "brandName": "DRAGON",
+    "category": "tools",
+    "price": 30,
+    "description": "latest",
+    "size": "Mid",
+    "quantityInDepot": 50,
+    "rate": 4,
+    "discount": 4,
+    "keywords": "tools, pc, laptop"
+  },
+  {
+    "id": 28,
+    "name": "4K gaming monitor",
+    "color": "#000",
+    "brandName": "DRAGON",
+    "category": "tools",
+    "price": 300,
+    "description": "latest",
+    "size": "64in",
+    "quantityInDepot": 50,
+    "rate": 4,
+    "discount": 12,
+    "keywords": "tools, pc, laptop, tv"
+  },
+  {
+    "id": 29,
+    "name": "4K wide programming and gaming monitor",
+    "color": "#000",
+    "brandName": "DRAGON",
+    "category": "monitor",
+    "price": 500,
+    "description": "latest",
+    "size": "240in",
+    "quantityInDepot": 50,
+    "rate": 4,
+    "discount": 15,
+    "keywords": "tools, pc, laptop, tv"
+  },
+  {
+    "id": 30,
+    "name": "programming and gaming pc",
+    "color": "#000",
+    "brandName": "DRAGON",
+    "category": "pc",
+    "price": 500,
+    "description": "latest",
+    "size": "mid",
+    "quantityInDepot": 50,
+    "rate": 4,
+    "discount": 8,
+    "keywords": "tools, pc, laptop, tv, monitor"
+  },
+  {
+    "id": 31,
+    "name": "speaker H400",
+    "color": "#000",
+    "brandName": "DRAGON",
+    "category": "tools",
+    "price": 200,
+    "description": "latest",
+    "size": "large",
+    "quantityInDepot": 50,
+    "rate": 4,
+    "discount": 4,
+    "keywords": "tools, mobile"
+  },
+  {
+    "id": 32,
+    "name": "3-in-1 usb",
+    "color": "#ff4000",
+    "brandName": "hp",
+    "category": "tools",
+    "price": 10,
+    "description": "latest",
+    "size": "mid",
+    "quantityInDepot": 50,
+    "rate": 4,
+    "discount": 0,
+    "keywords": "tools, mobile"
+  },
+  {
+    "id": 33,
+    "name": "video player HD",
+    "color": "#000",
+    "brandName": "hp",
+    "category": "tools",
+    "price": 100,
+    "description": "latest",
+    "size": "mid",
+    "quantityInDepot": 50,
+    "rate": 4,
+    "discount": 5,
+    "keywords": "tools, mobile, tv, monitor"
+  },
+  {
+    "id": 34,
+    "name": "wireless mouse",
+    "color": "#000",
+    "brandName": "dragon",
+    "category": "tools",
+    "price": 10,
+    "description": "latest",
+    "size": "mid",
+    "quantityInDepot": 50,
+    "rate": 4,
+    "discount": 0,
+    "keywords": "tools, pc"
+  },
+  {
+    "id": 35,
+    "name": "CPU corei7 3500 2017",
+    "color": "#fff",
+    "brandName": "intel",
+    "category": "tools",
+    "price": 100,
+    "description": "latest",
+    "size": "mid",
+    "quantityInDepot": 50,
+    "rate": 4,
+    "discount": 4,
+    "keywords": "tools, pc"
+  },
+  {
+    "id": 36,
+    "name": "Laptop corei9 3500 2022",
+    "color": "#fff",
+    "brandName": "asus",
+    "category": "laptop",
+    "price": 800,
+    "description": "latest",
+    "size": "mid",
+    "quantityInDepot": 50,
+    "rate": 4,
+    "discount": 15,
+    "keywords": "tools, pc, laptop"
+  },
+  {
+    "id": 37,
+    "name": "Laptop corei7 3500 16gb 2022",
+    "color": "#fff",
+    "brandName": "dell",
+    "category": "laptop",
+    "price": 700,
+    "description": "latest",
+    "size": "mid",
+    "quantityInDepot": 50,
+    "rate": 4,
+    "discount": 10,
+    "keywords": "tools, pc, laptop"
+  },
+  {
+    "id": 38,
+    "name": "webcam node 8 ",
+    "color": "#fff",
+    "brandName": "dragon",
+    "category": "tools",
+    "price": 50,
+    "description": "latest",
+    "size": "mid",
+    "quantityInDepot": 50,
+    "rate": 4,
+    "discount": 5,
+    "keywords": "tools, pc,"
   }
+
 ]
