@@ -44,7 +44,7 @@ class ProductRepositoryTest {
         String category = product.getCategory();
 
         //then
-        assertTrue(underTest.findAllByCategory(category).stream().allMatch(item -> item.getCategory().equals(category)));
+        assertTrue(underTest.findAllByKeywordsContaining(category).stream().allMatch(item -> item.getCategory().equals(category)));
     }
 
     @Test
@@ -74,7 +74,7 @@ class ProductRepositoryTest {
         //when
         String brandName = product.getBrandName();
         //then
-        assertTrue(underTest.existsProductByBrandName(brandName));
+        assertTrue(underTest.existsProductByBrandNameContaining(brandName));
     }
 
     @Test
@@ -85,7 +85,7 @@ class ProductRepositoryTest {
         String brandName = product.getCategory();
         double price = product.getPrice();
         //then
-        assertTrue(underTest.findAllByCategoryAndBrandNameAndPriceGreaterThan(category, brandName, price).
+        assertTrue(underTest.findAllByKeywordsContainingAndBrandNameAndPriceGreaterThan(category, brandName, price).
                 stream().
                 allMatch(
                         item -> item.getCategory().equals(category) &&
@@ -104,7 +104,7 @@ class ProductRepositoryTest {
         String brandName = product.getCategory();
         double price = product.getPrice();
         //then
-        assertTrue(underTest.findAllByCategoryAndBrandNameAndPriceGreaterThan(category, brandName, price).
+        assertTrue(underTest.findAllByKeywordsContainingAndBrandNameAndPriceGreaterThan(category, brandName, price).
                 stream().
                 allMatch(
                         item -> item.getCategory().equals(category) &&
@@ -146,7 +146,7 @@ class ProductRepositoryTest {
         String category = product.getCategory();
         double price = product.getPrice();
         //then
-        assertTrue(underTest.findAllByCategoryAndPriceLessThanEqual(category, price).
+        assertTrue(underTest.findAllByKeywordsContainingAndPriceLessThanEqual(category, price).
                 stream().
                 allMatch(
                         item -> item.getCategory().equals(category) &&
@@ -162,7 +162,7 @@ class ProductRepositoryTest {
         String category = product.getCategory();
         double price = product.getPrice();
         //then
-        assertTrue(underTest.findAllByCategoryAndPriceGreaterThanEqual(category, price).
+        assertTrue(underTest.findAllByKeywordsContainingAndPriceGreaterThanEqual(category, price).
                 stream().
                 allMatch(
                         item -> item.getCategory().equals(category) &&
@@ -177,7 +177,7 @@ class ProductRepositoryTest {
         String brandName = product.getBrandName();
         double price = product.getPrice();
         //then
-        assertTrue(underTest.findAllByBrandNameAndPriceLessThanEqual(brandName, price).
+        assertTrue(underTest.findAllByBrandNameContainingAndPriceLessThanEqual(brandName, price).
                 stream().
                 allMatch(
                         item -> item.getPrice() <= price && item.getBrandName().equals(brandName)));
@@ -190,7 +190,7 @@ class ProductRepositoryTest {
         String brandName = product.getBrandName();
         double price = product.getPrice();
         //then
-        assertTrue(underTest.findAllByBrandNameAndPriceGreaterThanEqual(brandName, price).
+        assertTrue(underTest.findAllByBrandNameContainingAndPriceGreaterThanEqual(brandName, price).
                 stream().
                 allMatch(item -> item.getPrice() >= price && item.getBrandName().equals(brandName)));
     }
