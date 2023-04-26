@@ -115,7 +115,7 @@ class ProductServiceTest {
         String category = "laptop";
         underTest.getAllByCategory(category);
         //then
-        verify(productRepository).findAllByCategory(category);
+        verify(productRepository).findAllByKeywordsContaining(category);
     }
 
     @Test
@@ -126,7 +126,7 @@ class ProductServiceTest {
         Double price = 99.5;
         underTest.getAllByCategoryAndBrandNameAndPriceGreaterThanEqual(category, branName, price);
         //then
-        verify(productRepository).findAllByCategoryAndBrandNameAndPriceGreaterThan(category, branName, price);
+        verify(productRepository).findAllByKeywordsContainingAndBrandNameAndPriceGreaterThan(category, branName, price);
 
     }
 
@@ -164,7 +164,7 @@ class ProductServiceTest {
         String category = "laptop";
         underTest.getAllByCategoryAndPriceLessThanEqual(category, price);
         //then
-        verify(productRepository).findAllByCategoryAndPriceLessThanEqual(category, price);
+        verify(productRepository).findAllByKeywordsContainingAndPriceLessThanEqual(category, price);
     }
 
     @Test
@@ -174,7 +174,7 @@ class ProductServiceTest {
         Double price = 200.99;
         underTest.getAllByCategoryAndPriceGreaterThanEqual(category, price);
         //then
-        verify(productRepository).findAllByCategoryAndPriceGreaterThanEqual(category, price);
+        verify(productRepository).findAllByKeywordsContainingAndPriceGreaterThanEqual(category, price);
     }
 
     @Test
@@ -184,7 +184,7 @@ class ProductServiceTest {
         Double price = 999.99;
         underTest.getAllByBrandNameAndPriceLessThanEqual(brandName, price);
         //then
-        verify(productRepository).findAllByBrandNameAndPriceLessThanEqual(brandName, price);
+        verify(productRepository).findAllByBrandNameContainingAndPriceLessThanEqual(brandName, price);
     }
 
     @Test
@@ -194,7 +194,7 @@ class ProductServiceTest {
         Double price = 300.50;
         underTest.getAllByBrandNameAndPriceGreaterThanEqual(brandName, price);
         //then
-        verify(productRepository).findAllByBrandNameAndPriceGreaterThanEqual(brandName, price);
+        verify(productRepository).findAllByBrandNameContainingAndPriceGreaterThanEqual(brandName, price);
     }
 
     @Test
