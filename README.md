@@ -27,7 +27,7 @@ api/users
 
 
 api/products
-    GET / -> List of products
+    GET /pagination/{offset}/{pagesize} -> List of products
     POST / -> Add product - required : admin role
     DELETE / -> delete all products - require : admin role
     GET /{id} -> View product
