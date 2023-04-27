@@ -2,6 +2,7 @@ package com.eshop.resources;
 
 import com.eshop.dto.ProductDTO;
 import com.eshop.dto.ProductRegistrationRequest;
+import com.eshop.dto.ProductUpdateRequest;
 import com.eshop.model.Product;
 import com.eshop.service.ProductService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -34,8 +35,7 @@ public class ProductResource {
     //get all the product from database
     @GetMapping("pagination/{offset}/{pageSize}")
     public ResponseEntity<?> getAllProducts(@PathVariable int offset, @PathVariable int pageSize) {
-        Collection<ProductDTO> products = productService.getAllProducts(offset, pageSize);
-        return ResponseEntity.ok().body(products);
+        return ResponseEntity.ok().body(productService.getAllProducts(offset, pageSize));
     }
 
     //find by id
@@ -57,7 +57,7 @@ public class ProductResource {
 
     //update th existed product
     @PutMapping()
-    public ResponseEntity<String> updateProduct(@ModelAttribute ProductRegistrationRequest request) {
+    public ResponseEntity<String> updateProduct(@ModelAttribute ProductUpdateRequest request) {
         boolean isUpdated = productService.updateProduct(request);
         if(isUpdated){
             return ResponseEntity.ok().body("product successfully updated");
@@ -86,16 +86,7 @@ public class ProductResource {
     // find product by name
     @GetMapping(value = "pagination/{offset}/{pageSize}/find", params = {"name"})
     public ResponseEntity<?> searchProducts(@PathVariable int offset, @PathVariable int pageSize, @RequestParam String all) {
-        Collection<ProductDTO> products = productService.getAllProducts(offset, pageSize);
-        String finalAll = all.toLowerCase();
-        products = products.stream().filter(item -> item.getName().toLowerCase().contains(finalAll) || item.getCategory().toLowerCase().contains(finalAll))
-                .collect(Collectors.toList());
-
-        if (products.size() > 0) {
-            return new ResponseEntity<>(products, HttpStatus.OK);
-        } else {
-            return new ResponseEntity<>(products + all, HttpStatus.NO_CONTENT);
-        }
+        return ResponseEntity.ok(productService.searchProducts(offset, pageSize, all));
     }
 
     // find product by name

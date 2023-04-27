@@ -1,17 +1,12 @@
 package com.eshop.dto;
 
 import org.springframework.web.multipart.MultipartFile;
-import org.springframework.lang.Nullable;
 
 public class ProductRegistrationRequest {
-    private long productId;
     private String name;
     private String color;
-    @Nullable
     private MultipartFile imageSide1;
-    @Nullable
     private MultipartFile imageSide2;
-    @Nullable
     private MultipartFile imageSide3;
     private String brandName;
     private String category;
@@ -25,8 +20,7 @@ public class ProductRegistrationRequest {
     public ProductRegistrationRequest() {
     }
 
-    public ProductRegistrationRequest(long productId,
-                                      String name,
+    public ProductRegistrationRequest(String name,
                                       String color,
                                       MultipartFile imageSide1,
                                       MultipartFile imageSide2,
@@ -39,7 +33,6 @@ public class ProductRegistrationRequest {
                                       long quantityInDepot,
                                       double rate,
                                       double discount) {
-        this.productId = productId;
         this.name = name;
         this.color = color;
         this.imageSide1 = imageSide1;
@@ -54,15 +47,6 @@ public class ProductRegistrationRequest {
         this.rate = rate;
         this.discount = discount;
     }
-
-    public long getProductId() {
-        return productId;
-    }
-
-    public void setProductId(long productId) {
-        this.productId = productId;
-    }
-
     public String getName() {
         return name;
     }

@@ -1,52 +1,54 @@
 package com.eshop.dto;
 
-import javax.persistence.Column;
-import java.math.RoundingMode;
-import java.text.DecimalFormat;
-import java.util.ArrayList;
+import org.springframework.web.multipart.MultipartFile;
 
-public class ProductDTO {
+public class ProductUpdateRequest {
     private Long productId;
     private String name;
     private String color;
-    private ArrayList<String> images;
+    private MultipartFile imageSide1;
+    private MultipartFile imageSide2;
+    private MultipartFile imageSide3;
     private String brandName;
     private String category;
     private double price;
-    @Column(columnDefinition = "TEXT")
-    private ArrayList<String> details;
+    private String descriptions;
     private String size;
     private long quantityInDepot;
     private double rate;
     private double discount;
-    private int reviews;
-    private String keywords;
-    private double priceAfterDiscount;
 
-    public ProductDTO() {
+    public ProductUpdateRequest() {
     }
 
-    public ProductDTO(Long productId, String name, String color,
-                      ArrayList<String> images, String brandName, String category,
-                      double price, ArrayList<String> details,
-                      String size, long quantityInDepot, double rate,
-                      double discount, int reviews, String keywords) {
+    public ProductUpdateRequest(long productId,
+                                String name,
+                                String color,
+                                MultipartFile imageSide1,
+                                MultipartFile imageSide2,
+                                MultipartFile imageSide3,
+                                String brandName,
+                                String category,
+                                double price,
+                                String descriptions,
+                                String size,
+                                long quantityInDepot,
+                                double rate,
+                                double discount) {
         this.productId = productId;
         this.name = name;
         this.color = color;
-        this.images = images;
+        this.imageSide1 = imageSide1;
+        this.imageSide2 = imageSide2;
+        this.imageSide3 = imageSide3;
         this.brandName = brandName;
         this.category = category;
         this.price = price;
-        this.details = details;
+        this.descriptions = descriptions;
         this.size = size;
         this.quantityInDepot = quantityInDepot;
         this.rate = rate;
         this.discount = discount;
-        this.reviews = reviews;
-        this.keywords = keywords;
-
-        this.priceAfterDiscount = price - (discount/100 * price);
     }
 
     public Long getProductId() {
@@ -73,12 +75,28 @@ public class ProductDTO {
         this.color = color;
     }
 
-    public ArrayList<String> getImages() {
-        return images;
+    public MultipartFile getImageSide1() {
+        return imageSide1;
     }
 
-    public void setImages(ArrayList<String> images) {
-        this.images = images;
+    public void setImageSide1(MultipartFile imageSide1) {
+        this.imageSide1 = imageSide1;
+    }
+
+    public MultipartFile getImageSide2() {
+        return imageSide2;
+    }
+
+    public void setImageSide2(MultipartFile imageSide2) {
+        this.imageSide2 = imageSide2;
+    }
+
+    public MultipartFile getImageSide3() {
+        return imageSide3;
+    }
+
+    public void setImageSide3(MultipartFile imageSide3) {
+        this.imageSide3 = imageSide3;
     }
 
     public String getBrandName() {
@@ -105,12 +123,12 @@ public class ProductDTO {
         this.price = price;
     }
 
-    public ArrayList<String> getDetails() {
-        return details;
+    public String getDescriptions() {
+        return descriptions;
     }
 
-    public void setDetails(ArrayList<String> details) {
-        this.details = details;
+    public void setDescriptions(String descriptions) {
+        this.descriptions = descriptions;
     }
 
     public String getSize() {
@@ -143,32 +161,5 @@ public class ProductDTO {
 
     public void setDiscount(double discount) {
         this.discount = discount;
-    }
-
-    public int getReviews() {
-        return reviews;
-    }
-
-    public void setReviews(int reviews) {
-        this.reviews = reviews;
-    }
-
-    public String getKeywords() {
-        return keywords;
-    }
-
-    public void setKeywords(String keywords) {
-        this.keywords = keywords;
-    }
-
-    public double getPriceAfterDiscount() {
-        DecimalFormat df = new DecimalFormat("0.00");
-        df.setRoundingMode(RoundingMode.UP);
-        priceAfterDiscount = Double.parseDouble(df.format(price - (discount/100 * price)));
-        return priceAfterDiscount;
-    }
-
-    public void setPriceAfterDiscount(double priceAfterDiscount) {
-        this.priceAfterDiscount = priceAfterDiscount;
     }
 }

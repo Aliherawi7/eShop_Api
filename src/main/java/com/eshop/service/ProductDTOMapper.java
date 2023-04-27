@@ -35,7 +35,8 @@ public class ProductDTOMapper implements Function<Product, ProductDTO> {
                 product.getQuantityInDepot(),
                 product.getRate(),
                 product.getDiscount(),
-                0
+                0,
+                product.getKeywords()
         );
     }
 }

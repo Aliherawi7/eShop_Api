@@ -1,7 +1,9 @@
 package com.eshop.service;
 
+import com.eshop.dto.PageContainerDTO;
 import com.eshop.dto.ProductDTO;
 import com.eshop.dto.ProductRegistrationRequest;
+import com.eshop.dto.ProductUpdateRequest;
 import com.eshop.exception.ProductNotFoundException;
 import com.eshop.model.Product;
 import com.eshop.repository.CommentRepository;
@@ -13,6 +15,8 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestParam;
 
 import javax.servlet.http.HttpServletRequest;
 import java.io.IOException;
@@ -87,7 +91,7 @@ public class ProductService {
     }
 
     // update the existed product
-    public boolean updateProduct(ProductRegistrationRequest request) {
+    public boolean updateProduct(ProductUpdateRequest request) {
         Optional<Product> product = productRepository.findById(request.getProductId());
         if (product.isPresent()) {
             Product updatedProduct = product.get();
@@ -112,14 +116,27 @@ public class ProductService {
         return false;
     }
 
+//    search products
+
+    public PageContainerDTO searchProducts(int offset, int pageSize, String all) {
+        PageContainerDTO pageContainerDTO = getAllProducts(offset, pageSize);
+        String finalAll = all.toLowerCase();
+        pageContainerDTO.setRecords(pageContainerDTO.getRecords().stream().filter(item -> item.getName().toLowerCase().contains(finalAll) || item.getCategory().toLowerCase().contains(finalAll))
+                .collect(Collectors.toList()));
+        return pageContainerDTO;
+    }
+
     //find all product in the database
-    public Collection<ProductDTO> getAllProducts(int offset, int pageSize) {
+    public PageContainerDTO getAllProducts(int offset, int pageSize) {
         Page<Product> productPage = productRepository.findAll(PageRequest.of(offset, pageSize));
-        return mapProductsToProductDTOs(productPage.get().collect(Collectors.toList()));
+        return new PageContainerDTO(
+                productRepository.count(),
+                mapProductsToProductDTOs(productPage.get().collect(Collectors.toList()))
+        );
     }
 
     // find all product by brand name
-    public Collection<ProductDTO> getAllByBrandName(String brandName) {
+    public List<ProductDTO> getAllByBrandName(String brandName) {
         return mapProductsToProductDTOs(productRepository.findAllByBrandName(brandName));
     }
 
@@ -141,45 +158,45 @@ public class ProductService {
     }
 
     // find product by category and brand name and price greater than or equal to the given price
-    public Collection<ProductDTO> getAllByCategoryAndBrandNameAndPriceGreaterThanEqual(String category, String brandName, Double price) {
+    public List<ProductDTO> getAllByCategoryAndBrandNameAndPriceGreaterThanEqual(String category, String brandName, Double price) {
         return mapProductsToProductDTOs(productRepository
                 .findAllByKeywordsContainingAndBrandNameAndPriceGreaterThan(category, brandName, price)
         );
     }
 
     // find product by category and brand name and price less than or equal to the given price
-    public Collection<ProductDTO> getAllByCategoryAndBrandNameAndPriceLessThanEqual(String category, String brandName, Double price) {
+    public List<ProductDTO> getAllByCategoryAndBrandNameAndPriceLessThanEqual(String category, String brandName, Double price) {
         return mapProductsToProductDTOs(productRepository
                 .findAllByKeywordsContainingAndBrandNameAndPriceLessThan(category, brandName, price));
     }
 
     // find all product by category and price greater or equal to the given price
-    public Collection<ProductDTO> getAllByPriceGreaterThanEqual(Double price) {
+    public List<ProductDTO> getAllByPriceGreaterThanEqual(Double price) {
         return mapProductsToProductDTOs(productRepository.findAllByPriceGreaterThanEqual(price));
     }
 
     //find all product by price less than or equal to the given price
-    public Collection<ProductDTO> getAllByPriceLessThanEqual(Double price) {
+    public List<ProductDTO> getAllByPriceLessThanEqual(Double price) {
         return mapProductsToProductDTOs(productRepository.findAllByPriceLessThanEqual(price));
     }
 
     // find all product by category and price less than or equal to the given price
-    public Collection<ProductDTO> getAllByCategoryAndPriceLessThanEqual(String category, Double price) {
+    public List<ProductDTO> getAllByCategoryAndPriceLessThanEqual(String category, Double price) {
         return mapProductsToProductDTOs(productRepository.findAllByKeywordsContainingAndPriceLessThanEqual(category, price));
     }
 
     // find all product by category and price greater than or equal to the given price
-    public Collection<ProductDTO> getAllByCategoryAndPriceGreaterThanEqual(String category, Double price) {
+    public List<ProductDTO> getAllByCategoryAndPriceGreaterThanEqual(String category, Double price) {
         return mapProductsToProductDTOs(productRepository.findAllByKeywordsContainingAndPriceGreaterThanEqual(category, price));
     }
 
     // find all product by brand name and price less than or equal to the given price
-    public Collection<ProductDTO> getAllByBrandNameAndPriceLessThanEqual(String brandName, Double price) {
+    public List<ProductDTO> getAllByBrandNameAndPriceLessThanEqual(String brandName, Double price) {
         return mapProductsToProductDTOs(productRepository.findAllByBrandNameContainingAndPriceLessThanEqual(brandName, price));
     }
 
     // find all product by brand name and price greater than or equal to the given price
-    public Collection<ProductDTO> getAllByBrandNameAndPriceGreaterThanEqual(String brandName, Double price) {
+    public List<ProductDTO> getAllByBrandNameAndPriceGreaterThanEqual(String brandName, Double price) {
         return mapProductsToProductDTOs(productRepository.findAllByBrandNameContainingAndPriceGreaterThanEqual(brandName, price));
     }
 
@@ -207,7 +224,7 @@ public class ProductService {
         return productDTO;
     }
 
-    public List<ProductDTO> mapProductsToProductDTOs(Collection<Product> list) {
+    public List<ProductDTO> mapProductsToProductDTOs(List<Product> list) {
         String baseURI = BaseURI.getBaseURI(httpServletRequest);
         return list.stream()
                 .map(this::getProductDTO)

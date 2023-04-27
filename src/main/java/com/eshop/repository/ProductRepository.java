@@ -9,10 +9,10 @@ import java.util.List;
 
 public interface ProductRepository extends JpaRepository<Product, Long> {
     // find all product by brand name
-    Collection<Product> findAllByBrandName(String brandName);
+    List<Product> findAllByBrandName(String brandName);
 
     // find all product by category
-    Collection<Product> findAllByKeywordsContaining(String category);
+    List<Product> findAllByKeywordsContaining(String category);
 
     // find product bt name
     Product findByName(String name);
@@ -30,28 +30,28 @@ public interface ProductRepository extends JpaRepository<Product, Long> {
     boolean existsProductByBrandNameContaining(String name);
 
     // find all product by category and brand name and price greater than given price
-    Collection<Product> findAllByKeywordsContainingAndBrandNameAndPriceGreaterThan(String category, String brandName, Double price);
+    List<Product> findAllByKeywordsContainingAndBrandNameAndPriceGreaterThan(String category, String brandName, Double price);
 
     // find all product by category and brand name and price less than given price
-    Collection<Product> findAllByKeywordsContainingAndBrandNameAndPriceLessThan(String category, String brandName, Double price);
+    List<Product> findAllByKeywordsContainingAndBrandNameAndPriceLessThan(String category, String brandName, Double price);
 
     // find all product by price greater or equal to the given price
-    Collection<Product> findAllByPriceGreaterThanEqual(Double price);
+    List<Product> findAllByPriceGreaterThanEqual(Double price);
 
     //find all product by price less than or equal to the given price
-    Collection<Product> findAllByPriceLessThanEqual(Double price);
+    List<Product> findAllByPriceLessThanEqual(Double price);
 
     // find all product by category and price less than or equal to the given price
-    Collection<Product> findAllByKeywordsContainingAndPriceLessThanEqual(String category, Double price);
+    List<Product> findAllByKeywordsContainingAndPriceLessThanEqual(String category, Double price);
 
     // find all product by category and price greater or equal to the given price
-    Collection<Product> findAllByKeywordsContainingAndPriceGreaterThanEqual(String category, Double price);
+    List<Product> findAllByKeywordsContainingAndPriceGreaterThanEqual(String category, Double price);
 
     // find all product by brand name and price less than or equal to the given price
-    Collection<Product> findAllByBrandNameContainingAndPriceLessThanEqual(String brandName, Double price);
+    List<Product> findAllByBrandNameContainingAndPriceLessThanEqual(String brandName, Double price);
 
     // find all product by brand name and price greater than or equal to the given price
-    Collection<Product> findAllByBrandNameContainingAndPriceGreaterThanEqual(String brandName, Double price);
+    List<Product> findAllByBrandNameContainingAndPriceGreaterThanEqual(String brandName, Double price);
 
 
 }

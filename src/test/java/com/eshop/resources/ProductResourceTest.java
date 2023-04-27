@@ -1,5 +1,6 @@
 package com.eshop.resources;
 
+import com.eshop.dto.PageContainerDTO;
 import com.eshop.dto.ProductDTO;
 import com.eshop.repository.ProductRepository;
 import com.eshop.service.ProductService;
@@ -50,8 +51,9 @@ class ProductResourceTest {
         //given
         int offset = 10;
         int pageSize = 1;
+        PageContainerDTO pageContainerDTO = new PageContainerDTO(1, Arrays.asList(product));
         //when
-        when(productService.getAllProducts(offset, pageSize)).thenReturn(Arrays.asList(product));
+        when(productService.getAllProducts(offset, pageSize)).thenReturn(pageContainerDTO);
         underTest.getAllProducts(offset, pageSize);
         // then
         verify(productService).getAllProducts(offset, pageSize);
@@ -161,7 +163,7 @@ class ProductResourceTest {
         Collection<ProductDTO> products = new ArrayList<>();
         //  when
         when(productService.getAllByBrandName(brandName))
-                .thenReturn(products);
+                .thenReturn(null);
 
         //  then
         assertEquals(underTest.getAllByBrandName(brandName),
@@ -209,7 +211,7 @@ class ProductResourceTest {
 
         //  when
         when(productService.getAllByPriceGreaterThanEqual(minPrice))
-                .thenReturn(products);
+                .thenReturn(null);
 
         //  then
         assertEquals(underTest.getAllByPriceGreaterThanEqual(minPrice),
@@ -243,7 +245,7 @@ class ProductResourceTest {
 
         //  when
         when(productService.getAllByPriceLessThanEqual(maxPrice))
-                .thenReturn(products);
+                .thenReturn(null);
 
         //  then
         assertEquals(underTest.getAllByPriceLessThanEqual(maxPrice),
@@ -282,7 +284,7 @@ class ProductResourceTest {
 
         //  when
         when(productService.getAllByCategoryAndPriceLessThanEqual(category, maxPrice))
-                .thenReturn(products);
+                .thenReturn(null);
         Map<String, String> params = new HashMap<>();
         params.put("category", category);
         params.put("maxprice", maxPrice + "");
@@ -325,7 +327,7 @@ class ProductResourceTest {
 
         //  when
         when(productService.getAllByCategoryAndPriceGreaterThanEqual(category, minPrice))
-                .thenReturn(products);
+                .thenReturn(null);
         Map<String, String> params = new HashMap<>();
         params.put("category", category);
         params.put("minprice", minPrice + "");
@@ -372,7 +374,7 @@ class ProductResourceTest {
 
         //  when
         when(productService.getAllByCategoryAndBrandNameAndPriceGreaterThanEqual(category, brandName, minPrice))
-                .thenReturn(products);
+                .thenReturn(null);
         Map<String, String> params = new HashMap<>();
         params.put("category", category);
         params.put("brand", brandName);
@@ -422,7 +424,7 @@ class ProductResourceTest {
 
         //  when
         when(productService.getAllByCategoryAndBrandNameAndPriceLessThanEqual(category, brandName, maxPrice))
-                .thenReturn(products);
+                .thenReturn(null);
         Map<String, String> params = new HashMap<>();
         params.put("category", category);
         params.put("brand", brandName);
@@ -468,7 +470,7 @@ class ProductResourceTest {
 
         //  when
         when(productService.getAllByBrandNameAndPriceLessThanEqual(brandName, maxPrice))
-                .thenReturn(products);
+                .thenReturn(null);
         Map<String, String> params = new HashMap<>();
         params.put("brand", brandName);
         params.put("maxprice", maxPrice + "");
@@ -511,7 +513,7 @@ class ProductResourceTest {
 
         //  when
         when(productService.getAllByBrandNameAndPriceGreaterThanEqual(brandName, minPrice))
-                .thenReturn(products);
+                .thenReturn(null);
         Map<String, String> params = new HashMap<>();
         params.put("brand", brandName);
         params.put("minprice", minPrice + "");
