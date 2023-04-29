@@ -21,12 +21,25 @@ public class CorsConfig {
         return new WebMvcConfigurer() {
             @Override
             public void addCorsMappings(CorsRegistry registry) {
-                registry.addMapping("/*")
-                        .allowedOrigins(allowedOrigin)
+                registry.addMapping("/**")
+                        .allowedOriginPatterns(allowedOrigin)
                         .allowedMethods("GET", "POST", "PUT", "DELETE")
                         .allowedHeaders("*");
             }
         };
+    }
+
+    @Bean
+    public CorsFilter corsFilter() {
+        UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
+        CorsConfiguration config = new CorsConfiguration();
+        config.getAllowCredentials();
+        config.addAllowedOrigin("http://localhost:3000");
+        config.addAllowedHeader("*");
+        config.setAllowedOrigins(Arrays.asList(allowedOrigin, "http://localhost:3000/*"));
+        config.setAllowedMethods(Arrays.asList("GET", "POST", "DELETE", "PUT"));
+        source.registerCorsConfiguration("/**", config);
+        return new CorsFilter(source);
     }
 
 }
