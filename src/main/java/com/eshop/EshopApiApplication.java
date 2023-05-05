@@ -14,6 +14,7 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.Bean;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 
+import javax.servlet.http.HttpServletRequest;
 import java.net.URL;
 import java.time.LocalDate;
 import java.util.ArrayList;
@@ -57,9 +58,9 @@ public class EshopApiApplication {
             Role role_admin = new Role(2, "ADMIN");
             roleRepository.save(role_admin);
             roleRepository.save(role_user);
-            userService.addUser(user1);
-            userService.addUser(user2);
-            userService.addUser(user3);
+            userService.addUserForTest(user1);
+            userService.addUserForTest(user2);
+            userService.addUserForTest(user3);
             userService.addRoleToUser(user1.getEmail(), role_admin.getName());
 
             // static products

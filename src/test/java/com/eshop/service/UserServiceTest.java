@@ -17,6 +17,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 
+import javax.servlet.http.HttpServletRequest;
 import java.util.Date;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -38,6 +39,9 @@ class UserServiceTest {
     private BCryptPasswordEncoder bCryptPasswordEncoder;
     @Mock
     UserInformationDTOMapper userInformationDTOMapper;
+    @Mock
+    HttpServletRequest httpServletRequest;
+
     private UserService underTest;
     private UserRegistrationRequest userSingup;
     private UserApp user;
@@ -51,7 +55,9 @@ class UserServiceTest {
                 bCryptPasswordEncoder,
                 orderRepository,
                 fileStorageService,
-                userInformationDTOMapper);
+                userInformationDTOMapper,
+                httpServletRequest
+                );
         userSingup = new UserRegistrationRequest();
         userSingup.setName("ali");
         userSingup.setLastName("herawi");

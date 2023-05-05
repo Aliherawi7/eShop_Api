@@ -53,7 +53,7 @@ public class ProductService {
             Product product = optionalProduct.get();
             productDTO = productDTOMapper.apply(product);
             ArrayList<String> images = new ArrayList<>();
-            productDTO.getImages().forEach(item -> images.add(baseURI + "/" + item));
+            productDTO.getImages().forEach(item -> images.add(baseURI + item));
             productDTO.setImages(images);
             productDTO.setReviews(commentRepository.findAllByProductId(product.getId()).size());
             return productDTO;
@@ -230,7 +230,7 @@ public class ProductService {
                 .peek(item -> {
                     ArrayList<String> images = new ArrayList<>();
                     item.getImages()
-                            .forEach(img -> images.add(baseURI + "/" + img));
+                            .forEach(img -> images.add(baseURI + img));
                     item.setImages(images);
                 })
                 .collect(Collectors.toList());

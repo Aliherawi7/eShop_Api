@@ -12,6 +12,6 @@ public class BaseURI {
     public static String getBaseURI(HttpServletRequest httpServletRequest) {
         return ServletUriComponentsBuilder.fromRequestUri(httpServletRequest)
                 .replacePath(null)
-                .build().toUriString();
+                .build().toUriString()+"/";
     }
 }

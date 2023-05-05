@@ -29,7 +29,7 @@ public class BrandService {
         return brandRepository
                 .findAll()
                 .stream()
-                .peek(item -> item.setLogo(baseURI + "/" + APIEndpoints.BRAND_IMAGES.getValue() + item.getId()))
+                .peek(item -> item.setLogo(baseURI + APIEndpoints.BRAND_IMAGES.getValue() + item.getId()))
                 .collect(Collectors.toList());
     }
 
@@ -41,7 +41,7 @@ public class BrandService {
     public Brand getBrandByName(String name) {
         String baseURI = BaseURI.getBaseURI(httpServletRequest);
         Optional<Brand> optionalBrand = brandRepository.findByName(name);
-        optionalBrand.ifPresent(brand -> brand.setLogo(baseURI + "/" + APIEndpoints.BRAND_IMAGES.getValue() + brand.getId()));
+        optionalBrand.ifPresent(brand -> brand.setLogo(baseURI + APIEndpoints.BRAND_IMAGES.getValue() + brand.getId()));
         return optionalBrand.orElse(null);
     }
 

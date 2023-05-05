@@ -40,7 +40,7 @@ public class FavoriteProductService {
                 Product product = productRepository.findById(favoriteProduct.getProductId()).get();
                 ProductDTO productDTO = productDTOMapper.apply(product);
                 ArrayList<String> images = new ArrayList<>();
-                productDTO.getImages().forEach(item -> images.add(baseURI+ "/" + item));
+                productDTO.getImages().forEach(item -> images.add(baseURI + item));
                 productDTO.setImages(images);
                 products.add(productDTO);
             });

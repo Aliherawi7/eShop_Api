@@ -144,7 +144,7 @@ public class CustomAuthenticationFilter extends UsernamePasswordAuthenticationFi
                 checkUserActivation.getId(),
                 checkUserActivation.getName(),
                 checkUserActivation.getLastName(),
-                baseURI + "/" + APIEndpoints.USER_PICTURE.getValue() + checkUserActivation.getId(),
+                baseURI + APIEndpoints.USER_PICTURE.getValue() + checkUserActivation.getId(),
                 checkUserActivation.getEmail(),
                 user.getAuthorities()
                         .stream()

@@ -13,7 +13,6 @@ import com.eshop.repository.OrderRepository;
 import com.eshop.repository.RoleRepository;
 import com.eshop.repository.UserAppRepository;
 import com.eshop.utils.BaseURI;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
@@ -47,21 +46,22 @@ public class UserService implements UserDetailsService {
     private final OrderRepository orderRepository;
     private final FileStorageService fileStorageService;
     private final UserInformationDTOMapper userInformationDTOMapper;
-    @Autowired
-    private HttpServletRequest httpServletRequest;
+    private final HttpServletRequest httpServletRequest;
 
     public UserService(UserAppRepository userRepository,
                        RoleRepository roleRepository,
                        BCryptPasswordEncoder bCryptPasswordEncoder,
                        OrderRepository orderRepository,
                        FileStorageService fileStorageService,
-                       UserInformationDTOMapper userInformationDTOMapper) {
+                       UserInformationDTOMapper userInformationDTOMapper,
+                       HttpServletRequest httpServletRequest) {
         this.userRepository = userRepository;
         this.roleRepository = roleRepository;
         this.bCryptPasswordEncoder = bCryptPasswordEncoder;
         this.orderRepository = orderRepository;
         this.fileStorageService = fileStorageService;
         this.userInformationDTOMapper = userInformationDTOMapper;
+        this.httpServletRequest = httpServletRequest;
     }
 
 
@@ -87,6 +87,7 @@ public class UserService implements UserDetailsService {
             body.put("status_code", HttpStatus.NON_AUTHORITATIVE_INFORMATION.name());
             return new ResponseEntity<>(body, HttpStatus.NON_AUTHORITATIVE_INFORMATION);
         } else {
+            String baseURI = BaseURI.getBaseURI(httpServletRequest);
             email = user.getEmail().toLowerCase().trim();
             UserApp userApp = new UserApp();
             userApp.setEmail(email);
@@ -98,10 +99,13 @@ public class UserService implements UserDetailsService {
             userApp.setDob(LocalDate.parse(user.getDob()));
             userApp.addRole(roleRepository.findByName("USER"));
             userApp = userRepository.save(userApp);
-            fileStorageService.storeUserProfileImage(user.getImage(), userApp.getId());
             UserInformationDTO userInfo = userInformationDTOMapper.apply(userApp);
-            String baseURI = BaseURI.getBaseURI(httpServletRequest);
-            userInfo.setImage(baseURI + userInfo.getImage());
+            if (user.getImage() != null) {
+                fileStorageService.storeUserProfileImage(user.getImage(), userApp.getId());
+                userInfo.setImage(baseURI + userInfo.getImage());
+            } else {
+                userInfo.setImage(baseURI + "avatar");
+            }
             Algorithm algorithm = Algorithm.HMAC256("Bearer".getBytes());
             String accessToken = JWT.create()
                     .withSubject(userApp.getEmail())
@@ -113,12 +117,26 @@ public class UserService implements UserDetailsService {
         }
     }
 
+    //    for test
+    public void addUserForTest(UserRegistrationRequest user) {
+        UserApp userApp = new UserApp();
+        userApp.setEmail(user.getEmail());
+        userApp.setUserName(user.getEmail().substring(0, user.getEmail().indexOf("@")));
+        userApp.setName(user.getName());
+        userApp.setLastName(user.getLastName());
+        userApp.setPassword(bCryptPasswordEncoder.encode(user.getPassword()));
+        userApp.setLocation(user.getLocation());
+        userApp.setDob(LocalDate.parse(user.getDob()));
+        userApp.addRole(roleRepository.findByName("USER"));
+        userRepository.save(userApp);
+    }
+
     // update user information
     public UserInformationDTO updateUser(String email, MultipartFile file, Map<String, String> params) throws Exception {
 
         // check if there a user with the request jwt email
         UserApp userInDB = userRepository.findByEmail(email);
-        // if there is not such user in the db then throw UserCredentialExpetion
+        // if there is not such user in the db then throw UserCredentialException
         if (userInDB == null) {
             throw new UserCredentialExeption("User not found");
         }

@@ -14,6 +14,7 @@ import java.util.function.Function;
 public class CommentDTOMapper implements Function<Comment, CommentDTO> {
     @Autowired
     HttpServletRequest httpServletRequest;
+
     @Override
     public CommentDTO apply(Comment comment) {
         return new CommentDTO(
@@ -22,7 +23,7 @@ public class CommentDTOMapper implements Function<Comment, CommentDTO> {
                 comment.getMessage(),
                 comment.getRate(),
                 comment.getCommentDate(),
-                BaseURI.getBaseURI(httpServletRequest)+"/"+APIEndpoints.USER_PICTURE.getValue() + comment.getUserId(),
+                BaseURI.getBaseURI(httpServletRequest) + APIEndpoints.USER_PICTURE.getValue() + comment.getUserId(),
                 0L,
                 0L
         );
