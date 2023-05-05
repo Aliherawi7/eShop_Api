@@ -1,6 +1,6 @@
 package com.eshop.service;
 
-import com.eshop.dto.UserSignupDTO;
+import com.eshop.dto.UserRegistrationRequest;
 import com.eshop.model.Role;
 import com.eshop.model.UserApp;
 import com.eshop.repository.OrderRepository;
@@ -36,8 +36,10 @@ class UserServiceTest {
     private RoleRepository roleRepository;
     @Mock
     private BCryptPasswordEncoder bCryptPasswordEncoder;
+    @Mock
+    UserInformationDTOMapper userInformationDTOMapper;
     private UserService underTest;
-    private UserSignupDTO userSingup;
+    private UserRegistrationRequest userSingup;
     private UserApp user;
 
     @BeforeEach
@@ -48,21 +50,20 @@ class UserServiceTest {
                 roleRepository,
                 bCryptPasswordEncoder,
                 orderRepository,
-                fileStorageService);
-        userSingup = new UserSignupDTO();
+                fileStorageService,
+                userInformationDTOMapper);
+        userSingup = new UserRegistrationRequest();
         userSingup.setName("ali");
         userSingup.setLastName("herawi");
         userSingup.setEmail("aliherawi7@gmail.com");
         userSingup.setPassword("1234");
         userSingup.setLocation("af");
-        userSingup.setImage(new byte[5]);
         user = new UserApp();
         user.setName("ali");
         user.setLastName("herawi");
         user.setEmail("aliherawi7@gmail.com");
         user.setPassword("1234");
         user.setLocation("af");
-        user.setImgUrl("");
     }
 
     @Test

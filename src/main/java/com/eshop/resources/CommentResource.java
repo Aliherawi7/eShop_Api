@@ -67,6 +67,8 @@ public class CommentResource {
 
     @PostMapping
     public ResponseEntity<?> addComment(@RequestBody SaveCommentDTO saveCommentDTO, HttpServletRequest request) {
+        System.out.println(saveCommentDTO.getMessage() +" : " +  saveCommentDTO.getProductId()+" : " + saveCommentDTO.getId());
+
         return ResponseEntity.ok().body(commentService.addComment(saveCommentDTO, request));
     }
 

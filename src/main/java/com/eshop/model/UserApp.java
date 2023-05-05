@@ -28,8 +28,6 @@ public class UserApp {
     @PrimaryKeyJoinColumn
     @Column(nullable = false)
     private String email;
-    @Lob
-    private String image;
     @ManyToMany(fetch = FetchType.EAGER)
     private Collection<Role> roles = new ArrayList<>();
     private boolean enabled;
@@ -50,7 +48,7 @@ public class UserApp {
     public UserApp(Long id,
                    String name, String lastName,
                    LocalDate dob, String password,
-                   String email, String image, String location) {
+                   String email, String location) {
         this.id = id;
         this.name = name;
         this.lastName = lastName;
@@ -58,7 +56,6 @@ public class UserApp {
         this.password = password;
         this.joinedDate = LocalDateTime.now();
         this.email = email;
-        this.image = image;
         this.enabled = true;
         this.accountLocked = false;
         this.failedAttempt = 0;
@@ -133,18 +130,6 @@ public class UserApp {
         this.email = email.trim().toLowerCase();
     }
 
-    public String getImage() {
-        return image;
-    }
-
-    public void setImage(String image) {
-        this.image = image;
-    }
-
-    public void setImgUrl(String image) {
-        this.image = image;
-    }
-
     public Collection<Role> getRoles() {
         return roles;
     }
@@ -198,6 +183,7 @@ public class UserApp {
     }
 
     public void setLocation(String location) {
-        this.location = location.trim().toLowerCase();
+        if (location != null)
+            this.location = location.trim().toLowerCase();
     }
 }

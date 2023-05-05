@@ -21,15 +21,13 @@ public class TestUserWithJWT {
         String authorizationHeader = request.getHeader("Authorization");
         if (authorizationHeader != null) {
             try {
-                Algorithm algorithm = Algorithm.HMAC256("herawi".getBytes());
+                Algorithm algorithm = Algorithm.HMAC256("Bearer".getBytes());
                 JWTVerifier jwtVerifier = JWT.require(algorithm).build();
                 DecodedJWT decodedJWT = jwtVerifier.verify(authorizationHeader);
                 String email = decodedJWT.getSubject();
                 String[] roles = decodedJWT.getClaim("roles").asArray(String.class);
                 Collection<SimpleGrantedAuthority> authorities = new ArrayList<>();
-                Arrays.stream(roles).forEach(role -> {
-                    authorities.add(new SimpleGrantedAuthority(role));
-                });
+                Arrays.stream(roles).forEach(role -> authorities.add(new SimpleGrantedAuthority(role)));
                 UsernamePasswordAuthenticationToken authenticationToken =
                         new UsernamePasswordAuthenticationToken(email, null, authorities);
                 SecurityContextHolder.getContext().setAuthentication(authenticationToken);
@@ -48,7 +46,7 @@ public class TestUserWithJWT {
         String authorizationHeader = request.getHeader("Authorization");
         if (authorizationHeader != null) {
             try {
-                Algorithm algorithm = Algorithm.HMAC256("herawi".getBytes());
+                Algorithm algorithm = Algorithm.HMAC256("Bearer".getBytes());
                 JWTVerifier jwtVerifier = JWT.require(algorithm).build();
                 DecodedJWT decodedJWT = jwtVerifier.verify(authorizationHeader);
                 return decodedJWT.getSubject();

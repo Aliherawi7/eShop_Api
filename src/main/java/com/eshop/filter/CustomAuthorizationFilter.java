@@ -23,13 +23,13 @@ public class CustomAuthorizationFilter extends OncePerRequestFilter {
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
         //if the request is coming from login page so do nothing and pass the request to the next filter
-        if (request.getServletPath().equals("/api/login")) {
+        if (request.getServletPath().equals("/api/login")  || request.getServletPath().equals("/api/users/signup")) {
             filterChain.doFilter(request, response);
         } else {
             String authorizationHeader = request.getHeader("Authorization");
             if (authorizationHeader != null) {
                 try {
-                    Algorithm algorithm = Algorithm.HMAC256("herawi".getBytes());
+                    Algorithm algorithm = Algorithm.HMAC256("Bearer".getBytes());
                     JWTVerifier jwtVerifier = JWT.require(algorithm).build();
                     DecodedJWT decodedJWT = jwtVerifier.verify(authorizationHeader);
                     String email = decodedJWT.getSubject();

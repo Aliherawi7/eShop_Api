@@ -1,5 +1,6 @@
 package com.eshop.service;
 
+import com.eshop.constants.APIEndpoints;
 import com.eshop.dto.CommentDTO;
 import com.eshop.dto.SaveCommentDTO;
 import com.eshop.model.Comment;
@@ -58,7 +59,10 @@ public class CommentService {
     }
 
     public CommentDTO addComment(SaveCommentDTO saveCommentDTO, HttpServletRequest request) {
-        long userId = userService.getUser(TestUserWithJWT.getUserEmailByJWT(request)).getId();
+        String email = TestUserWithJWT.getUserEmailByJWT(request);
+        System.out.println(email);
+        long userId = userService.getUser(email).getId();
+        System.out.println("user id in add comment method in service: "+userId);
         if(commentRepository.existsCommentByUserIdAndProductId(userId, saveCommentDTO.getProductId())){
             System.out.println("update the comment");
             return updateComment(saveCommentDTO, request);
@@ -91,7 +95,7 @@ public class CommentService {
                     saveCommentDTO.getMessage(),
                     saveCommentDTO.getRate(),
                     LocalDateTime.now(),
-                    user.getImage(),
+                    APIEndpoints.USER_PICTURE.getValue()+user.getId(),
                     commentAgreeDisagreeService.getAllLikesOfTheComment(saveCommentDTO.getId()),
                     commentAgreeDisagreeService.getAllDislikesOfTheComment(saveCommentDTO.getId())
             );

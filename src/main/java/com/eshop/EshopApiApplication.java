@@ -1,9 +1,7 @@
 package com.eshop;
 
-import com.eshop.dto.UserSignupDTO;
+import com.eshop.dto.UserRegistrationRequest;
 import com.eshop.model.*;
-import com.eshop.repository.CommentAgreeDisagreeRepository;
-import com.eshop.repository.CommentRepository;
 import com.eshop.repository.RoleRepository;
 import com.eshop.service.BrandService;
 import com.eshop.service.OrderService;
@@ -18,7 +16,6 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 
 import java.net.URL;
 import java.time.LocalDate;
-import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Arrays;
 
@@ -44,16 +41,16 @@ public class EshopApiApplication {
     ) {
         return args -> {
 
-            UserSignupDTO user1 = new UserSignupDTO("Ali", "herawi",
-                    "aliherawi7@gmail.com", LocalDate.of(1999, 3, 25),
+            UserRegistrationRequest user1 = new UserRegistrationRequest("Ali", "herawi",
+                    "aliherawi7@gmail.com", LocalDate.of(1999, 3, 25).toString(),
                     "12345", null, "Afghanistan");
 
-            UserSignupDTO user2 = new UserSignupDTO("Alexa", "Jhonson",
-                    "Alexajhonson@gmail.com", LocalDate.of(2000, 3, 25),
+            UserRegistrationRequest user2 = new UserRegistrationRequest("Alexa", "Jhonson",
+                    "Alexajhonson@gmail.com", LocalDate.of(2000, 3, 25).toString(),
                     "12345", null, "USA");
 
-            UserSignupDTO user3 = new UserSignupDTO("Amanda", "Jepson",
-                    "Amandajepson@gmail.com", LocalDate.of(2000, 3, 25),
+            UserRegistrationRequest user3 = new UserRegistrationRequest("Amanda", "Jepson",
+                    "Amandajepson@gmail.com", LocalDate.of(2000, 3, 25).toString(),
                     "12345", null, "UK");
 
             Role role_user = new Role(1, "USER");

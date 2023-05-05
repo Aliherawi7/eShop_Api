@@ -4,7 +4,7 @@ import com.auth0.jwt.JWT;
 import com.auth0.jwt.algorithms.Algorithm;
 import com.eshop.dto.SignupInformationDTO;
 import com.eshop.dto.UserInformationDTO;
-import com.eshop.dto.UserSignupDTO;
+import com.eshop.dto.UserRegistrationRequest;
 import com.eshop.exception.UserCredentialExeption;
 import com.eshop.model.OrderApp;
 import com.eshop.model.Role;
@@ -12,6 +12,8 @@ import com.eshop.model.UserApp;
 import com.eshop.repository.OrderRepository;
 import com.eshop.repository.RoleRepository;
 import com.eshop.repository.UserAppRepository;
+import com.eshop.utils.BaseURI;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
@@ -22,6 +24,7 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
+import javax.servlet.http.HttpServletRequest;
 import java.time.LocalDate;
 import java.util.*;
 import java.util.stream.Collectors;
@@ -43,17 +46,22 @@ public class UserService implements UserDetailsService {
     private final BCryptPasswordEncoder bCryptPasswordEncoder;
     private final OrderRepository orderRepository;
     private final FileStorageService fileStorageService;
+    private final UserInformationDTOMapper userInformationDTOMapper;
+    @Autowired
+    private HttpServletRequest httpServletRequest;
 
     public UserService(UserAppRepository userRepository,
                        RoleRepository roleRepository,
                        BCryptPasswordEncoder bCryptPasswordEncoder,
                        OrderRepository orderRepository,
-                       FileStorageService fileStorageService) {
+                       FileStorageService fileStorageService,
+                       UserInformationDTOMapper userInformationDTOMapper) {
         this.userRepository = userRepository;
         this.roleRepository = roleRepository;
         this.bCryptPasswordEncoder = bCryptPasswordEncoder;
         this.orderRepository = orderRepository;
         this.fileStorageService = fileStorageService;
+        this.userInformationDTOMapper = userInformationDTOMapper;
     }
 
 
@@ -70,7 +78,7 @@ public class UserService implements UserDetailsService {
     }
 
     //save user on database
-    public ResponseEntity<?> addUser(UserSignupDTO user) {
+    public ResponseEntity<?> addUser(UserRegistrationRequest user) {
         String email;
         UserApp exist = userRepository.findByEmail(user.getEmail().toLowerCase().trim());
         if (exist != null) {
@@ -87,16 +95,14 @@ public class UserService implements UserDetailsService {
             userApp.setLastName(user.getLastName());
             userApp.setPassword(bCryptPasswordEncoder.encode(user.getPassword()));
             userApp.setLocation(user.getLocation());
+            userApp.setDob(LocalDate.parse(user.getDob()));
             userApp.addRole(roleRepository.findByName("USER"));
             userApp = userRepository.save(userApp);
-            fileStorageService.storeUserProfileImageByteArray(user.getImage(), userApp.getId());
-
-
-            UserInformationDTO userInfo = new UserInformationDTO(userApp.getId(), userApp.getName(), userApp.getLastName(),
-                    userApp.getImage(), userApp.getEmail(),
-                    userApp.getRoles().stream().map(Role::getName).collect(Collectors.toList()),
-                    userApp.getLocation(), 0, 0, userApp.isEnabled());
-            Algorithm algorithm = Algorithm.HMAC256("herawi".getBytes());
+            fileStorageService.storeUserProfileImage(user.getImage(), userApp.getId());
+            UserInformationDTO userInfo = userInformationDTOMapper.apply(userApp);
+            String baseURI = BaseURI.getBaseURI(httpServletRequest);
+            userInfo.setImage(baseURI + userInfo.getImage());
+            Algorithm algorithm = Algorithm.HMAC256("Bearer".getBytes());
             String accessToken = JWT.create()
                     .withSubject(userApp.getEmail())
                     .withExpiresAt(new Date(System.currentTimeMillis() + (1000 * 60 * 60 * 24 * 10)))
@@ -132,15 +138,8 @@ public class UserService implements UserDetailsService {
             fileStorageService.storeUserProfileImage(file, userInDB.getId());
         }
         userInDB.setEmail(params.get("email"));
-        userRepository.save(userInDB);
-        UserInformationDTO userDto = new UserInformationDTO();
-        userDto.setEmail(userInDB.getEmail());
-        userDto.setName(userInDB.getName());
-        userDto.setLastName(userDto.getName());
-        userDto.setImage(userInDB.getImage());
-        userDto.setLocation(userDto.getLocation());
-        userDto.setDob(userDto.getDob());
-        return userDto;
+        userInDB = userRepository.save(userInDB);
+        return userInformationDTOMapper.apply(userInDB);
     }
 
     // find user by email
@@ -185,10 +184,10 @@ public class UserService implements UserDetailsService {
                         totalOrder = orderRepository.findAllByUserId(userApp.getId()).size();
                         totalSpending = orderRepository.findAllByUserId(userApp.getId()).stream().mapToDouble(OrderApp::getAmount).sum();
                     }
-                    return new UserInformationDTO(userApp.getId(), userApp.getName(), userApp.getLastName(),
-                            userApp.getImage(), userApp.getEmail(),
-                            userApp.getRoles().stream().map((Role::getName)).collect(Collectors.toList()),
-                            userApp.getLocation(), totalOrder, totalSpending, userApp.isEnabled());
+                    UserInformationDTO userInformationDTO = userInformationDTOMapper.apply(userApp);
+                    userInformationDTO.setTotalOrders(totalOrder);
+                    userInformationDTO.setTotalSpending(totalSpending);
+                    return userInformationDTO;
                 })
                 .collect(Collectors.toList());
         if (users.size() > 0) {

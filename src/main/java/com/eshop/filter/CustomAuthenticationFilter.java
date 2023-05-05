@@ -114,7 +114,7 @@ public class CustomAuthenticationFilter extends UsernamePasswordAuthenticationFi
         }*/
 
         //we have an algorithm to to build the token with
-        Algorithm algorithm = Algorithm.HMAC256("herawi".getBytes());
+        Algorithm algorithm = Algorithm.HMAC256("Bearer".getBytes());
         //then we create the access token and refresh token using auth0 library
         String access_token = JWT.create()
                 .withSubject(user.getUsername())

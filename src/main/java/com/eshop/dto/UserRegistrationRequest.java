@@ -1,21 +1,21 @@
 package com.eshop.dto;
 
-import java.time.LocalDate;
+import org.springframework.web.multipart.MultipartFile;
 
-public class UserSignupDTO {
+public class UserRegistrationRequest {
     private String name;
     private String lastName;
     private String email;
-    private LocalDate dob;
+    private String dob;
     private String password;
-    private byte[] image;
+    private MultipartFile image;
     private String location;
 
-    public UserSignupDTO() {
+    public UserRegistrationRequest() {
     }
 
-    public UserSignupDTO(String name, String lastName, String email,
-                         LocalDate dob, String password, byte[] image, String location) {
+    public UserRegistrationRequest(String name, String lastName, String email,
+                                   String dob, String password, MultipartFile image, String location) {
         this.name = name;
         this.lastName = lastName;
         this.email = email;
@@ -49,11 +49,18 @@ public class UserSignupDTO {
         this.email = email;
     }
 
-    public LocalDate getDob() {
+    public String getDob() {
+        if(dob.contains(",")){
+            return dob.split(",")[0];
+        }
         return dob;
     }
 
-    public void setDob(LocalDate dob) {
+    public void setDob(String dob) {
+        if(dob.contains(",")){
+            this.dob = dob.split(",")[0];
+            return;
+        }
         this.dob = dob;
     }
 
@@ -65,11 +72,11 @@ public class UserSignupDTO {
         this.password = password;
     }
 
-    public byte[] getImage() {
+    public MultipartFile getImage() {
         return image;
     }
 
-    public void setImage(byte[] image) {
+    public void setImage(MultipartFile image) {
         this.image = image;
     }
 

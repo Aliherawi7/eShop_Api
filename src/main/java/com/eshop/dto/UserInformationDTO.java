@@ -11,7 +11,7 @@ public class UserInformationDTO {
     private String email;
     private List<String> roles;
     private String location;
-    private LocalDate dob;
+    private String dob;
     private int totalOrders;
     private double totalSpending;
     private boolean isActive;
@@ -20,7 +20,6 @@ public class UserInformationDTO {
     }
 
     public UserInformationDTO(Long id, String name, String lastName, String image, String email, List<String> roles, String location, int totalOrders, double totalSpending, boolean isActive) {
-        this.id = id;
         this.name = name;
         this.lastName = lastName;
         this.image = image;
@@ -112,11 +111,11 @@ public class UserInformationDTO {
         this.isActive = isActive;
     }
 
-    public LocalDate getDob() {
+    public String getDob() {
         return dob;
     }
 
-    public void setDob(LocalDate dob) {
+    public void setDob(String dob) {
         this.dob = dob;
     }
 }

@@ -3,12 +3,11 @@ package com.eshop.resources;
 import com.eshop.dto.AddRoleToUserDTO;
 import com.eshop.dto.EmailAndPasswordDTO;
 import com.eshop.dto.UserInformationDTO;
-import com.eshop.dto.UserSignupDTO;
+import com.eshop.dto.UserRegistrationRequest;
 import com.eshop.model.UserApp;
 import com.eshop.security.TestUserWithJWT;
 import com.eshop.service.IPFinderService;
 import com.eshop.service.UserService;
-import com.mysql.cj.x.protobuf.MysqlxDatatypes;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -37,28 +36,8 @@ public class UserResource {
     }
 
     @PostMapping("/signup")
-    public ResponseEntity<?> addUser(@RequestParam("image") MultipartFile file, @RequestParam Map<MysqlxDatatypes.Scalar.String, String> params, HttpServletRequest request) throws IOException {
-        UserSignupDTO userInfo = new UserSignupDTO();
-        userInfo.setName(params.get("name"));
-        userInfo.setLastName(params.get("lastName"));
-        userInfo.setEmail(params.get("email"));
-        userInfo.setPassword(params.get("password"));
-        //check if there no file then set the default avatar to the user
-        if (file.isEmpty()) {
-            File avatar = new File("src/main/resources/templates/image/ali.jpg");
-            byte[] avatarBytes = new byte[(int) avatar.length()];
-            FileInputStream fileInputStream = new FileInputStream(avatar);
-            fileInputStream.read(avatarBytes);
-            userInfo.setImage(avatarBytes);
-        } else {
-            userInfo.setImage(file.getBytes());
-        }
-
-        userInfo.setDob(LocalDate.parse(params.get("dob")));
-        String ipAddress = IPFinderService.getClientIP(request).equals("127.0.0.1") ? "168.211.152.24" : IPFinderService.getClientIP(request);
-        String countryName = IPFinderService.getCountryName(ipAddress);
-        userInfo.setLocation(countryName);
-        return userService.addUser(userInfo);
+    public ResponseEntity<?> addUser(@ModelAttribute UserRegistrationRequest userRegistrationRequest, HttpServletRequest request) throws IOException {
+        return userService.addUser(userRegistrationRequest);
     }
 
     @GetMapping("/user")
@@ -70,14 +49,9 @@ public class UserResource {
         userDTO.setName(user.getName());
         userDTO.setLastName(user.getLastName());
         userDTO.setEmail(user.getEmail());
-        userDTO.setDob(user.getDob());
+//        userDTO.setDob(user.getDob());
         userDTO.setLocation(user.getLocation());
-        userDTO.setImage(user.getImage());
-        if (user != null) {
-            return new ResponseEntity<>(userDTO, HttpStatus.OK);
-        } else {
-            return new ResponseEntity<>("User with email: " + jwtEmail + " not found!", HttpStatus.NOT_FOUND);
-        }
+        return new ResponseEntity<>(userDTO, HttpStatus.OK);
     }
 
     @PutMapping
