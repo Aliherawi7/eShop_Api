@@ -4,12 +4,12 @@ import java.util.ArrayList;
 
 public class MonthlyDataDTO {
     private ArrayList<String> labels;
-    private ArrayList<Integer> data;
+    private ArrayList<Long> data;
 
     public MonthlyDataDTO() {
     }
 
-    public MonthlyDataDTO(ArrayList<String> labels, ArrayList<Integer> data) {
+    public MonthlyDataDTO(ArrayList<String> labels, ArrayList<Long> data) {
         this.labels = labels;
         this.data = data;
     }
@@ -22,11 +22,11 @@ public class MonthlyDataDTO {
         this.labels = labels;
     }
 
-    public ArrayList<Integer> getData() {
+    public ArrayList<Long> getData() {
         return data;
     }
 
-    public void setData(ArrayList<Integer> data) {
+    public void setData(ArrayList<Long> data) {
         this.data = data;
     }
 }

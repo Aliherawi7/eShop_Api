@@ -3,11 +3,16 @@ package com.eshop.repository;
 
 import com.eshop.model.Product;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Query;
 
 import java.util.Collection;
 import java.util.List;
 
 public interface ProductRepository extends JpaRepository<Product, Long> {
+
+    @Query("select sum(p.quantityInDepot) from Product p")
+    long totalNumberOfProductInDepot();
+
     // find all product by brand name
     List<Product> findAllByBrandName(String brandName);
 

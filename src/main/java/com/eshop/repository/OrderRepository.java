@@ -2,9 +2,11 @@ package com.eshop.repository;
 
 import com.eshop.model.OrderApp;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Query;
 
 import java.time.LocalDate;
 import java.util.Collection;
+import java.util.List;
 
 public interface OrderRepository extends JpaRepository<OrderApp, Long> {
 
@@ -16,6 +18,17 @@ public interface OrderRepository extends JpaRepository<OrderApp, Long> {
 
     // find all orders with specific productID
     Collection<OrderApp> findAllByProductId(Long productId);
+
+//    @Query("select sum(o.amount) from OrderApp o where o.userId = :userId")
+//    long getTotalAmountOfTheUser(long userId);
+
+    @Query("select sum(o.quantity) from OrderApp o")
+    long totalNumberOfOrderedProducts();
+
+    @Query("select sum(o.quantity) from OrderApp o where function('YEAR', o.orderDate) = :yearNum and function('MONTHNAME', o.orderDate) like :monthName")
+    Long totalNumberOfOrderedProductInEachMonth(int yearNum, String monthName);
+
+
 
     //find all order in a specific date
     Collection<OrderApp> findAllByOrderDate(LocalDate orderDate);

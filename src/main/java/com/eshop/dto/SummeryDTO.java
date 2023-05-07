@@ -3,14 +3,14 @@ package com.eshop.dto;
 public class SummeryDTO {
     private Long products;
     private Long orders;
-    private int categories;
-    private int users;
-    private int brands;
+    private long categories;
+    private long users;
+    private long brands;
 
     public SummeryDTO() {
     }
 
-    public SummeryDTO(Long products, Long orders, int categories, int users, int brands) {
+    public SummeryDTO(Long products, Long orders, long categories, long users, long brands) {
         this.products = products;
         this.orders = orders;
         this.categories = categories;
@@ -34,15 +34,15 @@ public class SummeryDTO {
         this.orders = orders;
     }
 
-    public int getCategories() {
+    public long getCategories() {
         return categories;
     }
 
-    public void setCategories(int categories) {
+    public void setCategories(long categories) {
         this.categories = categories;
     }
 
-    public int getUsers() {
+    public long getUsers() {
         return users;
     }
 
@@ -50,11 +50,11 @@ public class SummeryDTO {
         this.users = users;
     }
 
-    public int getBrands() {
+    public long getBrands() {
         return brands;
     }
 
-    public void setBrands(int brands) {
+    public void setBrands(long brands) {
         this.brands = brands;
     }
 }
