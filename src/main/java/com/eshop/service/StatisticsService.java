@@ -118,21 +118,22 @@ public class StatisticsService {
                 lastMonth = monthsArray[i];
                 months.add(lastMonth);
                 // fetch the total ordered product in this month
-                Long dataOfLastMonth = orderRepository
+                Long dataOfLastMonth = statisticsRepository
                         .countAllByYearAndMonth(currentYear, lastMonth + "%");
                 // add the total number of ordered product in this month
-                data.add(dataOfLastMonth);
+                data.add(dataOfLastMonth == null ? 0 : dataOfLastMonth);
             }
             currentYear -= 1;
             int counter = 11;
             while (remainedMonths > 0) {
                 lastMonth = monthsArray[counter];
-                months.add(monthsArray[counter--]);
+                months.add(monthsArray[counter]);
                 Long dataOfLastMonth = statisticsRepository
                         .countAllByYearAndMonth(currentYear, lastMonth + "%");
                 // add the total number of ordered product in this month
-                data.add(dataOfLastMonth);
+                data.add(dataOfLastMonth == null ? 0 : dataOfLastMonth);
                 remainedMonths--;
+                counter--;
             }
         } else {
             for (int i = indexOfCurrentMonth; i >= 0; i--) {
@@ -140,10 +141,10 @@ public class StatisticsService {
                 lastMonth = monthsArray[i];
                 months.add(lastMonth);
                 // fetch the total ordered product in this month
-                long dataOfLastMonth = statisticsRepository
+                Long dataOfLastMonth = statisticsRepository
                         .countAllByYearAndMonth(currentYear, lastMonth + "%");
                 // add the total number of ordered product in this month
-                data.add(dataOfLastMonth);
+                data.add(dataOfLastMonth == null ? 0 : dataOfLastMonth);
             }
         }
         return new MonthlyDataDTO(months, data);

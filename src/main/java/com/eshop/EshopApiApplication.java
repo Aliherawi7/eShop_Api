@@ -74,14 +74,17 @@ public class EshopApiApplication {
                 Product[] array = objectMapper.readValue(jsonUrl, Product[].class);
                 products.addAll(Arrays.asList(array));
                 AtomicInteger counter = new AtomicInteger();
+
                 products.forEach(item -> {
-                    int year = 2022;
-                    if(counter.getAndIncrement() <= LocalDate.now().getMonthValue()){
+                    int year = LocalDate.now().getYear()-1;
+                    int month = (int) (Math.random() * 12 + 1);
+                    if(counter.getAndIncrement() < LocalDate.now().getMonthValue()){
                         year = 2023;
+                        month = 1+ LocalDate.now().getMonthValue() - counter.get();
                     }
+                    System.out.println(year+" : "+month);
                     item.setAddedDate(LocalDate.of(
-                            year, (int) (Math.random() * 12 + 1),
-                            15
+                            year, month, 15
                     ));
                     productService.addProduct(item);
                 });

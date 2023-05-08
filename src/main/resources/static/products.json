@@ -22,7 +22,7 @@
     "price": 1000,
     "description": "latest iphone",
     "size": "medium",
-    "quantityInDepot": 120,
+    "quantityInDepot": 1120,
     "rate": 4,
     "discount": 8,
     "keywords": "tools, mobile"
@@ -400,7 +400,7 @@
     "price": 500,
     "description": "latest",
     "size": "240in",
-    "quantityInDepot": 100,
+    "quantityInDepot": 300,
     "rate": 4,
     "discount": 15,
     "keywords": "tools, pc, laptop, tv"
@@ -470,7 +470,7 @@
     "price": 10,
     "description": "latest",
     "size": "mid",
-    "quantityInDepot": 100,
+    "quantityInDepot": 200,
     "rate": 4,
     "discount": 0,
     "keywords": "tools, pc"
@@ -526,7 +526,7 @@
     "price": 50,
     "description": "latest",
     "size": "mid",
-    "quantityInDepot": 50,
+    "quantityInDepot": 510,
     "rate": 4,
     "discount": 5,
     "keywords": "tools, pc,"
