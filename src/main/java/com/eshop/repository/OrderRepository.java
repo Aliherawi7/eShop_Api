@@ -8,7 +8,7 @@ import java.time.LocalDate;
 import java.util.Collection;
 import java.util.List;
 
-public interface OrderRepository extends JpaRepository<OrderApp, Long> {
+public interface OrderRepository extends JpaRepository<OrderApp, Long>, StatisticsRepository {
 
     // find all orders with specific userId and ProductID
     Collection<OrderApp> findAllByUserIdAndProductId(Long userID, Long productId);
@@ -25,10 +25,10 @@ public interface OrderRepository extends JpaRepository<OrderApp, Long> {
     @Query("select sum(o.quantity) from OrderApp o")
     long totalNumberOfOrderedProducts();
 
-    @Query("select sum(o.quantity) from OrderApp o where function('YEAR', o.orderDate) = :yearNum and function('MONTHNAME', o.orderDate) like :monthName")
-    Long totalNumberOfOrderedProductInEachMonth(int yearNum, String monthName);
-
-
+    // count all ordered products by year and the month added in depot
+    @Override
+    @Query("select sum(o.quantity) from OrderApp o where function('YEAR', o.orderDate) = :year and function('MONTHNAME', o.orderDate) like :month")
+    Long countAllByYearAndMonth(int year, String month);
 
     //find all order in a specific date
     Collection<OrderApp> findAllByOrderDate(LocalDate orderDate);

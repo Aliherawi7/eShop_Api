@@ -8,7 +8,7 @@ import org.springframework.data.jpa.repository.Query;
 import java.util.Collection;
 import java.util.List;
 
-public interface ProductRepository extends JpaRepository<Product, Long> {
+public interface ProductRepository extends JpaRepository<Product, Long>, StatisticsRepository {
 
     @Query("select sum(p.quantityInDepot) from Product p")
     long totalNumberOfProductInDepot();
@@ -24,6 +24,11 @@ public interface ProductRepository extends JpaRepository<Product, Long> {
 
     // find product by name keyword
     List<Product> findAllByNameContaining(String keyword);
+
+    // count all product by the month added in depot
+    @Override
+    @Query("select sum(p.quantityInDepot) from Product p where function('YEAR', p.addedDate) = :year and function('MONTHNAME', p.addedDate) like :month")
+    Long countAllByYearAndMonth(int year, String month);
 
     // find product by name keyword
     List<Product> findAllByNameContainingOrKeywordsContainingOrBrandNameContaining(String name, String category, String brand);

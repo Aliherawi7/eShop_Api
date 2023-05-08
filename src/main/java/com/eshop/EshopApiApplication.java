@@ -1,7 +1,10 @@
 package com.eshop;
 
 import com.eshop.dto.UserRegistrationRequest;
-import com.eshop.model.*;
+import com.eshop.model.Brand;
+import com.eshop.model.OrderApp;
+import com.eshop.model.Product;
+import com.eshop.model.Role;
 import com.eshop.repository.RoleRepository;
 import com.eshop.service.BrandService;
 import com.eshop.service.OrderService;
@@ -14,11 +17,11 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.Bean;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 
-import javax.servlet.http.HttpServletRequest;
 import java.net.URL;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.concurrent.atomic.AtomicInteger;
 
 
 @SpringBootApplication
@@ -70,8 +73,16 @@ public class EshopApiApplication {
                 URL jsonUrl = Thread.currentThread().getContextClassLoader().getResource("static\\products.json");
                 Product[] array = objectMapper.readValue(jsonUrl, Product[].class);
                 products.addAll(Arrays.asList(array));
+                AtomicInteger counter = new AtomicInteger();
                 products.forEach(item -> {
-                    System.out.println(item.getName());
+                    int year = 2022;
+                    if(counter.getAndIncrement() <= LocalDate.now().getMonthValue()){
+                        year = 2023;
+                    }
+                    item.setAddedDate(LocalDate.of(
+                            year, (int) (Math.random() * 12 + 1),
+                            15
+                    ));
                     productService.addProduct(item);
                 });
             } catch (Exception e) {

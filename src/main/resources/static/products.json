@@ -64,7 +64,7 @@
     "price": 1560,
     "description": "latest iphone",
     "size": "pro",
-    "quantityInDepot": 1500,
+    "quantityInDepot": 190,
     "rate": 4,
     "discount": 8,
     "keywords": "tools, mobile"
@@ -92,7 +92,7 @@
     "price": 300,
     "description": "latest",
     "size": "large",
-    "quantityInDepot": 23,
+    "quantityInDepot": 240,
     "rate": 4,
     "discount": 0,
     "keywords": "pc, laptop, tv"
@@ -120,7 +120,7 @@
     "price": 200,
     "description": "latest apple watch",
     "size": "medium",
-    "quantityInDepot": 730,
+    "quantityInDepot": 630,
     "rate": 5,
     "discount": 5,
     "keywords": "tools, mobile"
@@ -134,7 +134,7 @@
     "price": 200,
     "description": "latest apple watch",
     "size": "medium",
-    "quantityInDepot": 730,
+    "quantityInDepot": 330,
     "rate": 5,
     "discount": 10,
     "keywords": "tools, mobile"
@@ -162,7 +162,7 @@
     "price": 1200,
     "description": "latest iphone",
     "size": "pro",
-    "quantityInDepot": 50,
+    "quantityInDepot": 280,
     "rate": 4,
     "discount": 8,
     "keywords": "tools, mobile"
@@ -176,7 +176,7 @@
     "price": 1100,
     "description": "latest",
     "size": "50cm x 50cm",
-    "quantityInDepot": 50,
+    "quantityInDepot": 370,
     "rate": 4,
     "discount": 8,
     "keywords": "tools, mobile"
@@ -190,7 +190,7 @@
     "price": 10,
     "description": "latest",
     "size": "10cm x 5cm",
-    "quantityInDepot": 50,
+    "quantityInDepot": 600,
     "rate": 4,
     "discount": 8,
     "keywords": "tools, mobile"
@@ -204,7 +204,7 @@
     "price": 15,
     "description": "latest Ipro phone",
     "size": "small",
-    "quantityInDepot": 50,
+    "quantityInDepot": 190,
     "rate": 4,
     "discount": 8,
     "keywords": "tools, mobile"
@@ -218,7 +218,7 @@
     "price": 1000,
     "description": "latest",
     "size": "70cm x 30cm",
-    "quantityInDepot": 50,
+    "quantityInDepot": 120,
     "rate": 4,
     "discount": 8,
     "keywords": "tools, pc, laptop, tv"
@@ -232,7 +232,7 @@
     "price": 10,
     "description": "latest",
     "size": "4cm x 3cm",
-    "quantityInDepot": 50,
+    "quantityInDepot": 400,
     "rate": 4,
     "discount": 8,
     "keywords": "tools, mobile"
@@ -246,7 +246,7 @@
     "price": 800,
     "description": "latest",
     "size": "13in",
-    "quantityInDepot": 50,
+    "quantityInDepot": 300,
     "rate": 4,
     "discount": 8,
     "keywords": "tools, pc, laptop, tv"
@@ -260,7 +260,7 @@
     "price": 300,
     "description": "latest",
     "size": "75in",
-    "quantityInDepot": 50,
+    "quantityInDepot": 310,
     "rate": 4,
     "discount": 8,
     "keywords": "tools, pc, laptop, tv"
@@ -274,7 +274,7 @@
     "price": 200,
     "description": "latest",
     "size": "45in",
-    "quantityInDepot": 50,
+    "quantityInDepot": 200,
     "rate": 4,
     "discount": 8,
     "keywords": "tools, pc, laptop, tv"
@@ -288,7 +288,7 @@
     "price": 100,
     "description": "latest",
     "size": "56in",
-    "quantityInDepot": 50,
+    "quantityInDepot": 230,
     "rate": 4,
     "discount": 8,
     "keywords": "tools, pc, laptop, tv"
@@ -302,7 +302,7 @@
     "price": 100,
     "description": "latest",
     "size": "7.5in",
-    "quantityInDepot": 50,
+    "quantityInDepot": 340,
     "rate": 4,
     "discount": 8,
     "keywords": "tools, mobile"
@@ -316,7 +316,7 @@
     "price": 1000,
     "description": "latest",
     "size": "80cm x 30cm",
-    "quantityInDepot": 50,
+    "quantityInDepot": 570,
     "rate": 4,
     "discount": 8,
     "keywords": "tools, pc, laptop, tv"
@@ -330,7 +330,7 @@
     "price": 250,
     "description": "latest",
     "size": "75in",
-    "quantityInDepot": 50,
+    "quantityInDepot": 350,
     "rate": 4,
     "discount": 8,
     "keywords": "tools, pc, laptop, tv"
@@ -344,7 +344,7 @@
     "price": 0.5,
     "description": "latest",
     "size": "20in",
-    "quantityInDepot": 50,
+    "quantityInDepot": 250,
     "rate": 4,
     "discount": 0,
     "keywords": "tools, mobile"
@@ -358,7 +358,7 @@
     "price": 5,
     "description": "latest",
     "size": "Mid",
-    "quantityInDepot": 50,
+    "quantityInDepot": 150,
     "rate": 4,
     "discount": 2,
     "keywords": "tools, pc, laptop"
@@ -372,7 +372,7 @@
     "price": 30,
     "description": "latest",
     "size": "Mid",
-    "quantityInDepot": 50,
+    "quantityInDepot": 250,
     "rate": 4,
     "discount": 4,
     "keywords": "tools, pc, laptop"
@@ -386,7 +386,7 @@
     "price": 300,
     "description": "latest",
     "size": "64in",
-    "quantityInDepot": 50,
+    "quantityInDepot": 150,
     "rate": 4,
     "discount": 12,
     "keywords": "tools, pc, laptop, tv"
@@ -400,7 +400,7 @@
     "price": 500,
     "description": "latest",
     "size": "240in",
-    "quantityInDepot": 50,
+    "quantityInDepot": 100,
     "rate": 4,
     "discount": 15,
     "keywords": "tools, pc, laptop, tv"
@@ -414,7 +414,7 @@
     "price": 500,
     "description": "latest",
     "size": "mid",
-    "quantityInDepot": 50,
+    "quantityInDepot": 400,
     "rate": 4,
     "discount": 8,
     "keywords": "tools, pc, laptop, tv, monitor"
@@ -428,7 +428,7 @@
     "price": 200,
     "description": "latest",
     "size": "large",
-    "quantityInDepot": 50,
+    "quantityInDepot": 200,
     "rate": 4,
     "discount": 4,
     "keywords": "tools, mobile"
@@ -442,7 +442,7 @@
     "price": 10,
     "description": "latest",
     "size": "mid",
-    "quantityInDepot": 50,
+    "quantityInDepot": 430,
     "rate": 4,
     "discount": 0,
     "keywords": "tools, mobile"
@@ -456,7 +456,7 @@
     "price": 100,
     "description": "latest",
     "size": "mid",
-    "quantityInDepot": 50,
+    "quantityInDepot": 300,
     "rate": 4,
     "discount": 5,
     "keywords": "tools, mobile, tv, monitor"
@@ -470,7 +470,7 @@
     "price": 10,
     "description": "latest",
     "size": "mid",
-    "quantityInDepot": 50,
+    "quantityInDepot": 100,
     "rate": 4,
     "discount": 0,
     "keywords": "tools, pc"
@@ -484,7 +484,7 @@
     "price": 100,
     "description": "latest",
     "size": "mid",
-    "quantityInDepot": 50,
+    "quantityInDepot": 450,
     "rate": 4,
     "discount": 4,
     "keywords": "tools, pc"
@@ -498,7 +498,7 @@
     "price": 800,
     "description": "latest",
     "size": "mid",
-    "quantityInDepot": 50,
+    "quantityInDepot": 550,
     "rate": 4,
     "discount": 15,
     "keywords": "tools, pc, laptop"
@@ -512,7 +512,7 @@
     "price": 700,
     "description": "latest",
     "size": "mid",
-    "quantityInDepot": 50,
+    "quantityInDepot": 450,
     "rate": 4,
     "discount": 10,
     "keywords": "tools, pc, laptop"
