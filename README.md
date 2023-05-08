@@ -4,7 +4,7 @@ of shopping in Afghanistan. The idea behind this app is to make shopping
 easier and faster where people can easily find, buy and receive their 
 essential items.
 
-eshop-API was created and developed with Spring boot v2.7.1, Java v8, 
+eshop-API is created and developed with Spring boot v2.7.1, Java v8, 
 spring security v5.7.2, H2 in memory database v2.1.214 and Oauth v4.0.0 
 
 ### Security
