@@ -18,7 +18,7 @@ api/login
     POST / - Login using username: (your email) and password:(your password)
     
 api/users
-    GET / - list of users - required : admin role
+    GET / - get list of all users -> required : admin role
     PUT / - update the logged in user information
     GET /user - information the about this logged in user
     POST /signup - add new user required: name, last-name, email, profile-picture, password

@@ -9,14 +9,11 @@ import com.eshop.model.Product;
 import com.eshop.repository.CommentRepository;
 import com.eshop.repository.ProductRepository;
 import com.eshop.utils.BaseURI;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestParam;
 
 import javax.servlet.http.HttpServletRequest;
 import java.io.IOException;
@@ -31,17 +28,18 @@ public class ProductService {
     private final CommentRepository commentRepository;
     private final ProductDTOMapper productDTOMapper;
     private final FileStorageService fileStorageService;
-    @Autowired
-    HttpServletRequest httpServletRequest;
+    private final HttpServletRequest httpServletRequest;
 
     public ProductService(ProductRepository productRepository,
                           CommentRepository commentRepository,
                           ProductDTOMapper productDTOMapper,
-                          FileStorageService fileStorageService) {
+                          FileStorageService fileStorageService,
+                          HttpServletRequest httpServletRequest) {
         this.productRepository = productRepository;
         this.commentRepository = commentRepository;
         this.productDTOMapper = productDTOMapper;
         this.fileStorageService = fileStorageService;
+        this.httpServletRequest = httpServletRequest;
     }
 
     //find product by id
@@ -103,9 +101,9 @@ public class ProductService {
             updatedProduct.setDiscount(request.getDiscount());
             updatedProduct.setPrice(request.getPrice());
             try {
-                fileStorageService.storeProductImage(request.getImageSide1(), request.getName()+"-side-1");
-                fileStorageService.storeProductImage(request.getImageSide2(), request.getName()+"-side-2");
-                fileStorageService.storeProductImage(request.getImageSide3(), request.getName()+"-side-3");
+                fileStorageService.storeProductImage(request.getImageSide1(), request.getName() + "-side-1");
+                fileStorageService.storeProductImage(request.getImageSide2(), request.getName() + "-side-2");
+                fileStorageService.storeProductImage(request.getImageSide3(), request.getName() + "-side-3");
             } catch (IOException e) {
                 e.printStackTrace();
             }
@@ -128,6 +126,10 @@ public class ProductService {
     //find all product in the database
     public PageContainerDTO getAllProducts(int offset, int pageSize) {
         Page<Product> productPage = productRepository.findAll(PageRequest.of(offset, pageSize));
+        if (productPage == null || productPage.getSize() == 0) {
+            return new PageContainerDTO(0, new ArrayList<>());
+        }
+
         return new PageContainerDTO(
                 productRepository.count(),
                 mapProductsToProductDTOs(productPage.get().collect(Collectors.toList()))
@@ -140,14 +142,14 @@ public class ProductService {
     }
 
     // find product by name containing the keyword
-    public List<ProductDTO> getAllProductByNameContaining(String keyword){
+    public List<ProductDTO> getAllProductByNameContaining(String keyword) {
         return mapProductsToProductDTOs(productRepository.findAllByNameContaining(keyword));
     }
+
     // find product by name containing the keyword
-    public List<ProductDTO> getAllProductByNameContainingOrCategoryContainingOrBrandNameContaining(String keyword){
+    public List<ProductDTO> getAllProductByNameContainingOrCategoryContainingOrBrandNameContaining(String keyword) {
         return mapProductsToProductDTOs(productRepository.findAllByNameContainingOrKeywordsContainingOrBrandNameContaining(keyword, keyword, keyword));
     }
-
 
 
     // find all product by category
@@ -224,6 +226,7 @@ public class ProductService {
     }
 
     public List<ProductDTO> mapProductsToProductDTOs(List<Product> list) {
+        if (list == null || list.size() == 0) return new ArrayList<>();
         String baseURI = BaseURI.getBaseURI(httpServletRequest);
         return list.stream()
                 .map(this::getProductDTO)
@@ -237,8 +240,8 @@ public class ProductService {
     }
 
     /*
-    * find products by keywords
-    * */
+     * find products by keywords
+     * */
 
 //    public Collection<String> searchWordSuggestion(){
 //

@@ -1,5 +1,6 @@
 package com.eshop.service;
 
+import com.eshop.exception.ProductNotFoundException;
 import com.eshop.model.Product;
 import com.eshop.repository.CommentRepository;
 import com.eshop.repository.ProductRepository;
@@ -9,9 +10,13 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.ArgumentCaptor;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
+import org.springframework.data.domain.PageRequest;
+import javax.servlet.http.HttpServletRequest;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
 
 
 @ExtendWith(MockitoExtension.class)
@@ -24,17 +29,22 @@ class ProductServiceTest {
     private ProductDTOMapper productDTOMapper;
     @Mock
     private FileStorageService fileStorageService;
-
+    @Mock
+    private HttpServletRequest httpServletRequest;
     private ProductService underTest;
     private Product product;
 
 
     @BeforeEach
     void setUp() {
-        underTest = new ProductService(productRepository, commentRepository, productDTOMapper, fileStorageService);
-        product = new Product(1l, "L2400", "green",
+        underTest = new ProductService(productRepository,
+                commentRepository,
+                productDTOMapper,
+                fileStorageService,
+                httpServletRequest);
+        product = new Product(1L, "L2400", "green",
                 "dell", "laptop", 599.99,
-                "description", "small", 120l, 5d, 10D);
+                "description", "small", 120L, 5d, 10D);
     }
 
 
@@ -94,10 +104,13 @@ class ProductServiceTest {
 
     @Test
     void getAllProducts() {
+        // give
+        int offset = 1;
+        int pageSize = 10;
         //when
-        underTest.getAllProducts(1, 10);
+        underTest.getAllProducts(offset, pageSize);
         //then
-        verify(productRepository).findAll();
+        verify(productRepository).findAll(PageRequest.of(offset, pageSize));
     }
 
     @Test
@@ -199,10 +212,23 @@ class ProductServiceTest {
 
     @Test
     void deleteProductById() {
+        // given
+        Long id = 1L;
         //when
-        Long id = 1l;
+        when(productRepository.existsById(id)).thenReturn(true);
         underTest.deleteProductById(id);
         //then
+        verify(productRepository).deleteById(id);
+    }
+    @Test
+    void deleteProductByIdIfProductNotExist() {
+        // given
+        Long id = 1L;
+        //when
+        when(productRepository.existsById(id)).thenReturn(false);
+        ;
+        //then
+        assertThrows(ProductNotFoundException.class, () -> underTest.deleteProductById(id));
         verify(productRepository).deleteById(id);
     }
 

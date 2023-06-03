@@ -66,7 +66,20 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
                 "/api/products/*",
                 "/api/brands",
                 "/api/brands/*",
-                "/api/comments/products/*", "/api/v1/files/**").permitAll();
+                "/api/comments/products/*",
+                "/api/v1/files/**",
+                "/v2/api-docs",
+                "/v3/api-docs",
+                "/v3/api-docs/**",
+                "/swagger-resources",
+                "/swagger-resources/**",
+                "/configuration/ui",
+                "/configuration/security",
+                "/configuration/security/*",
+                "/swagger-ui/index.html",
+                "/swagger-ui/**",
+                "/swagger-ui.html",
+                "/webjars/**").permitAll();
         http.authorizeHttpRequests().antMatchers(HttpMethod.POST, "/api/products/save")
                 .hasAuthority("ADMIN");
         http.authorizeHttpRequests().antMatchers(HttpMethod.DELETE, "/api/products/delete")
