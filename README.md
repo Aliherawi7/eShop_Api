@@ -7,6 +7,8 @@ essential items.
 eshop-API is created and developed with Spring boot v2.7.1, Java v8, 
 spring security v5.7.2, H2 in memory database v2.1.214 and Oauth v4.0.0 
 
+Open the swagger API Documentation [Swagger Documentation](http://localhost:8080/swagger-ui/index.html).
+
 ### Security
 
 
